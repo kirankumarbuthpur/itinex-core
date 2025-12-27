@@ -1,0 +1,120 @@
+[
+  { "name": "Tokyo", "country": "Japan", "lat": 35.6762, "lon": 139.6503 },
+  { "name": "Kyoto", "country": "Japan", "lat": 35.0116, "lon": 135.7681 },
+  { "name": "Osaka", "country": "Japan", "lat": 34.6937, "lon": 135.5023 },
+
+  { "name": "Seoul", "country": "South Korea", "lat": 37.5665, "lon": 126.9780 },
+  { "name": "Busan", "country": "South Korea", "lat": 35.1796, "lon": 129.0756 },
+
+  { "name": "Beijing", "country": "China", "lat": 39.9042, "lon": 116.4074 },
+  { "name": "Shanghai", "country": "China", "lat": 31.2304, "lon": 121.4737 },
+  { "name": "Hong Kong", "country": "Hong Kong", "lat": 22.3193, "lon": 114.1694 },
+
+  { "name": "Bangkok", "country": "Thailand", "lat": 13.7563, "lon": 100.5018 },
+  { "name": "Chiang Mai", "country": "Thailand", "lat": 18.7883, "lon": 98.9853 },
+  { "name": "Phuket", "country": "Thailand", "lat": 7.8804, "lon": 98.3923 },
+
+  { "name": "Singapore", "country": "Singapore", "lat": 1.3521, "lon": 103.8198 },
+  { "name": "Kuala Lumpur", "country": "Malaysia", "lat": 3.1390, "lon": 101.6869 },
+  { "name": "Bali (Denpasar)", "country": "Indonesia", "lat": -8.6705, "lon": 115.2126 },
+  { "name": "Hanoi", "country": "Vietnam", "lat": 21.0278, "lon": 105.8342 },
+  { "name": "Ho Chi Minh City", "country": "Vietnam", "lat": 10.8231, "lon": 106.6297 },
+
+  { "name": "Dubai", "country": "UAE", "lat": 25.2048, "lon": 55.2708 },
+  { "name": "Abu Dhabi", "country": "UAE", "lat": 24.4539, "lon": 54.3773 },
+  { "name": "Doha", "country": "Qatar", "lat": 25.2854, "lon": 51.5310 },
+  { "name": "Muscat", "country": "Oman", "lat": 23.5859, "lon": 58.4059 },
+
+  { "name": "Istanbul", "country": "Turkey", "lat": 41.0082, "lon": 28.9784 },
+  { "name": "Cappadocia (Goreme)", "country": "Turkey", "lat": 38.6431, "lon": 34.8290 },
+
+  { "name": "London", "country": "United Kingdom", "lat": 51.5074, "lon": -0.1278 },
+  { "name": "Edinburgh", "country": "United Kingdom", "lat": 55.9533, "lon": -3.1883 },
+  { "name": "Dublin", "country": "Ireland", "lat": 53.3498, "lon": -6.2603 },
+
+  { "name": "Paris", "country": "France", "lat": 48.8566, "lon": 2.3522 },
+  { "name": "Nice", "country": "France", "lat": 43.7102, "lon": 7.2620 },
+  { "name": "Lyon", "country": "France", "lat": 45.7640, "lon": 4.8357 },
+
+  { "name": "Barcelona", "country": "Spain", "lat": 41.3851, "lon": 2.1734 },
+  { "name": "Madrid", "country": "Spain", "lat": 40.4168, "lon": -3.7038 },
+  { "name": "Seville", "country": "Spain", "lat": 37.3891, "lon": -5.9845 },
+
+  { "name": "Rome", "country": "Italy", "lat": 41.9028, "lon": 12.4964 },
+  { "name": "Venice", "country": "Italy", "lat": 45.4408, "lon": 12.3155 },
+  { "name": "Florence", "country": "Italy", "lat": 43.7696, "lon": 11.2558 },
+  { "name": "Milan", "country": "Italy", "lat": 45.4642, "lon": 9.1900 },
+
+  { "name": "Amsterdam", "country": "Netherlands", "lat": 52.3676, "lon": 4.9041 },
+  { "name": "Brussels", "country": "Belgium", "lat": 50.8503, "lon": 4.3517 },
+
+  { "name": "Berlin", "country": "Germany", "lat": 52.5200, "lon": 13.4050 },
+  { "name": "Munich", "country": "Germany", "lat": 48.1351, "lon": 11.5820 },
+
+  { "name": "Zurich", "country": "Switzerland", "lat": 47.3769, "lon": 8.5417 },
+  { "name": "Geneva", "country": "Switzerland", "lat": 46.2044, "lon": 6.1432 },
+
+  { "name": "Vienna", "country": "Austria", "lat": 48.2082, "lon": 16.3738 },
+  { "name": "Prague", "country": "Czechia", "lat": 50.0755, "lon": 14.4378 },
+  { "name": "Budapest", "country": "Hungary", "lat": 47.4979, "lon": 19.0402 },
+
+  { "name": "Copenhagen", "country": "Denmark", "lat": 55.6761, "lon": 12.5683 },
+  { "name": "Stockholm", "country": "Sweden", "lat": 59.3293, "lon": 18.0686 },
+  { "name": "Oslo", "country": "Norway", "lat": 59.9139, "lon": 10.7522 },
+  { "name": "Helsinki", "country": "Finland", "lat": 60.1699, "lon": 24.9384 },
+  { "name": "Reykjavik", "country": "Iceland", "lat": 64.1466, "lon": -21.9426 },
+
+  { "name": "New York", "country": "USA", "lat": 40.7128, "lon": -74.0060 },
+  { "name": "San Francisco", "country": "USA", "lat": 37.7749, "lon": -122.4194 },
+  { "name": "Los Angeles", "country": "USA", "lat": 34.0522, "lon": -118.2437 },
+  { "name": "Chicago", "country": "USA", "lat": 41.8781, "lon": -87.6298 },
+  { "name": "Miami", "country": "USA", "lat": 25.7617, "lon": -80.1918 },
+
+  { "name": "Vancouver", "country": "Canada", "lat": 49.2827, "lon": -123.1207 },
+  { "name": "Toronto", "country": "Canada", "lat": 43.6532, "lon": -79.3832 },
+  { "name": "Montreal", "country": "Canada", "lat": 45.5019, "lon": -73.5674 },
+
+  { "name": "Mexico City", "country": "Mexico", "lat": 19.4326, "lon": -99.1332 },
+  { "name": "Cancun", "country": "Mexico", "lat": 21.1619, "lon": -86.8515 },
+
+  { "name": "Rio de Janeiro", "country": "Brazil", "lat": -22.9068, "lon": -43.1729 },
+  { "name": "São Paulo", "country": "Brazil", "lat": -23.5558, "lon": -46.6396 },
+  { "name": "Buenos Aires", "country": "Argentina", "lat": -34.6037, "lon": -58.3816 },
+  { "name": "Lima", "country": "Peru", "lat": -12.0464, "lon": -77.0428 },
+
+  { "name": "Cape Town", "country": "South Africa", "lat": -33.9249, "lon": 18.4241 },
+  { "name": "Marrakesh", "country": "Morocco", "lat": 31.6295, "lon": -7.9811 },
+  { "name": "Nairobi", "country": "Kenya", "lat": -1.2921, "lon": 36.8219 },
+
+  { "name": "Sydney", "country": "Australia", "lat": -33.8688, "lon": 151.2093 },
+  { "name": "Melbourne", "country": "Australia", "lat": -37.8136, "lon": 144.9631 },
+  { "name": "Auckland", "country": "New Zealand", "lat": -36.8485, "lon": 174.7633 },
+  { "name": "Queenstown", "country": "New Zealand", "lat": -45.0312, "lon": 168.6626 },
+
+  { "name": "Nassau", "country": "Bahamas", "lat": 25.0443, "lon": -77.3504 },
+  { "name": "Paradise Island", "country": "Bahamas", "lat": 25.0836, "lon": -77.3177 },
+
+  { "name": "Montego Bay", "country": "Jamaica", "lat": 18.4762, "lon": -77.8939 },
+  { "name": "Negril", "country": "Jamaica", "lat": 18.2684, "lon": -78.3481 },
+
+  { "name": "Punta Cana", "country": "Dominican Republic", "lat": 18.5601, "lon": -68.3725 },
+  { "name": "Santo Domingo", "country": "Dominican Republic", "lat": 18.4861, "lon": -69.9312 },
+
+  { "name": "San Juan", "country": "Puerto Rico", "lat": 18.4655, "lon": -66.1057 },
+
+  { "name": "Bridgetown", "country": "Barbados", "lat": 13.0975, "lon": -59.6167 },
+
+  { "name": "Castries", "country": "Saint Lucia", "lat": 14.0101, "lon": -60.9875 },
+
+  { "name": "St. George's", "country": "Grenada", "lat": 12.0561, "lon": -61.7486 },
+
+  { "name": "Oranjestad", "country": "Aruba", "lat": 12.5211, "lon": -70.0370 },
+
+  { "name": "Willemstad", "country": "Curaçao", "lat": 12.1091, "lon": -68.9350 },
+
+  { "name": "Basseterre", "country": "Saint Kitts and Nevis", "lat": 17.3026, "lon": -62.7177 },
+
+  { "name": "Philipsburg", "country": "Sint Maarten", "lat": 18.0250, "lon": -63.0460 },
+
+  { "name": "Road Town", "country": "British Virgin Islands", "lat": 18.4286, "lon": -64.6185 }
+]

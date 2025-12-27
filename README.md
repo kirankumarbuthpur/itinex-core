@@ -68,3 +68,56 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+To Generate Attractions : npm run generate:attractions
+
+
+🔑 Keys
+Application ID
+848469
+Access Key
+YEDIZjsDSSxJ3J26-jhfe26GvEdad2tdyE5vjE7jP1c
+Secret key
+kTu9Mx4F0k-PRVR0qK2KITBa0USTQrMht5Gef088Vf4
+Note: both your Access Key and Secret Key must remain confidential.
+
+Supabase Database Tables
+create table if not exists public.reviews (
+  id uuid primary key default gen_random_uuid(),
+  destination_id text not null,
+  destination_name text,
+  author text not null,
+  text text not null,
+  rating int not null check (rating between 1 and 5),
+  created_at timestamptz not null default now()
+);
+
+-- Enable RLS
+alter table public.reviews enable row level security;
+
+-- Allow anyone to read reviews
+create policy "public read reviews"
+on public.reviews for select
+to anon
+using (true);
+
+-- Allow anyone to add a review (public demo mode)
+create policy "public insert reviews"
+on public.reviews for insert
+to anon
+with check (true);
+
+
+// DO THIS STEP BEFORE SUBMISSION TO GOOGLE
+
+5) Google steps (this is required)
+
+Add itinex.com in Google Search Console
+
+Verify ownership (DNS or HTML file)
+
+Submit: https://itinex.com/sitemap.xml
+
+“Request indexing” for the homepage
