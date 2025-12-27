@@ -177,7 +177,7 @@ function AdSlot({ id, label = "Ad", className = "" }) {
 		  </p>
 		  <button
 		    className="mt-3 inline-flex items-center px-3 py-1.5 rounded-md bg-itinex-primary text-white text-xs font-semibold hover:opacity-90"
-		    onClick={() => window.location.href = "mailto:ads@itinex.com"}>
+		    onClick={() => window.location.href = "mailto:buthpur@itinex.net"}>
 		    Advertise with Itinex
 		  </button>
 		</div>
