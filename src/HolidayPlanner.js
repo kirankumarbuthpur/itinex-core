@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  MapPin,
   Calendar,
   Cloud,
   Sun,
@@ -32,9 +31,6 @@ import { supabase } from "./lib/supabase";
 import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
 import L from 'leaflet';
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import { MapContainer, TileLayer, Marker, Tooltip, useMap } from 'react-leaflet';
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -175,11 +171,15 @@ function AdSlot({ id, label = "Ad", className = "" }) {
 		  <p className="mt-1 text-xs text-slate-500">
 		    Your brand here — inspire journeys at the moment of decision.
 		  </p>
-		  <button
-		    className="mt-3 inline-flex items-center px-3 py-1.5 rounded-md bg-itinex-primary text-white text-xs font-semibold hover:opacity-90"
-		    onClick={() => window.location.href = "mailto:buthpur@itinex.net"}>
-		    Advertise with Itinex
-		  </button>
+		 <a
+  href="https://mail.google.com/mail/?view=cm&to=buthpur@itinex.com&su=Advertising%20with%20Itinex&body=Hi%20Itinex%20Team,%0A%0AI%20am%20interested%20in%20advertising%20on%20Itinex."
+  target="_blank"
+  rel="noopener noreferrer"
+  className="mt-3 inline-flex items-center px-3 py-1.5 rounded-md bg-itinex-primary text-white text-xs font-semibold hover:opacity-90"
+>
+  Advertise with Itinex
+</a>
+
 		</div>
 		</div>
         <div className="text-[11px] mt-1 text-slate-400">{id}</div>
@@ -275,9 +275,7 @@ const scrollToSection = (id) => {
   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
 };
 
-const [attractionImagePool, setAttractionImagePool] = useState({}); 
 
-const [carouselIndex, setCarouselIndex] = useState({}); 
 const [mapWeatherById, setMapWeatherById] = useState({}); 
 
 const [loadingMapWeather, setLoadingMapWeather] = useState(false);
@@ -288,11 +286,6 @@ const weatherConditionFromCode = (code) => {
   return "rainy";
 };
 
-const pinColorFromCondition = (condition) => {
-  if (condition === "sunny") return "#F59E0B"; 
-  if (condition === "rainy") return "#3B82F6";
-  return "#64748B"; 
-};
 const [savedTrips, setSavedTrips] = useState([]);
 const SAVED_TRIPS_KEY = "itinex:savedTrips";
 const destKey = (dest) => {
@@ -1879,19 +1872,6 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 		  Map
 		</NavButton>
 
-
-        <NavButton
-          active={activeNav === "itinerary"}
-          onClick={() => {
-            setActiveNav("itinerary");
-            if (step === "itinerary") scrollToSection("itinerary");
-          }}
-          disabled={step !== "itinerary"}
-          title={step !== "itinerary" ? "Generate an itinerary first" : ""}
-        >
-          Itinerary
-        </NavButton>
-
        <NavButton
 		  active={activeNav === "saved"}
 		  onClick={() => {
@@ -1948,68 +1928,62 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
       </div>
     </div>
 
-    {/* Mobile nav */}
-    {mobileNavOpen && (
-      <div className="lg:hidden mt-4 grid grid-cols-2 gap-2">
-        <MobileNavItem
-          onClick={() => {
-            setMobileNavOpen(false);
-            setActiveNav("destinations");
-            if (step !== "select") resetPlanner();
-            setTimeout(() => scrollToSection("destinations"), 50);
-          }}
-        >
-          Destinations
-        </MobileNavItem>
+   {/* Mobile nav */}
+{mobileNavOpen && (
+  <div className="lg:hidden mt-4 flex flex-col gap-2">
+    
+    {/* Destinations */}
+    <MobileNavItem
+      onClick={() => {
+        setMobileNavOpen(false);
+        setActiveNav("destinations");
 
-        <MobileNavItem
-          onClick={() => {
-            setMobileNavOpen(false);
-            setActiveNav("map");
-          }}
-        >
-          Map
-        </MobileNavItem>
+        if (step !== "select") resetPlanner();
 
-        <MobileNavItem
-          disabled={step !== "itinerary"}
-          onClick={() => {
-            setMobileNavOpen(false);
-            setActiveNav("itinerary");
-            if (step === "itinerary") scrollToSection("itinerary");
-          }}
-        >
-          Itinerary
-        </MobileNavItem>
+        setStep("select"); // ✅ REQUIRED
+        setTimeout(() => scrollToSection("destinations"), 50);
+      }}
+    >
+      Destinations
+    </MobileNavItem>
 
-        <MobileNavItem
-          onClick={() => {
-            setMobileNavOpen(false);
-            setActiveNav("saved");
-          }}
-        >
-          Saved Trips
-        </MobileNavItem>
+    {/* Map */}
+    <MobileNavItem
+      onClick={() => {
+        setMobileNavOpen(false);
+        setActiveNav("map");
+        setStep("map"); // ✅ REQUIRED
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }}
+    >
+      Map
+    </MobileNavItem>
 
-        <MobileNavItem
-          onClick={() => {
-            setMobileNavOpen(false);
-            setActiveNav("reviews");
-          }}
-        >
-          Reviews
-        </MobileNavItem>
+    {/* Saved Trips */}
+    <MobileNavItem
+      onClick={() => {
+        setMobileNavOpen(false);
+        setActiveNav("saved");
+        setStep("saved"); // ✅ REQUIRED
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }}
+    >
+      Saved Trips
+    </MobileNavItem>
 
-        <MobileNavItem
-          onClick={() => {
-            setMobileNavOpen(false);
-            if (step !== "select") resetPlanner();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className="col-span-2 bg-gradient-to-r from-itinex-secondary to-itinex-primary text-white border-transparent"
-        >
-          New Trip
-        </MobileNavItem>
+    {/* New Trip */}
+    <MobileNavItem
+      onClick={() => {
+        setMobileNavOpen(false);
+        setActiveNav("home");
+        setStep("select"); // ✅ REQUIRED
+        resetPlanner();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }}
+      className="bg-gradient-to-r from-itinex-secondary to-itinex-primary text-white border-transparent"
+    >
+      New Trip
+    </MobileNavItem>
       </div>
     )}
   </div>
