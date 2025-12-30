@@ -70,6 +70,20 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
 
+Itinex - Name and Context : 
+Itinext is actually a pretty solid name for a travel-related website! Here's why:
+
+Short and Snappy: It's easy to remember and pronounce, which is great for branding.
+
+Relevant: The "Itin" part immediately connects to "itinerary," which makes it clear that the website is about travel planning. The "next" part could imply "next destination," "next adventure," or even "the next step in planning your trip," which gives it a dynamic feel.
+
+Modern and Techy: The name sounds modern, which is important for tech-focused services like a travel planning platform.
+
+Unique: It's not overly common, so you’ll have a better chance at creating a distinct brand identity with it.
+
+
+
+
 
 To Generate Attractions : npm run generate:attractions
 
