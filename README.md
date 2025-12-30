@@ -121,3 +121,21 @@ Verify ownership (DNS or HTML file)
 Submit: https://itinex.com/sitemap.xml
 
 “Request indexing” for the homepage
+
+
+
+Deploy latest build :
+
+az storage blob upload-batch \
+  --account-name itinexstorageaccount \
+  --destination '$web' \
+  --source ./build \
+  --auth-mode login \
+  --overwrite
+
+  NS LOOKUP : nslookup www.itinex.net
+
+
+
+  TXT Record name : _dnsauth.itinex.net
+  TXT Record Value : _j7sccknal26sfrll2pzbibd65gm4xsy
