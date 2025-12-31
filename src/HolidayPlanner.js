@@ -330,6 +330,21 @@ const fetchReviewsForDestination = async (destinationId) => {
   }
 };
 
+{/* Remove after New Year */}
+const [showMarketingModal, setShowMarketingModal] = useState(false);
+
+useEffect(() => {
+  const seen = localStorage.getItem("itinex_ny2026_seen");
+  if (!seen) {
+    const timer = setTimeout(() => {
+      setShowMarketingModal(true);
+      localStorage.setItem("itinex_ny2026_seen", "true");
+    }, 1500); // delay feels natural
+
+    return () => clearTimeout(timer);
+  }
+}, []);
+
 function loadSavedTrips() {
   try {
     const raw = localStorage.getItem(SAVED_TRIPS_KEY);
@@ -3012,6 +3027,56 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
     </div>
   </div>
 </footer>
+{/* Remove after New Year */}
+{showMarketingModal && (
+  <div className="fixed bottom-5 right-5 z-50 max-w-sm w-[90vw] sm:w-96">
+    <div className="relative rounded-2xl shadow-2xl bg-white border overflow-hidden">
+      
+      {/* Header */}
+      <div className="bg-gradient-to-r from-itinex-primary to-itinex-secondary p-4 text-white">
+        <h3 className="text-lg font-extrabold">🎆 Happy New Year 2026!</h3>
+        <p className="text-xs opacity-90 mt-1">
+          Plan smarter journeys this year with Itinex
+        </p>
+      </div>
+
+      {/* Body */}
+      <div className="p-4 space-y-3">
+        <div className="text-sm text-gray-800">
+          ✨ Try our <span className="font-semibold text-itinex-primary">
+          Weather-Aware Smart Itineraries</span>
+          — activities adapt automatically to rain, sun & temperature.
+        </div>
+
+        <ul className="text-xs text-gray-600 list-disc pl-4 space-y-1">
+          <li>Real attractions & maps</li>
+          <li>One-click swaps</li>
+          <li>Share trips instantly</li>
+        </ul>
+
+        {/* Actions */}
+        <div className="flex items-center justify-between pt-3">
+          <button
+            onClick={() => setShowMarketingModal(false)}
+            className="text-xs text-gray-500 hover:text-gray-800"
+          >
+            Dismiss
+          </button>
+
+          <button
+            onClick={() => {
+              setShowMarketingModal(false);
+              setActiveNav("destinations"); // or setStep("destinations")
+            }}
+            className="inline-flex items-center px-4 py-2 rounded-lg bg-itinex-primary text-white text-xs font-semibold hover:opacity-90"
+          >
+            Try it now →
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
 
     </div>
   );
