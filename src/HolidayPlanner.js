@@ -1014,7 +1014,7 @@ useEffect(() => {
   const fetchWikipediaAttractions = async (lat, lon) => {
   // 1) Get nearby pages
   const geoRes = await fetch(
-    `https://en.wikipedia.org/w/api.php?action=query&list=geosearch&gsradius=20000&gscoord=${lat}|${lon}&gslimit=50&format=json&origin=*`
+    `https://en.wikipedia.org/w/api.php?action=query&list=geosearch&gsradius=50000&gscoord=${lat}|${lon}&gslimit=50&format=json&origin=*`
   );
   const geoData = await geoRes.json();
   const geo = geoData?.query?.geosearch || [];
