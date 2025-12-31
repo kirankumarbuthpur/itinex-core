@@ -1349,6 +1349,15 @@ setAttractionsForTrip(null);
     safeDestroyCollab();
   };
 
+const FooterLink = ({ label, nav }) => (
+  <button
+    onClick={() => setActiveNav(nav)}
+    className="text-slate-600 hover:text-itinex-primary hover:underline text-left"
+  >
+    {label}
+  </button>
+);
+
 const pickReplacement = (slot, dayObj, currentItinerary) => {
   const pools = attractionsForTrip;
   if (!pools) return null;
@@ -2415,6 +2424,81 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 		  </div>
 		)}
 
+{activeNav === "about" && (
+  <section className="max-w-4xl mx-auto px-6 py-16">
+    <h1 className="text-3xl font-extrabold mb-4">About Itinex</h1>
+    <p className="text-slate-700 leading-relaxed">
+      Itinex is a smart travel planner that builds real itineraries
+      using live weather, authentic attractions, interactive maps,
+      and seamless sharing.
+    </p>
+  </section>
+)}
+
+{activeNav === "contact" && (
+  <section className="max-w-4xl mx-auto px-6 py-16">
+    <h1 className="text-3xl font-extrabold mb-4">Contact Us</h1>
+    <p className="text-slate-700">
+      Have feedback or questions? &nbsp;
+
+    <a
+      href="https://mail.google.com/mail/?view=cm&to=buthpur@itinex.net&su=Advertising%20with%20Itinex&body=Hi%20Itinex%20Team,%0A%0AI%20am%20interested%20in%20advertising%20on%20Itinex."
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-3 inline-flex items-center px-3 py-1.5 rounded-md bg-itinex-primary text-white text-xs font-semibold hover:opacity-90"
+    >
+      Email
+    </a>&nbsp; us
+    </p>
+
+  </section>
+)}
+{activeNav === "advertise" && (
+  <section className="max-w-4xl mx-auto px-6 py-16">
+    <h1 className="text-3xl font-extrabold mb-4">Advertise with Itinex</h1>
+
+    <p className="text-slate-700 mb-6">
+      Reach travelers at the exact moment they plan their trips.
+    </p>
+
+    <ul className="list-disc pl-6 text-slate-700 space-y-2">
+      <li>Destination-targeted placements</li>
+      <li>High-intent travelers</li>
+      <li>Premium brand exposure</li>
+    </ul>
+    <p className="text-slate-700">
+      Please email @ &nbsp;
+      <a
+  href="https://mail.google.com/mail/?view=cm&to=buthpur@itinex.net&su=Advertising%20with%20Itinex&body=Hi%20Itinex%20Team,%0A%0AI%20am%20interested%20in%20advertising%20on%20Itinex."
+  target="_blank"
+  rel="noopener noreferrer"
+  className="mt-3 inline-flex items-center px-3 py-1.5 rounded-md bg-itinex-primary text-white text-xs font-semibold hover:opacity-90"
+>
+  Advertise with Itinex
+</a>
+    </p>
+    
+  </section>
+)}
+{activeNav === "privacy" && (
+  <section className="max-w-4xl mx-auto px-6 py-16 text-sm text-slate-700">
+    <h1 className="text-3xl font-extrabold mb-4">Privacy Policy</h1>
+    <p>
+      We respect your privacy. Itinex stores only essential data
+      required to deliver travel planning features.
+    </p>
+  </section>
+)}
+
+{activeNav === "terms" && (
+  <section className="max-w-4xl mx-auto px-6 py-16 text-sm text-slate-700">
+    <h1 className="text-3xl font-extrabold mb-4">Terms of Service</h1>
+    <p>
+      By using Itinex, you agree to use the platform responsibly
+      and comply with applicable laws.
+    </p>
+  </section>
+)}
 
         {step === 'itinerary' && itinerary.length > 0 && (
           <div id="itinerary" className="space-y-6">
@@ -2955,78 +3039,53 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
           </div>
         </div>
       )}
-                      <footer className="mt-20 bg-itinex-bg border-t border-slate-200">
-  <div className="max-w-7xl mx-auto px-6 py-10">
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-      
-      {/* Brand */}
-      <div>
-        <div className="flex items-center gap-2">
-          <span className="text-xl font-extrabold text-itinex-primary">
-            Itinex
-          </span>
-        </div>
-        <p className="mt-3 text-sm text-slate-600 max-w-sm">
-          Plan less. Explore more.  
-          Smart itineraries, real places, weather-aware journeys.
-        </p>
-      </div>
+                      <footer className="border-t bg-slate-50 mt-20">
+  <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
 
-      {/* Links */}
-      <div className="grid grid-cols-2 gap-6">
-        <div>
-          <h4 className="text-sm font-semibold text-slate-900 mb-3">
-            Product
-          </h4>
-          <ul className="space-y-2 text-sm text-slate-600">
-            <li className="hover:text-itinex-primary cursor-pointer">Destinations</li>
-            <li className="hover:text-itinex-primary cursor-pointer">Smart Itineraries</li>
-            <li className="hover:text-itinex-primary cursor-pointer">Map Planner</li>
-            <li className="hover:text-itinex-primary cursor-pointer">Collaboration</li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 className="text-sm font-semibold text-slate-900 mb-3">
-            Resources
-          </h4>
-          <ul className="space-y-2 text-sm text-slate-600">
-            <li className="hover:text-itinex-secondary cursor-pointer">Help</li>
-            <li className="hover:text-itinex-secondary cursor-pointer">Privacy</li>
-            <li className="hover:text-itinex-secondary cursor-pointer">Terms</li>
-          </ul>
-        </div>
-      </div>
-
-      {/* CTA */}
-      <div className="md:text-right">
-        <h4 className="text-sm font-semibold text-slate-900 mb-3">
-          Ready to explore?
-        </h4>
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg
-                     bg-gradient-to-r from-itinex-secondary to-itinex-primary
-                     text-white font-semibold shadow-sm
-                     hover:opacity-90 transition"
-        >
-          Start a new trip
-        </button>
-      </div>
+    {/* Brand */}
+    <div>
+      <div className="font-extrabold text-lg text-slate-900">Itinex</div>
+      <p className="mt-2 text-slate-600 text-xs">
+        Plan less. Explore more.<br />
+        Smart, weather-aware travel planning.
+      </p>
     </div>
 
-    {/* Bottom bar */}
-    <div className="mt-10 pt-6 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-      <span>
-        © {new Date().getFullYear()} Itinex. All rights reserved.
-      </span>
+    {/* Product */}
+    <div>
+      <h4 className="font-semibold text-slate-900 mb-3">Product</h4>
+      <ul className="space-y-2">
+        <li><FooterLink label="Destinations" nav="destinations" /></li>
+        <li><FooterLink label="Map View" nav="map" /></li>
+        <li><FooterLink label="Saved Trips" nav="saved" /></li>
+      </ul>
+    </div>
 
-      <span className="flex items-center gap-1">
-        Built for explorers 🌍
-      </span>
+    {/* Company */}
+    <div>
+      <h4 className="font-semibold text-slate-900 mb-3">Company</h4>
+      <ul className="space-y-2">
+        <li><FooterLink label="About Itinex" nav="about" /></li>
+         <li><FooterLink label="Contact" nav="contact" /></li>
+         <li><FooterLink label="Advertise with Us" nav="advertise" /></li>
+      </ul>
+    </div>
+
+    {/* Legal */}
+    <div>
+      <h4 className="font-semibold text-slate-900 mb-3">Legal</h4>
+      <ul className="space-y-2">
+         <li><FooterLink label="Privacy Policy" nav="privacy" /></li>
+         <li><FooterLink label="Terms of Service" nav="terms" /></li>
+      </ul>
     </div>
   </div>
+
+  <div className="text-center text-xs text-slate-500 pb-6">
+    © {new Date().getFullYear()} Itinex · itinex.net
+  </div>
 </footer>
+
 {/* Remove after New Year */}
 {showMarketingModal && (
   <div className="fixed bottom-5 right-5 z-50 max-w-sm w-[90vw] sm:w-96">
