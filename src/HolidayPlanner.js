@@ -172,7 +172,7 @@ function AdSlot({ id, label = "Ad", className = "" }) {
 		    Your brand here — inspire journeys at the moment of decision.
 		  </p>
 		 <a
-  href="https://mail.google.com/mail/?view=cm&to=buthpur@itinex.com&su=Advertising%20with%20Itinex&body=Hi%20Itinex%20Team,%0A%0AI%20am%20interested%20in%20advertising%20on%20Itinex."
+  href="https://mail.google.com/mail/?view=cm&to=buthpur@itinex.net&su=Advertising%20with%20Itinex&body=Hi%20Itinex%20Team,%0A%0AI%20am%20interested%20in%20advertising%20on%20Itinex."
   target="_blank"
   rel="noopener noreferrer"
   className="mt-3 inline-flex items-center px-3 py-1.5 rounded-md bg-itinex-primary text-white text-xs font-semibold hover:opacity-90"
