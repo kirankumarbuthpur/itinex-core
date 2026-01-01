@@ -358,7 +358,7 @@ const fetchPlaceDetails = async (placeName) => {
   setNearbyPlaces([]);
 
   try {
-    // 1️⃣ Fetch main place
+    // 1️⃣ Fetch main place summary
     const res = await fetch(
       `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(placeName)}`
     );
@@ -373,44 +373,21 @@ const fetchPlaceDetails = async (placeName) => {
       url: data.content_urls?.desktop?.page || null
     });
 
-    let nearby = [];
-
-    // 2️⃣ PRIMARY: GeoSearch (best quality)
+    // 2️⃣ Fetch nearby attractions (if coordinates exist)
     if (data.coordinates?.lat && data.coordinates?.lon) {
       const geoRes = await fetch(
-        `https://en.wikipedia.org/w/api.php?action=query&list=geosearch&gscoord=${data.coordinates.lat}|${data.coordinates.lon}&gsradius=2000&gslimit=8&format=json&origin=*`
+        `https://en.wikipedia.org/w/api.php?action=query&list=geosearch&gscoord=${data.coordinates.lat}|${data.coordinates.lon}&gsradius=1500&gslimit=6&format=json&origin=*`
       );
 
       const geoData = await geoRes.json();
-      nearby =
+
+      const nearby =
         geoData?.query?.geosearch
-          ?.map(p => p.title)
-          ?.filter(t => t !== data.title) || [];
+          ?.filter(p => p.title !== data.title)
+          ?.map(p => p.title) || [];
+
+      setNearbyPlaces(nearby);
     }
-
-    // 3️⃣ FALLBACK: Text search (guaranteed results)
-    if (nearby.length < 4) {
-      const searchRes = await fetch(
-        `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(
-          placeName
-        )}&srlimit=6&format=json&origin=*`
-      );
-
-      const searchData = await searchRes.json();
-
-      const fallback =
-        searchData?.query?.search
-          ?.map(s => s.title)
-          ?.filter(
-            t => t !== data.title && !nearby.includes(t)
-          ) || [];
-
-      nearby = [...nearby, ...fallback];
-    }
-
-    // 4️⃣ Finalize (always at least some items)
-    setNearbyPlaces(nearby.slice(0, 6));
-
   } catch {
     setPlaceDetails({
       title: placeName,
@@ -418,14 +395,16 @@ const fetchPlaceDetails = async (placeName) => {
       image: null,
       url: null
     });
-
-    // Absolute fallback (still show something)
-    setNearbyPlaces([]);
   } finally {
     setPlaceLoading(false);
   }
 };
-
+const openGoogleMapsDirections = (placeName) => {
+  const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+    placeName
+  )}`;
+  window.open(url, "_blank", "noopener,noreferrer");
+};
 
 
 
@@ -3207,11 +3186,20 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
                     Read more on Wikipedia →
                   </a>
                 )}
+                <div>
+                <button
+                    onClick={() => openGoogleMapsDirections(placeDetails.title)}
+                    className="mt-3 inline-flex items-center gap-2 rounded-lg bg-itinex-primary px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+                  >
+                    📍 Get directions
+                  </button>
+                </div>
               </>
             ) : null}
           </div>
         </div>
       )}
+
                       <footer className="border-t bg-slate-50 mt-20">
   <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
 
