@@ -275,6 +275,7 @@ const scrollToSection = (id) => {
   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
 };
 
+const [nearbyPlaces, setNearbyPlaces] = useState([]);
 
 const [mapWeatherById, setMapWeatherById] = useState({}); 
 
@@ -344,6 +345,89 @@ useEffect(() => {
     return () => clearTimeout(timer);
   }
 }, []);
+
+const [placeModalOpen, setPlaceModalOpen] = useState(false);
+const [activePlace, setActivePlace] = useState(null);
+const [placeDetails, setPlaceDetails] = useState(null);
+const [placeLoading, setPlaceLoading] = useState(false);
+const fetchPlaceDetails = async (placeName) => {
+  if (!placeName) return;
+
+  setPlaceLoading(true);
+  setPlaceDetails(null);
+  setNearbyPlaces([]);
+
+  try {
+    // 1️⃣ Fetch main place
+    const res = await fetch(
+      `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(placeName)}`
+    );
+    if (!res.ok) throw new Error("Not found");
+
+    const data = await res.json();
+
+    setPlaceDetails({
+      title: data.title,
+      description: data.extract,
+      image: data.thumbnail?.source || null,
+      url: data.content_urls?.desktop?.page || null
+    });
+
+    let nearby = [];
+
+    // 2️⃣ PRIMARY: GeoSearch (best quality)
+    if (data.coordinates?.lat && data.coordinates?.lon) {
+      const geoRes = await fetch(
+        `https://en.wikipedia.org/w/api.php?action=query&list=geosearch&gscoord=${data.coordinates.lat}|${data.coordinates.lon}&gsradius=2000&gslimit=8&format=json&origin=*`
+      );
+
+      const geoData = await geoRes.json();
+      nearby =
+        geoData?.query?.geosearch
+          ?.map(p => p.title)
+          ?.filter(t => t !== data.title) || [];
+    }
+
+    // 3️⃣ FALLBACK: Text search (guaranteed results)
+    if (nearby.length < 4) {
+      const searchRes = await fetch(
+        `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(
+          placeName
+        )}&srlimit=6&format=json&origin=*`
+      );
+
+      const searchData = await searchRes.json();
+
+      const fallback =
+        searchData?.query?.search
+          ?.map(s => s.title)
+          ?.filter(
+            t => t !== data.title && !nearby.includes(t)
+          ) || [];
+
+      nearby = [...nearby, ...fallback];
+    }
+
+    // 4️⃣ Finalize (always at least some items)
+    setNearbyPlaces(nearby.slice(0, 6));
+
+  } catch {
+    setPlaceDetails({
+      title: placeName,
+      description: "No additional details available.",
+      image: null,
+      url: null
+    });
+
+    // Absolute fallback (still show something)
+    setNearbyPlaces([]);
+  } finally {
+    setPlaceLoading(false);
+  }
+};
+
+
+
 
 function loadSavedTrips() {
   try {
@@ -2734,7 +2818,17 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 
 		    <div className="absolute bottom-0 left-0 right-0 p-4">
 		      <div className="text-white font-bold text-lg leading-snug drop-shadow">
-		        {day.morning}
+		        <button
+              className="text-left font-semibold text-itinex-primary hover:underline"
+              onClick={() => {
+                setActivePlace(day.morning);
+                setPlaceModalOpen(true);
+                fetchPlaceDetails(day.morning);
+              }}
+            >
+              {day.morning}
+            </button>
+
 		      </div>
 		      <div className="text-white/85 text-xs mt-1">
 		        Best for {day.condition === 'rainy' ? 'indoors nearby' : 'exploring'}
@@ -2809,7 +2903,16 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 
 			            <div className="absolute bottom-0 left-0 right-0 p-4">
 			              <div className="text-white font-bold text-lg leading-snug drop-shadow">
-			                {day.evening}
+			                <button
+                        className="text-left font-semibold text-itinex-primary hover:underline"
+                        onClick={() => {
+                          setActivePlace(day.evening);
+                          setPlaceModalOpen(true);
+                          fetchPlaceDetails(day.evening);
+                        }}
+                      >
+                        {day.evening}
+                      </button>
 			              </div>
 			              <div className="text-white/85 text-xs mt-1">
 			                Great for {day.tempMax >= 24 ? 'late strolls' : 'cozy spots'}
@@ -3036,6 +3139,76 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
                 )}
               </div>
             </div>
+          </div>
+        </div>
+      )}
+      {placeModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-xl max-w-lg w-full p-6 relative">
+            
+            <button
+              className="absolute top-3 right-3 text-slate-500 hover:text-slate-700"
+              onClick={() => setPlaceModalOpen(false)}
+            >
+              ✕
+            </button>
+
+            {placeLoading ? (
+              <p className="text-sm text-slate-500">Loading details…</p>
+            ) : placeDetails ? (
+              <>
+                <h3 className="text-xl font-bold mb-2">
+                  {placeDetails.title}
+                </h3>
+
+                {placeDetails.image && (
+                  <img
+                    src={placeDetails.image}
+                    alt={placeDetails.title}
+                    className="w-full h-48 object-cover rounded-lg mb-3"
+                  />
+                )}
+
+                <p className="text-sm text-slate-700 mb-3">
+                  {placeDetails.description}
+                </p>
+                {nearbyPlaces.length > 0 && (
+                  <div className="mt-4">
+                    <h4 className="text-sm font-bold text-slate-900 mb-2">
+                      Nearby attractions
+                    </h4>
+
+                    <ul className="space-y-1">
+                      {nearbyPlaces.map((place) => (
+                        <li key={place}>
+                          <button
+                            className="text-sm text-itinex-primary hover:underline"
+                            onClick={() => {
+                              setActivePlace(place);
+                              fetchPlaceDetails(place);
+                            }}
+                          >
+                            {place}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+
+                {placeDetails.url && (
+                  <a
+                    href={placeDetails.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-semibold text-itinex-primary hover:underline"
+                  >
+                    Read more on Wikipedia →
+                  </a>
+                )}
+              </>
+            ) : null}
           </div>
         </div>
       )}
