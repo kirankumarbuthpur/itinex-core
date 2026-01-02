@@ -2487,82 +2487,6 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 		  </div>
 		)}
 
-{activeNav === "about" && (
-  <section className="max-w-4xl mx-auto px-6 py-16">
-    <h1 className="text-3xl font-extrabold mb-4">About Itinex</h1>
-    <p className="text-slate-700 leading-relaxed">
-      Itinex is a smart travel planner that builds real itineraries
-      using live weather, authentic attractions, interactive maps,
-      and seamless sharing.
-    </p>
-  </section>
-)}
-
-{activeNav === "contact" && (
-  <section className="max-w-4xl mx-auto px-6 py-16">
-    <h1 className="text-3xl font-extrabold mb-4">Contact Us</h1>
-    <p className="text-slate-700">
-      Have feedback or questions? &nbsp;
-
-    <a
-      href="https://mail.google.com/mail/?view=cm&to=buthpur@itinex.net&su=Advertising%20with%20Itinex&body=Hi%20Itinex%20Team,%0A%0AI%20am%20interested%20in%20advertising%20on%20Itinex."
-      target="_blank"
-      rel="noopener noreferrer"
-      className="mt-3 inline-flex items-center px-3 py-1.5 rounded-md bg-itinex-primary text-white text-xs font-semibold hover:opacity-90"
-    >
-      Email
-    </a>&nbsp; us
-    </p>
-
-  </section>
-)}
-{activeNav === "advertise" && (
-  <section className="max-w-4xl mx-auto px-6 py-16">
-    <h1 className="text-3xl font-extrabold mb-4">Advertise with Itinex</h1>
-
-    <p className="text-slate-700 mb-6">
-      Reach travelers at the exact moment they plan their trips.
-    </p>
-
-    <ul className="list-disc pl-6 text-slate-700 space-y-2">
-      <li>Destination-targeted placements</li>
-      <li>High-intent travelers</li>
-      <li>Premium brand exposure</li>
-    </ul>
-    <p className="text-slate-700">
-      Please email @ &nbsp;
-      <a
-  href="https://mail.google.com/mail/?view=cm&to=buthpur@itinex.net&su=Advertising%20with%20Itinex&body=Hi%20Itinex%20Team,%0A%0AI%20am%20interested%20in%20advertising%20on%20Itinex."
-  target="_blank"
-  rel="noopener noreferrer"
-  className="mt-3 inline-flex items-center px-3 py-1.5 rounded-md bg-itinex-primary text-white text-xs font-semibold hover:opacity-90"
->
-  Advertise with Itinex
-</a>
-    </p>
-    
-  </section>
-)}
-{activeNav === "privacy" && (
-  <section className="max-w-4xl mx-auto px-6 py-16 text-sm text-slate-700">
-    <h1 className="text-3xl font-extrabold mb-4">Privacy Policy</h1>
-    <p>
-      We respect your privacy. Itinex stores only essential data
-      required to deliver travel planning features.
-    </p>
-  </section>
-)}
-
-{activeNav === "terms" && (
-  <section className="max-w-4xl mx-auto px-6 py-16 text-sm text-slate-700">
-    <h1 className="text-3xl font-extrabold mb-4">Terms of Service</h1>
-    <p>
-      By using Itinex, you agree to use the platform responsibly
-      and comply with applicable laws.
-    </p>
-  </section>
-)}
-
         {step === 'itinerary' && itinerary.length > 0 && (
           <div id="itinerary" className="space-y-6">
             <div className="bg-white rounded-2xl shadow-xl p-6">
@@ -3216,6 +3140,83 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
           </div>
         </div>
       )}
+      
+{activeNav === "about" && (
+  <section className="max-w-4xl mx-auto px-6 py-16">
+    <h1 className="text-3xl font-extrabold mb-4">About Itinex</h1>
+    <p className="text-slate-700 leading-relaxed">
+      Itinex is a smart travel planner that builds real itineraries
+      using live weather, authentic attractions, interactive maps,
+      and seamless sharing.
+    </p>
+  </section>
+)}
+
+{activeNav === "contact" && (
+  <section className="max-w-4xl mx-auto px-6 py-16">
+    <h1 className="text-3xl font-extrabold mb-4">Contact Us</h1>
+    <p className="text-slate-700">
+      Have feedback or questions? &nbsp;
+
+    <a
+      href="https://mail.google.com/mail/?view=cm&to=buthpur@itinex.net&su=Advertising%20with%20Itinex&body=Hi%20Itinex%20Team,%0A%0AI%20am%20interested%20in%20advertising%20on%20Itinex."
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-3 inline-flex items-center px-3 py-1.5 rounded-md bg-itinex-primary text-white text-xs font-semibold hover:opacity-90"
+    >
+      Email
+    </a>&nbsp; us
+    </p>
+
+  </section>
+)}
+{activeNav === "advertise" && (
+  <section className="max-w-4xl mx-auto px-6 py-16">
+    <h1 className="text-3xl font-extrabold mb-4">Advertise with Itinex</h1>
+
+    <p className="text-slate-700 mb-6">
+      Reach travelers at the exact moment they plan their trips.
+    </p>
+
+    <ul className="list-disc pl-6 text-slate-700 space-y-2">
+      <li>Destination-targeted placements</li>
+      <li>High-intent travelers</li>
+      <li>Premium brand exposure</li>
+    </ul>
+    <p className="text-slate-700">
+      Please email @ &nbsp;
+      <a
+  href="https://mail.google.com/mail/?view=cm&to=buthpur@itinex.net&su=Advertising%20with%20Itinex&body=Hi%20Itinex%20Team,%0A%0AI%20am%20interested%20in%20advertising%20on%20Itinex."
+  target="_blank"
+  rel="noopener noreferrer"
+  className="mt-3 inline-flex items-center px-3 py-1.5 rounded-md bg-itinex-primary text-white text-xs font-semibold hover:opacity-90"
+>
+  Advertise with Itinex
+</a>
+    </p>
+    
+  </section>
+)}
+{activeNav === "privacy" && (
+  <section className="max-w-4xl mx-auto px-6 py-16 text-sm text-slate-700">
+    <h1 className="text-3xl font-extrabold mb-4">Privacy Policy</h1>
+    <p>
+      We respect your privacy. Itinex stores only essential data
+      required to deliver travel planning features.
+    </p>
+  </section>
+)}
+
+{activeNav === "terms" && (
+  <section className="max-w-4xl mx-auto px-6 py-16 text-sm text-slate-700">
+    <h1 className="text-3xl font-extrabold mb-4">Terms of Service</h1>
+    <p>
+      By using Itinex, you agree to use the platform responsibly
+      and comply with applicable laws.
+    </p>
+  </section>
+)}
+
 
                       <footer className="border-t bg-slate-50 mt-20">
   <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
