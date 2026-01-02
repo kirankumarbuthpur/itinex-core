@@ -2756,6 +2756,7 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
         {/* Morning tile */}
         <div className="rounded-2xl border border-gray-200 overflow-hidden bg-white shadow-sm hover:shadow-lg transition-shadow">
 		  <div className="relative aspect-square bg-gray-100">
+
 		    <img
 		      src={attractionImages[day.morning] || svgPlaceholderDataUrl(day.morning)}
 		      alt={day.morning}
@@ -2766,9 +2767,17 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 		        e.currentTarget.src = svgPlaceholderDataUrl(day.morning);
 		      }}
 		    />
-
+<button
+              className="text-white text-left font-semibold text-itinex-primary hover:underline"
+              onClick={() => {
+                setActivePlace(day.morning);
+                setPlaceModalOpen(true);
+                fetchPlaceDetails(day.morning);
+              }}
+            >
 		    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
 
+      </button>
 		    <div className="absolute top-3 left-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/90 backdrop-blur text-sm font-semibold text-gray-900">
 		      <Sun className="w-4 h-4 text-orange-500" />
 		      Morning
@@ -2798,7 +2807,7 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 		    <div className="absolute bottom-0 left-0 right-0 p-4">
 		      <div className="text-white font-bold text-lg leading-snug drop-shadow">
 		        <button
-              className="text-left font-semibold text-itinex-primary hover:underline"
+              className="text-white text-left font-semibold text-itinex-primary hover:underline"
               onClick={() => {
                 setActivePlace(day.morning);
                 setPlaceModalOpen(true);
@@ -2854,8 +2863,16 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
             />
 
             {/* overlay */}
+              <button
+              className="text-white text-left font-semibold text-itinex-primary hover:underline"
+              onClick={() => {
+                setActivePlace(day.morning);
+                setPlaceModalOpen(true);
+                fetchPlaceDetails(day.morning);
+              }}
+            >
             <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
-
+            </button>
             <div className="absolute top-3 left-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/90 backdrop-blur text-sm font-semibold text-gray-900">
               <Clock className="w-4 h-4 text-indigo-600" />
               Evening
@@ -2883,7 +2900,7 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 			            <div className="absolute bottom-0 left-0 right-0 p-4">
 			              <div className="text-white font-bold text-lg leading-snug drop-shadow">
 			                <button
-                        className="text-left font-semibold text-itinex-primary hover:underline"
+                        className="text-white text-left font-semibold text-itinex-primary hover:underline"
                         onClick={() => {
                           setActivePlace(day.evening);
                           setPlaceModalOpen(true);
@@ -3420,6 +3437,7 @@ function ensureCollabSingleton(roomId, userName, setComments, setPresenceCount) 
   onComments();
   onAwareness();
 }
+
 
 function addCommentViaSingleton(author, text, setComments) {
   if (!_collab?.yComments) {
