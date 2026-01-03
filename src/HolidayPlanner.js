@@ -33,6 +33,7 @@ import { WebrtcProvider } from 'y-webrtc';
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Tooltip, useMap } from 'react-leaflet';
 import DestinationMap from "./DestinationMap";
+import { generateItinerary } from "./utils/generateItinerary";
 
    
 function AdSlot({ id, label = "Ad", className = "" }) {
@@ -1072,7 +1073,21 @@ const response = await fetch(weatherUrl, { signal: controller.signal });
       if (!data.daily?.weather_code) throw new Error('Invalid weather data format');
 
       setWeather(data);
-      generateItinerary(data, destination, attractions);
+      const { plan, normalizedAttractions } = generateItinerary({
+        weatherData: data,
+        destination,
+        attractionsData: attractions,
+        days,
+        useDateRange,
+        startDate,
+        getWeatherCondition,
+      });
+
+      setAttractionsForTrip(normalizedAttractions);
+      setItinerary(plan);
+      setStep("itinerary");
+      setLoading(false);
+      hydrateAttractionImages(destination?.name || "", plan);
     } catch (e) {
       if (e?.name === 'AbortError') return;
 
@@ -1097,137 +1112,6 @@ const response = await fetch(weatherUrl, { signal: controller.signal });
     if (code === 0 || code === 1) return <Sun className="w-6 h-6 text-yellow-500" />;
     if (code === 2 || code === 3) return <Cloud className="w-6 h-6 text-gray-500" />;
     return <CloudRain className="w-6 h-6 text-blue-500" />;
-  };
-
-  const generateItinerary = (weatherData, destination, attractionsData) => {
-    const plan = [];
-    const usedAttractions = new Set();
-
-const normalizedAttractions = {
-  sunny: attractionsData.sunny.map((s) => (typeof s === 'string' ? s : s.name)),
-  cloudy: attractionsData.cloudy.map((s) => (typeof s === 'string' ? s : s.name)),
-  rainy: attractionsData.rainy.map((s) => (typeof s === 'string' ? s : s.name))
-};
-
-setAttractionsForTrip(normalizedAttractions);
-
-    const shuffleArray = (array) => {
-      const shuffled = [...array];
-      for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-      }
-      return shuffled;
-    };
-      const attractionPools = {
-   sunny: shuffleArray(normalizedAttractions.sunny),
-   cloudy: shuffleArray(normalizedAttractions.cloudy),
-   rainy: shuffleArray(normalizedAttractions.rainy)
- };
-    const poolIndexes = { sunny: 0, cloudy: 0, rainy: 0 };
-
-    const getUniqueAttraction = (condition) => {
-      const pool = attractionPools[condition];
-      for (let i = poolIndexes[condition]; i < pool.length; i++) {
-        const attraction = pool[i];
-        if (!usedAttractions.has(attraction)) {
-          usedAttractions.add(attraction);
-          poolIndexes[condition] = i + 1;
-          return attraction;
-        }
-      }
-      const alternative = Object.keys(attractionPools).filter((k) => k !== condition);
-      for (const alt of alternative) {
-        for (let i = poolIndexes[alt]; i < attractionPools[alt].length; i++) {
-          const attraction = attractionPools[alt][i];
-          if (!usedAttractions.has(attraction)) {
-            usedAttractions.add(attraction);
-            poolIndexes[alt] = i + 1;
-            return attraction;
-          }
-        }
-      }
-      const fallback = pool[poolIndexes[condition] % pool.length];
-      poolIndexes[condition]++;
-      return fallback;
-    };
-
-    for (let i = 0; i < days; i++) {
-  // ✅ PLACE YOUR CODE HERE (START)
-
-  let condition = 'cloudy';
-  let weatherCode = 2;
-
-  let tempMax = 20;
-  let tempMin = 14;
-  let precipMm = 0;
-  let precipProb = null;
-  let windMax = null;
-  let sunrise = null;
-  let sunset = null;
-
-  if (weatherData?.daily?.weather_code?.[i] !== undefined) {
-    weatherCode = weatherData.daily.weather_code[i];
-    condition = getWeatherCondition(weatherCode);
-
-    const max = weatherData.daily.temperature_2m_max?.[i];
-    const min = weatherData.daily.temperature_2m_min?.[i];
-    tempMax = Number.isFinite(max) ? Math.round(max) : 20;
-    tempMin = Number.isFinite(min) ? Math.round(min) : 14;
-
-    const p = weatherData.daily.precipitation_sum?.[i];
-    precipMm = Number.isFinite(p) ? Math.round(p * 10) / 10 : 0;
-
-    const pp = weatherData.daily.precipitation_probability_max?.[i];
-    precipProb = Number.isFinite(pp) ? Math.round(pp) : null;
-
-    const w = weatherData.daily.wind_speed_10m_max?.[i];
-    windMax = Number.isFinite(w) ? Math.round(w) : null;
-
-    sunrise = weatherData.daily.sunrise?.[i] || null;
-    sunset = weatherData.daily.sunset?.[i] || null;
-  }
-
-  const morningSpot = getUniqueAttraction(condition);
-  const eveningSpot = getUniqueAttraction(condition);
-const baseDate = useDateRange && startDate ? new Date(startDate) : new Date();
-const key = destKey(selectedDest);
-const reviewCount = (destinationReviews[key] || []).length;
-const avgRating = getAverageRating(key);
-
-const dateObj = new Date(baseDate);
-dateObj.setDate(baseDate.getDate() + i);
-  plan.push({
-    day: i + 1,
-    date: dateObj.toLocaleDateString('en-US', {
-  weekday: 'short',
-  month: 'short',
-  day: 'numeric'
-}),
-isoDate: dateObj.toISOString().slice(0, 10),
-
-    condition,
-    weatherCode,
-
-    // ✅ store weather per day
-    tempMax,
-    tempMin,
-    precipMm,
-    precipProb,
-    windMax,
-    sunrise,
-    sunset,
-
-    morning: morningSpot,
-    evening: eveningSpot
-  });
-}
-
-
-    setItinerary(plan);
-    setStep('itinerary');
-    setLoading(false);
-    hydrateAttractionImages(destination?.name || "", plan);
   };
 
   const handleSelectDestination = (dest) => {
@@ -2642,9 +2526,9 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
               <button
               className="text-white text-left font-semibold text-itinex-primary hover:underline"
               onClick={() => {
-                setActivePlace(day.morning);
+                setActivePlace(day.evening);
                 setPlaceModalOpen(true);
-                fetchPlaceDetails(day.morning);
+                fetchPlaceDetails(day.evening);
               }}
             >
             <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
