@@ -1120,46 +1120,85 @@ const swapWithNearbyPlace = (newPlace) => {
   if (!activePlace) return;
 
   setItinerary((prev) => {
-    // collect all used places
+    let targetDayIndex = -1;
+    let targetSlot = null;
+
+    // locate the active place
+    prev.forEach((day, idx) => {
+      if (day.morning === activePlace) {
+        targetDayIndex = idx;
+        targetSlot = 'morning';
+      }
+      if (day.evening === activePlace) {
+        targetDayIndex = idx;
+        targetSlot = 'evening';
+      }
+    });
+
+    if (targetDayIndex === -1) return prev;
+
+    // collect used places (excluding the active one)
     const used = new Set();
     prev.forEach((d) => {
       if (d.morning) used.add(d.morning);
       if (d.evening) used.add(d.evening);
     });
-
-    // allow replacing the currently active place
     used.delete(activePlace);
 
-    // 🚫 prevent duplicates
+    // hard block: no duplicates elsewhere
     if (used.has(newPlace)) {
       return prev;
     }
 
-    return prev.map((day) => {
-      if (day.morning === activePlace) {
-        return { ...day, morning: newPlace };
+    // 🔍 check adjacent days
+    const prevDay = prev[targetDayIndex - 1];
+    const nextDay = prev[targetDayIndex + 1];
+
+    const usedAdjacent =
+      prevDay?.morning === newPlace ||
+      prevDay?.evening === newPlace ||
+      nextDay?.morning === newPlace ||
+      nextDay?.evening === newPlace;
+
+    // soft preference: only block if we *have* better options
+    if (usedAdjacent) {
+      const hasNonAdjacentOption = nearbyPlaces?.some((p) => {
+        if (p === newPlace || used.has(p)) return false;
+
+        return !(
+          prevDay?.morning === p ||
+          prevDay?.evening === p ||
+          nextDay?.morning === p ||
+          nextDay?.evening === p
+        );
+      });
+
+      if (hasNonAdjacentOption) {
+        return prev;
       }
-      if (day.evening === activePlace) {
-        return { ...day, evening: newPlace };
-      }
-      return day;
+    }
+
+    return prev.map((day, idx) => {
+      if (idx !== targetDayIndex) return day;
+      return { ...day, [targetSlot]: newPlace };
     });
   });
 
-  // 🔹 Auto-hydrate image (safe, async)
+  // 🔹 auto-hydrate image (async, safe)
   try {
     const destName = selectedDest?.name || '';
     Promise.resolve(getAttractionImage(destName, newPlace)).then((url) => {
       if (!url) return;
       setAttractionImages((prev) => ({
         ...prev,
-        [newPlace]: url
+        [newPlace]: url,
       }));
     });
   } catch {}
 
   setPlaceModalOpen(false);
 };
+
 
 
 const replaceActivityForDay = async (dayNumber, slot) => {
