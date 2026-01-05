@@ -777,6 +777,62 @@ const image = (await fetchUnsplashImage(query)) || svgPlaceholderDataUrl(label);
   }
 }, []);
 
+// Keyword arrays for cost estimation
+const expensiveKeywords = [
+  'Luxury',
+  'Fine Dining',
+  'Cruise',
+  'Concert',
+  'Spa',
+  'Resort',
+  'Gourmet',
+  'Private Tour',
+  'Opera',
+  'Theater',
+  'Premium',
+  'VIP',
+  'Helicopter',
+  'Yacht',
+  'Casino',
+  'High-end'
+];
+
+const mediumKeywords = [
+  'Museum',
+  'Aquarium',
+  'Science',
+  'Castle',
+  'Observation',
+  'Gallery',
+  'Historic',
+  'Botanical',
+  'Zoo',
+  'Planetarium',
+  'Workshop',
+  'Exhibit',
+  'Monument',
+  'Tower',
+  'Park',
+  'Temple'
+];
+
+/**
+ * Determine cost level (1-5 💵) based on title and description
+ */
+const getCostLevel = (title = '', description = '') => {
+  const text = `${title} ${description}`.toLowerCase();
+
+  // Check expensive keywords
+  if (expensiveKeywords.some((kw) => text.includes(kw.toLowerCase()))) return 5;
+
+  // Check medium keywords
+  if (mediumKeywords.some((kw) => text.includes(kw.toLowerCase()))) return 3;
+
+  // Default cheap
+  return 1;
+};
+
+
 const UNSPLASH_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
 
   useEffect(() => {
@@ -2474,9 +2530,9 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
             </button>
 
 		      </div>
-		      <div className="text-white/85 text-xs mt-1">
-		        Best for {day.condition === 'rainy' ? 'indoors nearby' : 'exploring'}
-		      </div>
+		      <div className="text-white/85 text-xs mt-1 flex items-center gap-1">
+              Best for {day.condition === 'rainy' ? 'indoors nearby' : 'exploring'}
+          </div>
 		    </div>
 		  </div>
 		</div>
@@ -2566,11 +2622,10 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
                         {day.evening}
                       </button>
 			              </div>
-			              <div className="text-white/85 text-xs mt-1">
-			                Great for {day.tempMax >= 24 ? 'late strolls' : 'cozy spots'}
-			              </div>
+                    <div className="text-white/85 text-xs mt-1 flex items-center gap-1">
+                        Great for {day.tempMax >= 24 ? 'late strolls' : 'cozy spots'}
+                    </div>
 			            </div>
-
 			          </div>
 			        </div>
 			      </div>
@@ -2820,6 +2875,9 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
                     className="w-full h-48 object-cover rounded-lg mb-3"
                   />
                 )}
+                <p className="text-sm text-slate-700 mb-1">
+                  Cost: {Array(getCostLevel(placeDetails.title, placeDetails.description)).fill('💎').join('')}
+                </p>
 
                 <p className="text-sm text-slate-700 mb-3">
                   {placeDetails.description}
