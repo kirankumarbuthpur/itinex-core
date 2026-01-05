@@ -23,6 +23,19 @@ import {
   Trash2
 } from 'lucide-react';
 
+import {
+  getWeatherCondition,
+  weatherConditionFromCode,
+  daysFromRange,
+  latLonToXY,
+  svgPlaceholderDataUrl,
+  categorizeAttractions,
+  getCuratedAttractions,
+  formatIcsDate,
+  icsEventLines,
+  generateItinerary,
+} from "./utils/utils";
+
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import 'leaflet/dist/leaflet.css';
@@ -33,7 +46,6 @@ import { WebrtcProvider } from 'y-webrtc';
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Tooltip, useMap } from 'react-leaflet';
 import DestinationMap from "./DestinationMap";
-import { generateItinerary } from "./utils/generateItinerary";
 
    
 function AdSlot({ id, label = "Ad", className = "" }) {
@@ -133,12 +145,6 @@ const [nearbyPlaces, setNearbyPlaces] = useState([]);
 const [mapWeatherById, setMapWeatherById] = useState({}); 
 
 const [loadingMapWeather, setLoadingMapWeather] = useState(false);
-
-const weatherConditionFromCode = (code) => {
-  if (code === 0 || code === 1) return "sunny";
-  if (code === 2 || code === 3) return "cloudy";
-  return "rainy";
-};
 
 const [savedTrips, setSavedTrips] = useState([]);
 const SAVED_TRIPS_KEY = "itinex:savedTrips";
@@ -656,13 +662,6 @@ const getUnsplashKey = () =>
   (typeof import.meta !== "undefined" && import.meta.env?.VITE_UNSPLASH_ACCESS_KEY) ||
   process.env.REACT_APP_UNSPLASH_ACCESS_KEY ||
   null;
-const daysFromRange = (s, e) => {
-  const start = new Date(s);
-  const end = new Date(e);
-  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return 1;
-  const diff = Math.round((end - start) / 86400000) + 1; // inclusive
-  return Math.max(1, Math.min(14, diff));
-};
 
 const fetchUnsplashPhotoUrl = async (query) => {
   if (_unsplashBlocked) return null;
@@ -702,15 +701,6 @@ const fetchUnsplashPhotoUrl = async (query) => {
 };
 
 const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
-
-const latLonToXY = (lat, lon) => {
-  // Equirectangular projection into [0..100] percentage coordinates
-  // lon -180..180 => x 0..100
-  // lat  90..-90  => y 0..100
-  const x = ((lon + 180) / 360) * 100;
-  const y = ((90 - lat) / 180) * 100;
-  return { x: clamp(x, 0, 100), y: clamp(y, 0, 100) };
-};
 
 const getAttractionImage = async (destinationName, attractionName) => {
   const dest = destinationName || "";
@@ -992,57 +982,6 @@ useEffect(() => {
   return categorizeAttractions(places);
 };
 
-
-  const categorizeAttractions = (places) => {
-  const outdoorKeywords = [
-    'park','garden','beach','view','lookout','trail','hike','island',
-    'zoo','temple','shrine','castle','palace','fort','harbor','waterfront',
-    'bridge','square','plaza'
-  ];
-  const indoorKeywords = [
-    'museum','gallery','cathedral','church','basilica','palace',
-    'theatre','theater','market','mall','aquarium','planetarium','library',
-    'exhibition'
-  ];
-
-  const isOutdoor = (p) => {
-    const s = `${p.name} ${p.text}`.toLowerCase();
-    return outdoorKeywords.some(k => s.includes(k));
-  };
-
-  const isIndoor = (p) => {
-    const s = `${p.name} ${p.text}`.toLowerCase();
-    return indoorKeywords.some(k => s.includes(k));
-  };
-
-  const sunny = places.filter(isOutdoor);
-  const rainy = places.filter(isIndoor);
-  const cloudy = places.filter(p => !sunny.includes(p) && !rainy.includes(p));
-
-  return {
-    sunny: sunny.length > 8 ? sunny : [...sunny, ...cloudy].slice(0, 20),
-    cloudy: cloudy.length > 8 ? cloudy : places.slice(0, 20),
-    rainy: rainy.length > 8 ? rainy : [...rainy, ...cloudy].slice(0, 20)
-  };
-};
-
-
-  const getCuratedAttractions = (cityName) => {
-    const city = (cityName || '').toLowerCase();
-    if (city.includes('tokyo')) {
-      return {
-        sunny: ['Senso-ji Temple & Asakusa', 'Meiji Shrine & Harajuku', 'Shinjuku Gyoen National Garden'],
-        cloudy: ['Shibuya Crossing & Hachiko', 'Akihabara Electric Town', 'Ginza Shopping'],
-        rainy: ['Tokyo National Museum', 'Mori Art Museum', 'teamLab Borderless Digital Art']
-      };
-    }
-    return {
-      sunny: ['City Park', 'Waterfront Promenade', 'Botanical Gardens', 'Viewpoint Hill', 'Beach Area', 'Nature Reserve'],
-      cloudy: ['Main Square', 'Old Town', 'Market Place', 'Historic Cathedral', 'City Museum', 'Art Gallery'],
-      rainy: ['National Museum', 'Science Center', 'Shopping Mall', 'Aquarium', 'Indoor Market', 'Concert Hall']
-    };
-  };
-
   const fetchWeather = async (destination) => {
     setLoading(true);
     setError(null);
@@ -1100,12 +1039,6 @@ const response = await fetch(weatherUrl, { signal: controller.signal });
         setLoading(false);
       }
     }
-  };
-
-  const getWeatherCondition = (code) => {
-    if (code === 0 || code === 1) return 'sunny';
-    if (code === 2 || code === 3) return 'cloudy';
-    return 'rainy';
   };
 
   const getWeatherIcon = (code) => {
@@ -1182,6 +1115,52 @@ const pickReplacement = (slot, dayObj, currentItinerary) => {
 
   return candidates[Math.floor(Math.random() * candidates.length)];
 };
+
+const swapWithNearbyPlace = (newPlace) => {
+  if (!activePlace) return;
+
+  setItinerary((prev) => {
+    // collect all used places
+    const used = new Set();
+    prev.forEach((d) => {
+      if (d.morning) used.add(d.morning);
+      if (d.evening) used.add(d.evening);
+    });
+
+    // allow replacing the currently active place
+    used.delete(activePlace);
+
+    // 🚫 prevent duplicates
+    if (used.has(newPlace)) {
+      return prev;
+    }
+
+    return prev.map((day) => {
+      if (day.morning === activePlace) {
+        return { ...day, morning: newPlace };
+      }
+      if (day.evening === activePlace) {
+        return { ...day, evening: newPlace };
+      }
+      return day;
+    });
+  });
+
+  // 🔹 Auto-hydrate image (safe, async)
+  try {
+    const destName = selectedDest?.name || '';
+    Promise.resolve(getAttractionImage(destName, newPlace)).then((url) => {
+      if (!url) return;
+      setAttractionImages((prev) => ({
+        ...prev,
+        [newPlace]: url
+      }));
+    });
+  } catch {}
+
+  setPlaceModalOpen(false);
+};
+
 
 const replaceActivityForDay = async (dayNumber, slot) => {
   setItinerary((prev) => {
@@ -1488,28 +1467,6 @@ function setOG(property, content) {
     document.head.appendChild(el);
   }
   el.setAttribute("content", content);
-}
-
-
-function svgPlaceholderDataUrl(text) {
-  const safe = String(text || '').slice(0, 60);
-  const svg = `
-    <svg xmlns="/itinex.png" width="800" height="600">
-      <defs>
-        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#3b82f6"/>
-          <stop offset="100%" stop-color="#7c3aed"/>
-        </linearGradient>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#g)"/>
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
-            font-family="Arial, sans-serif" font-size="34" fill="white" opacity="0.95">
-        ${escapeXml(safe)}
-      </text>
-    </svg>
-  `.trim();
-
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
 
 function escapeXml(s) {
@@ -2533,8 +2490,8 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
             >
             <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
             </button>
-            <div className="absolute top-3 left-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/90 backdrop-blur text-sm font-semibold text-gray-900">
-              <Clock className="w-4 h-4 text-indigo-600" />
+            <div className="absolute top-3 left-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/90 backdrop-blur text-sm font-semibold text-white">
+              <Clock className="w-4 h-4 text-white-600" />
               Evening
             </div>
 			   <div className="absolute top-3 right-3 flex items-center gap-2">
@@ -2836,17 +2793,25 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 
                     <ul className="space-y-1">
                       {nearbyPlaces.map((place) => (
-                        <li key={place}>
-                          <button
-                            className="text-sm text-itinex-primary hover:underline"
-                            onClick={() => {
-                              setActivePlace(place);
-                              fetchPlaceDetails(place);
-                            }}
-                          >
-                            {place}
-                          </button>
-                        </li>
+                        <li key={place} className="flex items-center justify-between gap-2">
+                        <button
+                          className="text-sm text-itinex-primary hover:underline"
+                          onClick={() => {
+                            setActivePlace(place);
+                            fetchPlaceDetails(place);
+                          }}
+                        >
+                          {place}
+                        </button>
+
+                        <button
+                          className="text-xs text-slate-500 hover:text-itinex-primary"
+                          onClick={() => swapWithNearbyPlace(place)}
+                          title="Swap with this activity"
+                        >
+                          Swap
+                        </button>
+                      </li>
                       ))}
                     </ul>
                   </div>
@@ -3079,28 +3044,8 @@ function cryptoRandomId() {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
-function formatIcsDate(d) {
-  const pad = (n) => String(n).padStart(2, '0');
-  return d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate()) + 'T' + 
-         pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + pad(d.getUTCSeconds()) + 'Z';
-}
-
 function icsEscape(s) {
   return String(s || '').replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;');
-}
-
-function icsEventLines({ uid, dtstamp, start, end, summary, description, location }) {
-  return [
-    'BEGIN:VEVENT',
-    `UID:${icsEscape(uid)}`,
-    `DTSTAMP:${dtstamp}`,
-    `DTSTART:${formatIcsDate(start)}`,
-    `DTEND:${formatIcsDate(end)}`,
-    `SUMMARY:${icsEscape(summary)}`,
-    `DESCRIPTION:${icsEscape(description)}`,
-    `LOCATION:${icsEscape(location)}`,
-    'END:VEVENT'
-  ];
 }
 
 async function waitForImages(el) {
