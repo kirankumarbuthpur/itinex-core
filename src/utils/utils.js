@@ -18,6 +18,13 @@ export const latLonToXY = (lat, lon) => {
   return { x: clamp(x, 0, 100), y: clamp(y, 0, 100) };
 };
 
+export const addDaysToISO = (isoDate, daysToAdd) => {
+  if (!isoDate) return isoDate;
+  const d = new Date(`${isoDate}T12:00:00`);
+  d.setDate(d.getDate() + daysToAdd);
+  return d.toISOString().slice(0, 10);
+};
+
 export const escapeXml = (s) =>
   String(s).replace(/[<>&'"]/g, (c) => ({
     "<": "&lt;",

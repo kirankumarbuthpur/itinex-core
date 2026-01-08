@@ -34,6 +34,7 @@ import {
   formatIcsDate,
   icsEventLines,
   generateItinerary,
+  addDaysToISO,
 } from "./utils/utils";
 
 import jsPDF from 'jspdf';
@@ -1051,6 +1052,22 @@ useEffect(() => {
 
      const dailyFields =
   "weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,wind_speed_10m_max,sunrise,sunset";
+const todayStr = new Date().toISOString().slice(0, 10);
+
+if (useDateRange && startDate && endDate) {
+  if (startDate < todayStr) {
+    setLoading(false);
+    setError("Start date can’t be in the past (forecast API).");
+    return;
+  }
+
+  const d = daysFromRange(startDate, endDate);
+  if (d > 14) { // your UI says max 14 anyway
+    setLoading(false);
+    setError("Please select a date range of 14 days or less.");
+    return;
+  }
+}
 
 let weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${destination.lat}&longitude=${destination.lon}&daily=${dailyFields}&timezone=auto`;
 
@@ -1084,17 +1101,42 @@ const response = await fetch(weatherUrl, { signal: controller.signal });
       setLoading(false);
       hydrateAttractionImages(destination?.name || "", plan);
     } catch (e) {
-      if (e?.name === 'AbortError') return;
+  if (e?.name === "AbortError") return;
 
-      setError(`Unable to fetch weather data: ${e.message}. Generating itinerary with default weather...`);
-      try {
-        const attractions = await fetchAttractions(destination.lat, destination.lon, destination.name);
-        generateItinerary(null, destination, attractions);
-      } catch {
-        setError('Failed to generate itinerary. Please try again.');
-        setLoading(false);
-      }
-    }
+  console.error("Weather fetch failed:", e);
+
+  try {
+    const attractions = await fetchAttractions(
+      destination.lat,
+      destination.lon,
+      destination.name
+    );
+
+    // Use itinerary defaults if weather fails (weatherData can be null)
+    const { plan, normalizedAttractions } = generateItinerary({
+      weatherData: null,                 // ✅ allowed by your generator
+      destination,
+      attractionsData: attractions,
+      days,
+      useDateRange,
+      startDate,
+      getWeatherCondition,
+    });
+
+    setAttractionsForTrip(normalizedAttractions);
+    setItinerary(plan);
+    setStep("itinerary");
+    setError("Weather unavailable — generated itinerary with default conditions.");
+    hydrateAttractionImages(destination?.name || "", plan);
+  } catch (err2) {
+    console.error("Fallback itinerary generation failed:", err2);
+    setError("Failed to generate itinerary. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+}
+
+
   };
 
   const getWeatherIcon = (code) => {
@@ -1310,7 +1352,7 @@ const swapActivitiesForDay = (dayNumber) => {
   useEffect(() => {
   if (!useDateRange) return;
   const d = daysFromRange(startDate, endDate);
-  setDays(d);
+  setDays(Math.max(1, Math.min(14, d)));
 }, [useDateRange, startDate, endDate]);
 
 
@@ -2176,6 +2218,7 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 				        <input
 				          type="date"
 				          value={startDate}
+                    min={new Date().toISOString().slice(0, 10)}
 				          onChange={(e) => {
 				            const v = e.target.value;
 				            setStartDate(v);
@@ -2213,9 +2256,18 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
                     min="1"
                     max="14"
                     value={days}
-                    onChange={(e) => setDays(parseInt(e.target.value))}
+                    onChange={(e) => {
+                      const newDays = parseInt(e.target.value, 10);
+                      setDays(newDays);
+
+                      // ✅ if using date range, align end date with selected days
+                      if (useDateRange && startDate) {
+                        setEndDate(addDaysToISO(startDate, newDays - 1));
+                      }
+                    }}
                     className="w-full h-3 rounded-lg cursor-pointer"
                   />
+
                   <div className="flex justify-between text-xs text-gray-500 mt-2">
                     <span>1 day</span>
                     <span>14 days</span>
