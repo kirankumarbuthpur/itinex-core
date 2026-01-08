@@ -132,6 +132,8 @@ const d = new Date();
   d.setDate(d.getDate() + 2);
   return d.toISOString().slice(0, 10);
 });
+const [hiddenGemsMode, setHiddenGemsMode] = useState(false);
+const [surpriseLevel, setSurpriseLevel] = useState(0.35); // 0..1
 
 const [activeNav, setActiveNav] = useState("planner"); 
 const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -1093,6 +1095,8 @@ const response = await fetch(weatherUrl, { signal: controller.signal });
         useDateRange,
         startDate,
         getWeatherCondition,
+        hiddenGemsMode,
+        surpriseLevel,
       });
 
       setAttractionsForTrip(normalizedAttractions);
@@ -1121,6 +1125,8 @@ const response = await fetch(weatherUrl, { signal: controller.signal });
       useDateRange,
       startDate,
       getWeatherCondition,
+        hiddenGemsMode,
+        surpriseLevel,
     });
 
     setAttractionsForTrip(normalizedAttractions);
@@ -2251,6 +2257,56 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 				  )}
 				</div>
 
+              {/* Hidden gems */}
+        <div className="mt-4 p-4 rounded-xl border bg-gray-50">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div>
+              <div className="text-sm font-semibold text-gray-900">Hidden gems</div>
+              <div className="text-xs text-gray-600">Prefer less touristy picks + more surprise</div>
+            </div>
+
+            <label className="inline-flex items-center gap-2 text-sm text-gray-700">
+              <input
+                type="checkbox"
+                checked={hiddenGemsMode}
+                onChange={(e) => setHiddenGemsMode(e.target.checked)}
+              />
+              Hidden gems mode
+            </label>
+          </div>
+
+          {hiddenGemsMode && (
+            <div className="mt-3">
+              <label className="block text-xs font-medium text-gray-600 mb-1">
+                Surprise level: <span className="font-semibold">{Math.round(surpriseLevel * 100)}%</span>
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={surpriseLevel}
+                onChange={(e) => setSurpriseLevel(parseFloat(e.target.value))}
+                className="w-full"
+              />
+              <button
+                  type="button"
+                  class="w-full bg-gradient-to-r from-itinex-secondary to-itinex-primary text-white py-4 rounded-xl font-semibold text-lg hover:from-itinex-secondary hover:to-itinex-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  onClick={() => {
+                    // keep user's chosen percent
+                    setHiddenGemsMode(true);
+
+                    // regenerate using current surpriseLevel
+                    setTimeout(() => {
+                      fetchWeather(selectedDest);
+                    }, 0);
+                  }}
+                >
+                  Surprise me ✨
+                </button>
+            </div>
+          )}
+        </div>
                   <input
                     type="range"
                     min="1"
@@ -2274,11 +2330,14 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
                   </div>
                 </div>
 
+
                 <button
                   onClick={handlePlanTrip}
                   disabled={loading}
                   className="w-full bg-gradient-to-r from-itinex-secondary to-itinex-primary text-white py-4 rounded-xl font-semibold text-lg hover:from-itinex-secondary hover:to-itinex-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
+                
+
                   {loading ? (
                     <>
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -2291,6 +2350,8 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
                     </>
                   )}
                 </button>
+
+
               </div>
             </div>
           </div>
