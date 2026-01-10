@@ -87,6 +87,30 @@ function AdSlot({ id, label = "Ad", className = "" }) {
     </div>
   );
 }
+const VoteBar = ({ k, votes, onVote }) => {
+  const v = votes[k] || { up: 0, down: 0 };
+
+  return (
+    <div className="flex items-center gap-2">
+      <button
+        type="button"
+        onClick={() => onVote(k, 1)}
+        className="px-2 py-1 rounded-full text-xs border bg-white"
+      >
+        👍 {v.up || 0}
+      </button>
+
+      <button
+        type="button"
+        onClick={() => onVote(k, -1)}
+        className="px-2 py-1 rounded-full text-xs border bg-white"
+      >
+        👎 {v.down || 0}
+      </button>
+    </div>
+  );
+};
+
 
 
 export default function HolidayPlanner() {
@@ -137,6 +161,7 @@ const [surpriseLevel, setSurpriseLevel] = useState(0.35); // 0..1
 
 const [activeNav, setActiveNav] = useState("planner"); 
 const [mobileNavOpen, setMobileNavOpen] = useState(false);
+const [votes, setVotes] = useState({}); 
 
 const scrollToSection = (id) => {
   const el = document.getElementById(id);
@@ -160,6 +185,8 @@ const destKey = (dest) => {
   const country = dest?.country ? String(dest.country) : "";
   return slugify(`${name}-${country}`);
 };
+const activityId = (dayNumber, slot /* 'morning'|'evening' */) =>
+  `${roomId || "local"}::day${dayNumber}::${slot}`;
 
 
 const fetchReviewsForDestination = async (destinationId) => {
@@ -1576,7 +1603,7 @@ const rangeLine =
 
   useEffect(() => {
   if (step !== 'itinerary' || itinerary.length === 0 || !roomId) return;
-  ensureCollabSingleton(roomId, commentName || 'Anonymous', setComments, setPresenceCount);
+ensureCollabSingleton(roomId, commentName || 'Anonymous', setComments, setPresenceCount, setVotes);
   return () => safeDestroyCollab();
 }, [step, roomId, commentName, itinerary.length]);
 
@@ -1591,6 +1618,69 @@ const rangeLine =
       </div>
     );
   }
+
+function getUserVoteKey() {
+  // stable per browser
+  const k = "itinex:voterId";
+  let id = localStorage.getItem(k);
+  if (!id) { id = cryptoRandomId(); localStorage.setItem(k, id); }
+  return id;
+}
+
+function readVoteRecord(voteRecord, userId) {
+  const rec = voteRecord || { up: 0, down: 0, by: {} };
+  const mine = rec.by?.[userId] || 0; // 1, -1, or 0
+  return { rec, mine };
+}
+
+function applyVote(activityKey, delta /* 1 or -1 */) {
+  const userId = getUserVoteKey();
+
+  // collaborative path
+  if (_collab?.yVotes) {
+    const current = _collab.yVotes.get(activityKey) || { up: 0, down: 0, by: {} };
+    const by = { ...(current.by || {}) };
+    const prev = by[userId] || 0;
+
+    // remove previous
+    let up = current.up || 0;
+    let down = current.down || 0;
+    if (prev === 1) up -= 1;
+    if (prev === -1) down -= 1;
+
+    // apply new (toggle off if same)
+    const next = prev === delta ? 0 : delta;
+    if (next === 1) up += 1;
+    if (next === -1) down += 1;
+
+    if (next === 0) delete by[userId];
+    else by[userId] = next;
+
+    _collab.yVotes.set(activityKey, { up, down, by });
+    return;
+  }
+
+  // local fallback (no room)
+  setVotes((prev) => {
+    const current = prev[activityKey] || { up: 0, down: 0, by: {} };
+    const by = { ...(current.by || {}) };
+    const prevVote = by[userId] || 0;
+
+    let up = current.up || 0;
+    let down = current.down || 0;
+    if (prevVote === 1) up -= 1;
+    if (prevVote === -1) down -= 1;
+
+    const nextVote = prevVote === delta ? 0 : delta;
+    if (nextVote === 1) up += 1;
+    if (nextVote === -1) down += 1;
+
+    if (nextVote === 0) delete by[userId];
+    else by[userId] = nextVote;
+
+    return { ...prev, [activityKey]: { up, down, by } };
+  });
+}
 
   function setMeta(name, content) {
   let el = document.querySelector(`meta[name="${name}"]`);
@@ -2630,6 +2720,7 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 
 
 		    <div className="absolute bottom-0 left-0 right-0 p-4">
+        <div className="flex items-center justify-between gap-3">
 		      <div className="text-white font-bold text-lg leading-snug drop-shadow">
 		        <button
               className="text-white text-left font-semibold text-itinex-primary hover:underline"
@@ -2643,6 +2734,12 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
             </button>
 
 		      </div>
+          <VoteBar
+          k={activityId(day.day, "morning")}
+          votes={votes}
+          onVote={applyVote}
+        />
+      </div>
 		      <div className="text-white/85 text-xs mt-1 flex items-center gap-1">
               Best for {day.condition === 'rainy' ? 'indoors nearby' : 'exploring'}
           </div>
@@ -2723,6 +2820,8 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 			</div>
 
 			            <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="flex items-center justify-between gap-3">
+        
 			              <div className="text-white font-bold text-lg leading-snug drop-shadow">
 			                <button
                         className="text-white text-left font-semibold text-itinex-primary hover:underline"
@@ -2735,6 +2834,12 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
                         {day.evening}
                       </button>
 			              </div>
+                    <VoteBar
+                      k={activityId(day.day, "evening")}
+                      votes={votes}
+                      onVote={applyVote}
+                    />
+                    </div>
                     <div className="text-white/85 text-xs mt-1 flex items-center gap-1">
                         Great for {day.tempMax >= 24 ? 'late strolls' : 'cozy spots'}
                     </div>
@@ -3275,16 +3380,19 @@ function safeDestroyCollab() {
   try { if (_collab.provider && _collab._onAwareness) _collab.provider.awareness.off('change', _collab._onAwareness); } catch {}
   try { _collab.provider?.destroy?.(); } catch {}
   try { _collab.ydoc?.destroy?.(); } catch {}
+  try { if (_collab.yVotes && _collab._onVotes) _collab.yVotes.unobserve(_collab._onVotes); } catch {}
+
   _collab = null;
 }
 
-function ensureCollabSingleton(roomId, userName, setComments, setPresenceCount) {
+function ensureCollabSingleton(roomId, userName, setComments, setPresenceCount, setVotes) {
   if (!roomId) return;
 
   if (_collab?.roomId === roomId && _collab.provider && _collab.ydoc) {
     try { _collab.provider.awareness.setLocalStateField('user', { name: userName || 'Anonymous' }); } catch {}
     _collab.setComments = setComments;
     _collab.setPresenceCount = setPresenceCount;
+    _collab.setVotes = setVotes;
     try {
       setComments(_collab.yComments?.toArray?.() ?? []);
       const states = Array.from(_collab.provider.awareness.getStates().values());
@@ -3298,8 +3406,26 @@ function ensureCollabSingleton(roomId, userName, setComments, setPresenceCount) 
   const ydoc = new Y.Doc();
   const provider = new WebrtcProvider(roomId, ydoc);
   const yComments = ydoc.getArray('comments');
+  const yVotes = ydoc.getMap('votes'); 
 
-  _collab = { roomId, ydoc, provider, yComments, setComments, setPresenceCount, _onComments: null, _onAwareness: null };
+const onVotes = () => {
+  try {
+    const obj = {};
+    _collab.yVotes.forEach((val, key) => { obj[key] = val; });
+    setVotes(obj); 
+  } catch {}
+};
+
+
+_collab = {
+  roomId, ydoc, provider,
+  yComments,
+  yVotes,                 // ✅ add
+  setComments, setPresenceCount,
+  setVotes,
+  _onComments: null, _onAwareness: null,
+  _onVotes: null          // ✅ add
+};
 
   try { provider.awareness.setLocalStateField('user', { name: userName || 'Anonymous' }); } catch {}
 
@@ -3315,6 +3441,11 @@ function ensureCollabSingleton(roomId, userName, setComments, setPresenceCount) 
   _collab._onAwareness = onAwareness;
 
   yComments.observe(onComments);
+  const onVotesObs = () => onVotes();
+  _collab._onVotes = onVotesObs;
+  yVotes.observe(onVotesObs);
+  onVotesObs();
+
   provider.awareness.on('change', onAwareness);
 
   if (yComments.length === 0) {
