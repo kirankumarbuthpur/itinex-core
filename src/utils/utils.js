@@ -125,6 +125,66 @@ export const formatIcsDate = (date) => {
   );
 };
 
+/* -------------------- Travel Stories helpers -------------------- */
+
+export const firstSentence = (text = "") => {
+  const t = String(text || "").replace(/\s+/g, " ").trim();
+  if (!t) return "";
+  const m = t.match(/^(.+?[.!?])\s/);
+  return (m?.[1] || t).trim();
+};
+
+export const shortActionLine = (placeName = "", extract = "") => {
+  const t = `${placeName} ${extract}`.toLowerCase();
+
+  if (t.includes("museum") || t.includes("gallery") || t.includes("exhibit")) {
+    return "Take your time exploring the exhibits and highlights — it’s ideal for a slower, deeper visit.";
+  }
+
+  if (t.includes("beach") || t.includes("coast") || t.includes("bay")) {
+    return "Walk the waterfront, take photos, and slow down with ocean views and a breezy pause.";
+  }
+
+  if (t.includes("park") || t.includes("garden") || t.includes("trail")) {
+    return "Go for a relaxed stroll, soak up the scenery, and enjoy a nature break from the city.";
+  }
+
+  if (t.includes("church") || t.includes("cathedral") || t.includes("temple")) {
+    return "Step inside respectfully, admire the architecture, and notice the quiet details and symbolism.";
+  }
+
+  if (t.includes("market") || t.includes("food") || t.includes("cuisine")) {
+    return "Browse local flavors, try a snack, and pick up small finds you’ll remember later.";
+  }
+
+  return "Wander through, take photos, and follow whatever catches your eye — it’s a great place to explore at your own pace.";
+};
+
+export const buildSixLineStory = ({
+  destinationName = "",
+  morningName = "",
+  eveningName = "",
+  morningExtract = "",
+  eveningExtract = "",
+}) => {
+  const m1 = firstSentence(morningExtract);
+  const e1 = firstSentence(eveningExtract);
+
+  return [
+    `Today in ${destinationName}, start at **${morningName}** — ${
+      m1 || "a place with its own distinct character and history."
+    }`,
+    shortActionLine(morningName, morningExtract),
+    "What makes it special: it’s widely known for how it reflects the identity and story of the area.",
+    `Later, head to **${eveningName}** — ${
+      e1 || "an experience that feels different as the day winds down."
+    }`,
+    shortActionLine(eveningName, eveningExtract),
+    "Together, these stops balance “must-see” energy with a meaningful sense of place — the kind of day you’ll remember.",
+  ];
+};
+
+
 export const icsEventLines = ({
   uid,
   dtstamp,

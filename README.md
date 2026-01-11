@@ -242,3 +242,57 @@ create policy "public update attraction_votes"
 on public.attraction_votes for update
 using (true)
 with check (true);
+
+
+Append numbers based on likes and dislikes(descend)
+
+- alter table public.attraction_votes
+add constraint attraction_votes_unique unique (trip_id, attraction_key);
+
+- create or replace function public.vote_attraction_delta(
+  p_trip_id text,
+  p_attraction_key text,
+  p_attraction_name text,
+  p_like_delta integer,
+  p_dislike_delta integer
+)
+returns public.attraction_votes
+language plpgsql
+as $$
+declare
+  row public.attraction_votes;
+begin
+  -- Create the row if missing
+  insert into public.attraction_votes(trip_id, attraction_key, attraction_name, likes, dislikes)
+  values (p_trip_id, p_attraction_key, p_attraction_name, 0, 0)
+  on conflict (trip_id, attraction_key) do nothing;
+
+  -- Increment / decrement totals (clamped so it never goes negative)
+  update public.attraction_votes
+  set
+    attraction_name = p_attraction_name,
+    likes = greatest(0, likes + coalesce(p_like_delta, 0)),
+    dislikes = greatest(0, dislikes + coalesce(p_dislike_delta, 0)),
+    updated_at = now()
+  where trip_id = p_trip_id and attraction_key = p_attraction_key
+  returning * into row;
+
+  return row;
+end;
+$$;
+
+
+______
+- You should see:
+
+    - only one row per attraction_key per trip_id
+
+    - counts increasing/decreasing
+
+
+select trip_id, attraction_key, attraction_name, likes, dislikes, reactions
+from public.attraction_votes
+order by updated_at desc
+limit 20;
+
+____
