@@ -153,3 +153,92 @@ az storage blob upload-batch \
 
   TXT Record name : _dnsauth.itinex.net
   TXT Record Value : _j7sccknal26sfrll2pzbibd65gm4xsy
+
+
+  Supabase - Attraction reactions 
+
+  -- One row per attraction per trip
+create table if not exists public.attraction_votes (
+  id bigserial primary key,
+  trip_id text not null,
+  attraction_key text not null,
+  attraction_name text not null,
+
+  likes integer not null default 0,
+  dislikes integer not null default 0,
+
+  -- net score (likes - dislikes) -> matches your example 10 likes, 3 dislikes => 7
+  -- BUT you said it should be 10, so we store "reactions" as likes - dislikes ONLY if you want net.
+  reactions integer generated always as (likes - dislikes) stored,
+
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+
+  unique (trip_id, attraction_key)
+);
+
+-- updated_at helper
+create or replace function public.set_updated_at()
+returns trigger as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$ language plpgsql;
+
+drop trigger if exists trg_attraction_votes_updated_at on public.attraction_votes;
+create trigger trg_attraction_votes_updated_at
+before update on public.attraction_votes
+for each row execute function public.set_updated_at();
+
+-- RPC: apply atomic deltas
+create or replace function public.vote_attraction_delta(
+  p_trip_id text,
+  p_attraction_key text,
+  p_attraction_name text,
+  p_like_delta integer,
+  p_dislike_delta integer
+)
+returns public.attraction_votes
+language plpgsql
+as $$
+declare
+  row public.attraction_votes;
+begin
+  -- ensure row exists
+  insert into public.attraction_votes(trip_id, attraction_key, attraction_name, likes, dislikes)
+  values (p_trip_id, p_attraction_key, p_attraction_name, 0, 0)
+  on conflict (trip_id, attraction_key) do nothing;
+
+  -- atomic update (clamp to >=0)
+  update public.attraction_votes
+  set
+    attraction_name = p_attraction_name,
+    likes = greatest(0, likes + p_like_delta),
+    dislikes = greatest(0, dislikes + p_dislike_delta),
+    updated_at = now()
+  where trip_id = p_trip_id and attraction_key = p_attraction_key
+  returning * into row;
+
+  return row;
+end;
+$$;
+
+-- RLS (open, since you have no auth)
+alter table public.attraction_votes enable row level security;
+
+drop policy if exists "public read attraction_votes" on public.attraction_votes;
+create policy "public read attraction_votes"
+on public.attraction_votes for select
+using (true);
+
+drop policy if exists "public insert attraction_votes" on public.attraction_votes;
+create policy "public insert attraction_votes"
+on public.attraction_votes for insert
+with check (true);
+
+drop policy if exists "public update attraction_votes" on public.attraction_votes;
+create policy "public update attraction_votes"
+on public.attraction_votes for update
+using (true)
+with check (true);
