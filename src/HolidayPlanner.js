@@ -87,29 +87,43 @@ function AdSlot({ id, label = "Ad", className = "" }) {
     </div>
   );
 }
-const VoteBar = ({ k, votes, onVote }) => {
-  const v = votes[k] || { up: 0, down: 0 };
+const VoteBar = ({ k, totals, onVote }) => {
+  const map = totals || {};
+  const v = map[k] || { likes: 0, dislikes: 0, reactions: 0 };
 
   return (
     <div className="flex items-center gap-2">
       <button
         type="button"
-        onClick={() => onVote(k, 1)}
+        onClick={(e) => {
+          e.stopPropagation();
+          console.log("LIKE clicked:", k);
+          onVote(k, 1);
+        }}
         className="px-2 py-1 rounded-full text-xs border bg-white"
       >
-        👍 {v.up || 0}
+        👍 {v.likes}
       </button>
 
       <button
         type="button"
-        onClick={() => onVote(k, -1)}
+        onClick={(e) => {
+          e.stopPropagation();
+          console.log("DISLIKE clicked:", k);
+          onVote(k, -1);
+        }}
         className="px-2 py-1 rounded-full text-xs border bg-white"
       >
-        👎 {v.down || 0}
+        👎 {v.dislikes}
       </button>
+
+      {/*<span className="text-xs text-white">Reactions {v.reactions}</span>*/}
     </div>
   );
 };
+
+
+
 
 
 
@@ -158,6 +172,10 @@ const d = new Date();
 });
 const [hiddenGemsMode, setHiddenGemsMode] = useState(false);
 const [surpriseLevel, setSurpriseLevel] = useState(0.35); // 0..1
+const [voteTotals, setVoteTotals] = useState({});
+// voteTotals[attraction_key] = { likes, dislikes, reactions }
+const buildAttractionKey = (destName, attractionName) =>
+  slugify(`${destName || ""}::${attractionName || ""}`);
 
 const [activeNav, setActiveNav] = useState("planner"); 
 const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -185,8 +203,9 @@ const destKey = (dest) => {
   const country = dest?.country ? String(dest.country) : "";
   return slugify(`${name}-${country}`);
 };
-const activityId = (dayNumber, slot /* 'morning'|'evening' */) =>
-  `${roomId || "local"}::day${dayNumber}::${slot}`;
+const activityId = (destName, attractionName) =>
+  slugify(`${destName || ""}::${attractionName || ""}`);
+
 
 
 const fetchReviewsForDestination = async (destinationId) => {
@@ -666,6 +685,63 @@ function DestinationLeafletPicker({ destinations, onPick }) {
   );
 }
 
+function getLocalVote(tripId, attractionKey) {
+  const k = `itinex:vote:${tripId}:${attractionKey}`;
+  const v = localStorage.getItem(k);
+  return v ? parseInt(v, 10) : 0; // -1, 0, 1
+}
+
+function setLocalVote(tripId, attractionKey, vote) {
+  const k = `itinex:vote:${tripId}:${attractionKey}`;
+  if (vote === 0) localStorage.removeItem(k);
+  else localStorage.setItem(k, String(vote));
+}
+
+async function voteAttraction(attractionName, requestedVote /* 1 or -1 */) {
+  if (!selectedDest || !attractionName) return;
+
+  const tripId = roomId || `local-${destKey(selectedDest)}`;
+  const aKey = buildAttractionKey(selectedDest?.name, attractionName);
+
+  const prev = getLocalVote(tripId, aKey);                   // -1/0/1
+  const next = prev === requestedVote ? 0 : requestedVote;   // toggle off
+
+  let likeDelta = 0;
+  let dislikeDelta = 0;
+
+  // remove prev
+  if (prev === 1) likeDelta -= 1;
+  if (prev === -1) dislikeDelta -= 1;
+
+  // apply next
+  if (next === 1) likeDelta += 1;
+  if (next === -1) dislikeDelta += 1;
+
+  const { data, error } = await supabase.rpc("vote_attraction_delta", {
+    p_trip_id: tripId,
+    p_attraction_key: aKey,
+    p_attraction_name: attractionName,
+    p_like_delta: likeDelta,
+    p_dislike_delta: dislikeDelta,
+  });
+
+  if (error) {
+    console.error("vote_attraction_delta failed:", error);
+    return;
+  }
+
+  setLocalVote(tripId, aKey, next);
+
+  // Update UI with Supabase totals
+  setVoteTotals((prevMap) => ({
+    ...prevMap,
+    [data.attraction_key]: {
+      likes: data.likes ?? 0,
+      dislikes: data.dislikes ?? 0,
+      reactions: data.reactions ?? 0, // total likes+dislikes
+    },
+  }));
+}
 
 async function fetchWikipediaThumbnail(title, size = 1000) {
   if (!title) return null;
@@ -1388,6 +1464,34 @@ const swapActivitiesForDay = (dayNumber) => {
   setDays(Math.max(1, Math.min(14, d)));
 }, [useDateRange, startDate, endDate]);
 
+useEffect(() => {
+  if (step !== "itinerary" || !selectedDest) return;
+
+  const tripId = roomId || `local-${destKey(selectedDest)}`;
+
+  (async () => {
+    const { data, error } = await supabase
+      .from("attraction_votes")
+      .select("attraction_key, likes, dislikes, reactions")
+      .eq("trip_id", tripId);
+
+    if (error) {
+      console.error("Failed to load votes:", error);
+      return;
+    }
+
+    const map = {};
+    (data || []).forEach((r) => {
+      map[r.attraction_key] = {
+        likes: r.likes ?? 0,
+        dislikes: r.dislikes ?? 0,
+        reactions: r.reactions ?? 0,
+      };
+    });
+
+    setVoteTotals(map);
+  })();
+}, [step, roomId, selectedDest]);
 
   useEffect(() => {
   if (step !== 'itinerary' || !selectedDest || itinerary.length === 0) return;
@@ -1619,68 +1723,77 @@ ensureCollabSingleton(roomId, commentName || 'Anonymous', setComments, setPresen
     );
   }
 
-function getUserVoteKey() {
-  // stable per browser
-  const k = "itinex:voterId";
-  let id = localStorage.getItem(k);
-  if (!id) { id = cryptoRandomId(); localStorage.setItem(k, id); }
-  return id;
+function getLocalVote(tripId, k) {
+  const key = `itinex:vote:${tripId}:${k}`;
+  const v = localStorage.getItem(key);
+  return v ? parseInt(v, 10) : 0; // -1/0/1
 }
 
-function readVoteRecord(voteRecord, userId) {
-  const rec = voteRecord || { up: 0, down: 0, by: {} };
-  const mine = rec.by?.[userId] || 0; // 1, -1, or 0
-  return { rec, mine };
+function setLocalVote(tripId, k, vote) {
+  const key = `itinex:vote:${tripId}:${k}`;
+  if (vote === 0) localStorage.removeItem(key);
+  else localStorage.setItem(key, String(vote));
 }
 
-function applyVote(activityKey, delta /* 1 or -1 */) {
-  const userId = getUserVoteKey();
+async function applyVote(k, delta) {
+  try {
+    if (!selectedDest) return;
 
-  // collaborative path
-  if (_collab?.yVotes) {
-    const current = _collab.yVotes.get(activityKey) || { up: 0, down: 0, by: {} };
-    const by = { ...(current.by || {}) };
-    const prev = by[userId] || 0;
+    const tripId = roomId || `local-${destKey(selectedDest)}`;
 
-    // remove previous
-    let up = current.up || 0;
-    let down = current.down || 0;
-    if (prev === 1) up -= 1;
-    if (prev === -1) down -= 1;
-
-    // apply new (toggle off if same)
+    // toggle per browser
+    const prev = getLocalVote(tripId, k);
     const next = prev === delta ? 0 : delta;
-    if (next === 1) up += 1;
-    if (next === -1) down += 1;
 
-    if (next === 0) delete by[userId];
-    else by[userId] = next;
+    let likeDelta = 0;
+    let dislikeDelta = 0;
 
-    _collab.yVotes.set(activityKey, { up, down, by });
-    return;
+    // remove prev
+    if (prev === 1) likeDelta -= 1;
+    if (prev === -1) dislikeDelta -= 1;
+
+    // add next
+    if (next === 1) likeDelta += 1;
+    if (next === -1) dislikeDelta += 1;
+
+    // attraction name from key
+    const attractionName = (k.split("::")[1] || "").replace(/-/g, " ");
+
+    console.log("applyVote()", { tripId, k, attractionName, likeDelta, dislikeDelta });
+
+    const { data, error } = await supabase.rpc("vote_attraction_delta", {
+      p_trip_id: tripId,
+      p_attraction_key: k,
+      p_attraction_name: attractionName,
+      p_like_delta: likeDelta,
+      p_dislike_delta: dislikeDelta,
+    });
+
+    if (error) {
+      console.error("Supabase RPC error:", error);
+      setError?.(`Vote save failed: ${error.message}`);
+      return;
+    }
+
+    console.log("RPC OK:", data);
+
+    setLocalVote(tripId, k, next);
+
+    // update UI immediately from returned row
+    setVoteTotals((prevMap) => ({
+      ...prevMap,
+      [k]: {
+        likes: data.likes ?? 0,
+        dislikes: data.dislikes ?? 0,
+        reactions: data.reactions ?? 0,
+      },
+    }));
+  } catch (e) {
+    console.error("applyVote exception:", e);
+    setError?.(`Vote save failed: ${e.message}`);
   }
-
-  // local fallback (no room)
-  setVotes((prev) => {
-    const current = prev[activityKey] || { up: 0, down: 0, by: {} };
-    const by = { ...(current.by || {}) };
-    const prevVote = by[userId] || 0;
-
-    let up = current.up || 0;
-    let down = current.down || 0;
-    if (prevVote === 1) up -= 1;
-    if (prevVote === -1) down -= 1;
-
-    const nextVote = prevVote === delta ? 0 : delta;
-    if (nextVote === 1) up += 1;
-    if (nextVote === -1) down += 1;
-
-    if (nextVote === 0) delete by[userId];
-    else by[userId] = nextVote;
-
-    return { ...prev, [activityKey]: { up, down, by } };
-  });
 }
+
 
   function setMeta(name, content) {
   let el = document.querySelector(`meta[name="${name}"]`);
@@ -2734,11 +2847,14 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
             </button>
 
 		      </div>
+         <div className="absolute bottom-3 right-3 z-20 pointer-events-auto">
           <VoteBar
-          k={activityId(day.day, "morning")}
-          votes={votes}
-          onVote={applyVote}
-        />
+            k={activityId(selectedDest?.name, day.morning)}
+            totals={voteTotals}
+            onVote={(key, delta) => applyVote(key, delta)}
+          />
+        </div>
+
       </div>
 		      <div className="text-white/85 text-xs mt-1 flex items-center gap-1">
               Best for {day.condition === 'rainy' ? 'indoors nearby' : 'exploring'}
@@ -2770,82 +2886,95 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 			</div>
 
         {/* Evening tile */}
-        <div className="rounded-2xl border border-gray-200 overflow-hidden bg-white shadow-sm hover:shadow-lg transition-shadow">
-          <div className="relative aspect-square bg-gray-100">
-       
-            <img
-              src={attractionImages[day.evening] || svgPlaceholderDataUrl(day.evening)}
-              alt={day.evening}
-              className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
-              loading="lazy"
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = svgPlaceholderDataUrl(day.evening);
-              }}
-            />
+        {/* Evening tile */}
+<div className="rounded-2xl border border-gray-200 overflow-hidden bg-white shadow-sm hover:shadow-lg transition-shadow">
+  <div className="relative aspect-square bg-gray-100">
 
-            {/* overlay */}
-              <button
-              className="text-white text-left font-semibold text-itinex-primary hover:underline"
-              onClick={() => {
-                setActivePlace(day.evening);
-                setPlaceModalOpen(true);
-                fetchPlaceDetails(day.evening);
-              }}
-            >
-            <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
-            </button>
-            <div className="absolute top-3 left-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/90 backdrop-blur text-sm font-semibold text-white">
-              <Clock className="w-4 h-4 text-white-600" />
-              Evening
-            </div>
-			   <div className="absolute top-3 right-3 flex items-center gap-2">
-			  <button
-			    type="button"
-			    onClick={() => swapActivitiesForDay(day.day)}
-			    className="inline-flex items-center px-3 py-1 rounded-full bg-black/50 hover:bg-black/65 text-white text-xs font-semibold backdrop-blur border border-white/15"
-			    title="Swap morning and evening for this day"
-			  >
-			    Swap
-			  </button>
+    <img
+      src={attractionImages[day.evening] || svgPlaceholderDataUrl(day.evening)}
+      alt={day.evening}
+      className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+      loading="lazy"
+      onError={(e) => {
+        e.currentTarget.onerror = null;
+        e.currentTarget.src = svgPlaceholderDataUrl(day.evening);
+      }}
+    />
 
-			  <button
-			    type="button"
-			    onClick={() => replaceActivityForDay(day.day, 'evening')}
-			    className="inline-flex items-center px-3 py-1 rounded-full bg-black/50 hover:bg-black/65 text-white text-xs font-semibold backdrop-blur border border-white/15"
-			    title="Replace the evening activity with another suggestion"
-			  >
-			    Replace
-			  </button>
-			</div>
+    {/* overlay gradient (do NOT capture clicks) */}
+    <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/65 via-black/10 to-transparent pointer-events-none" />
 
-			            <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <div className="flex items-center justify-between gap-3">
-        
-			              <div className="text-white font-bold text-lg leading-snug drop-shadow">
-			                <button
-                        className="text-white text-left font-semibold text-itinex-primary hover:underline"
-                        onClick={() => {
-                          setActivePlace(day.evening);
-                          setPlaceModalOpen(true);
-                          fetchPlaceDetails(day.evening);
-                        }}
-                      >
-                        {day.evening}
-                      </button>
-			              </div>
-                    <VoteBar
-                      k={activityId(day.day, "evening")}
-                      votes={votes}
-                      onVote={applyVote}
-                    />
-                    </div>
-                    <div className="text-white/85 text-xs mt-1 flex items-center gap-1">
-                        Great for {day.tempMax >= 24 ? 'late strolls' : 'cozy spots'}
-                    </div>
-			            </div>
-			          </div>
-			        </div>
+    {/* Optional: click-anywhere to open details (doesn't block VoteBar) */}
+    <button
+      type="button"
+      className="absolute inset-0 z-10"
+      onClick={() => {
+        setActivePlace(day.evening);
+        setPlaceModalOpen(true);
+        fetchPlaceDetails(day.evening);
+      }}
+      aria-label={`Open details for ${day.evening}`}
+      style={{ background: "transparent" }}
+    />
+
+    <div className="absolute top-3 left-3 z-20 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/90 backdrop-blur text-sm font-semibold text-white">
+      <Clock className="w-4 h-4" />
+      Evening
+    </div>
+
+    <div className="absolute top-3 right-3 z-20 flex items-center gap-2">
+      <button
+        type="button"
+        onClick={(e) => { e.stopPropagation(); swapActivitiesForDay(day.day); }}
+        className="inline-flex items-center px-3 py-1 rounded-full bg-black/50 hover:bg-black/65 text-white text-xs font-semibold backdrop-blur border border-white/15"
+        title="Swap morning and evening for this day"
+      >
+        Swap
+      </button>
+
+      <button
+        type="button"
+        onClick={(e) => { e.stopPropagation(); replaceActivityForDay(day.day, "evening"); }}
+        className="inline-flex items-center px-3 py-1 rounded-full bg-black/50 hover:bg-black/65 text-white text-xs font-semibold backdrop-blur border border-white/15"
+        title="Replace the evening activity with another suggestion"
+      >
+        Replace
+      </button>
+    </div>
+
+    {/* VoteBar - ABOVE overlays */}
+    <div className="absolute bottom-3 right-3 z-30 pointer-events-auto">
+      <VoteBar
+        k={activityId(selectedDest?.name, day.evening)}
+        totals={voteTotals}
+        onVote={applyVote}
+      />
+    </div>
+
+    <div className="absolute bottom-0 left-0 right-0 z-20 p-4">
+      <div className="text-white font-bold text-lg leading-snug drop-shadow">
+        <button
+          type="button"
+          className="text-white text-left font-semibold hover:underline"
+          onClick={(e) => {
+            e.stopPropagation();
+            setActivePlace(day.evening);
+            setPlaceModalOpen(true);
+            fetchPlaceDetails(day.evening);
+          }}
+        >
+          {day.evening}
+        </button>
+      </div>
+
+      <div className="text-white/85 text-xs mt-1 flex items-center gap-1">
+        Great for {day.tempMax >= 24 ? "late strolls" : "cozy spots"}
+      </div>
+    </div>
+
+  </div>
+</div>
+
 			      </div>
 			    </div>
 			  </div>
