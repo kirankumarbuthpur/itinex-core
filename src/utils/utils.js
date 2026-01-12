@@ -183,6 +183,150 @@ export const buildSixLineStory = ({
     "Together, these stops balance “must-see” energy with a meaningful sense of place — the kind of day you’ll remember.",
   ];
 };
+/* -------------------- Reels + Blog generators -------------------- */
+
+export const safeText = (s = "") =>
+  String(s || "").replace(/\s+/g, " ").trim();
+
+export const pickHashtags = (destinationName = "") => {
+  const base = ["#travel", "#wanderlust", "#itinerary", "#citybreak", "#traveltips"];
+  const destTag = destinationName
+    ? `#${destinationName.toLowerCase().replace(/[^a-z0-9]+/g, "")}`
+    : null;
+  return destTag ? [destTag, ...base] : base;
+};
+
+// returns array of {tStart, tEnd, onScreen, broll, vo}
+export const buildReelScript = ({
+  destinationName = "",
+  days = 0,
+  itinerary = [],
+  storySummaries = {}, // { [placeName]: { extract } }
+  surpriseLevel = 0, // optional: if you use it
+}) => {
+  const dest = safeText(destinationName);
+  const totalSeconds = Math.min(45, 8 + (itinerary.length * 6)); // ~8–45s
+  const perDay = itinerary.length ? Math.max(5, Math.floor((totalSeconds - 8) / itinerary.length)) : 6;
+
+  const scenes = [];
+  let t = 0;
+
+  // Hook (0–3s)
+  scenes.push({
+    tStart: 0,
+    tEnd: 3,
+    onScreen: `Save this ${days}-day plan for ${dest}`,
+    broll: `Quick montage: skyline + food + streets`,
+    vo: `Here’s a ${days}-day plan for ${dest} — save this for later.`,
+  });
+  t = 3;
+
+  // Context (3–8s)
+  scenes.push({
+    tStart: 3,
+    tEnd: 8,
+    onScreen: `Weather-aware • Real places • Easy swaps`,
+    broll: `Map zoom-in + itinerary scroll`,
+    vo: `It’s weather-aware, built around real places, and easy to customize.`,
+  });
+  t = 8;
+
+  // Days
+  itinerary.forEach((d, idx) => {
+    const morning = safeText(d.morning);
+    const evening = safeText(d.evening);
+    const mEx = safeText(storySummaries?.[d.morning]?.extract || "");
+    const eEx = safeText(storySummaries?.[d.evening]?.extract || "");
+
+    const mLine = mEx ? mEx.split(".")[0] + "." : "A must-see spot with great photo moments.";
+    const eLine = eEx ? eEx.split(".")[0] + "." : "Perfect to wrap the day with views or vibes.";
+
+    const start = t;
+    const end = t + perDay;
+
+    scenes.push({
+      tStart: start,
+      tEnd: end,
+      onScreen: `Day ${d.day}: ${morning} → ${evening}`,
+      broll: `B-roll: ${morning} (2s), food/streets (1s), ${evening} (2s)`,
+      vo: `Day ${d.day}: start at ${morning}. ${mLine} Then end at ${evening}. ${eLine}`,
+    });
+
+    t = end;
+  });
+
+  // CTA (last 4s)
+  const hashtags = pickHashtags(dest).join(" ");
+  scenes.push({
+    tStart: t,
+    tEnd: t + 4,
+    onScreen: `Want the full plan? Link in bio • ${hashtags}`,
+    broll: `Itinerary share screen + final skyline`,
+    vo: `Want the full plan and map? Grab the link and share it with friends.`,
+  });
+
+  return { durationSeconds: Math.round(t + 4), scenes, hashtags };
+};
+
+// Simple SRT captions from scenes
+export const buildSrtFromReel = (reel) => {
+  const pad = (n, w = 2) => String(n).padStart(w, "0");
+  const fmt = (sec) => {
+    const s = Math.max(0, Math.floor(sec));
+    const ms = 0;
+    const hh = Math.floor(s / 3600);
+    const mm = Math.floor((s % 3600) / 60);
+    const ss = s % 60;
+    return `${pad(hh)}:${pad(mm)}:${pad(ss)},${pad(ms, 3)}`;
+  };
+
+  const lines = [];
+  (reel?.scenes || []).forEach((sc, i) => {
+    lines.push(String(i + 1));
+    lines.push(`${fmt(sc.tStart)} --> ${fmt(sc.tEnd)}`);
+    lines.push(safeText(sc.onScreen || sc.vo || ""));
+    lines.push("");
+  });
+
+  return lines.join("\n");
+};
+
+export const buildBlogPostMarkdown = ({
+  destinationName = "",
+  days = 0,
+  startDate = null,
+  endDate = null,
+  itinerary = [],
+  storySummaries = {}, // { [placeName]: { extract, url } }
+}) => {
+  const dest = safeText(destinationName);
+  const dateLine =
+    startDate && endDate ? `**Dates:** ${startDate} → ${endDate}` : `**Length:** ${days} day(s)`;
+
+  const intro = `# ${days}-Day Itinerary for ${dest}\n\n${dateLine}\n\nThis guide turns a smart itinerary into a practical plan you can actually follow — with clear morning/evening ideas, why each place matters, and tips for pacing your day.\n`;
+
+  const daySections = itinerary
+    .map((d) => {
+      const morning = safeText(d.morning);
+      const evening = safeText(d.evening);
+
+      const mEx = safeText(storySummaries?.[d.morning]?.extract || "");
+      const eEx = safeText(storySummaries?.[d.evening]?.extract || "");
+
+      const mWhy = mEx ? mEx : "A standout place to start the day — great for exploring, photos, and context.";
+      const eWhy = eEx ? eEx : "A memorable way to end the day — better light, calmer pace, and strong atmosphere.";
+
+      const mUrl = storySummaries?.[d.morning]?.url;
+      const eUrl = storySummaries?.[d.evening]?.url;
+
+      return `## Day ${d.day} — ${d.date}\n\n**Morning: ${morning}**\n\n${mWhy}\n${mUrl ? `\nSource: ${mUrl}\n` : ""}\n**Evening: ${evening}**\n\n${eWhy}\n${eUrl ? `\nSource: ${eUrl}\n` : ""}\n**Weather note:** ${d.condition} • High ${d.tempMax}°C / Low ${d.tempMin}°C • Rain ${d.precipMm}mm\n`;
+    })
+    .join("\n");
+
+  const outro = `---\n\n### Quick tips\n- Start earlier on sunny days for the best light.\n- If it rains, swap to indoor-friendly spots (museums/markets).\n- Save the plan and share it with your group so everyone can vote and comment.\n`;
+
+  return `${intro}\n${daySections}\n${outro}`;
+};
 
 
 export const icsEventLines = ({

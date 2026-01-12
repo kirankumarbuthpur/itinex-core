@@ -96,6 +96,7 @@ YEDIZjsDSSxJ3J26-jhfe26GvEdad2tdyE5vjE7jP1c
 Secret key
 kTu9Mx4F0k-PRVR0qK2KITBa0USTQrMht5Gef088Vf4
 Note: both your Access Key and Secret Key must remain confidential.
+Pixel API Key : sI2cHfVXTjfzvZ5EBUg7SUUa8NomHfpuLxhv8aQ7fgwelEJXZ1ghQNSE
 
 Supabase Database Tables
 create table if not exists public.reviews (
