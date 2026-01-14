@@ -20,7 +20,10 @@ import {
   FileText,
   Star,
   X,
-  Trash2
+  Trash2,
+  Coins,
+  PiggyBank,
+  Banknote
 } from 'lucide-react';
 
 import {
@@ -50,6 +53,8 @@ import { WebrtcProvider } from 'y-webrtc';
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Tooltip, useMap } from 'react-leaflet';
 import DestinationMap from "./DestinationMap";
+import FixMyDay from "./FixMyDay";
+import BudgetTrackerModal from "./BudgetTrackerModal";
 
    
 function AdSlot({ id, label = "Ad", className = "" }) {
@@ -86,332 +91,6 @@ function AdSlot({ id, label = "Ad", className = "" }) {
 		</div>
 		</div>
         <div className="text-[11px] mt-1 text-slate-400">{id}</div>
-      </div>
-    </div>
-  );
-}
-function BudgetTracker({
-  itinerary,
-  currency,
-  setCurrency,
-  budgetData,
-  setBudgetData,
-}) {
-  const [newExpense, setNewExpense] = React.useState({
-    dayKey: "",
-    category: "Food",
-    note: "",
-    planned: "",
-    actual: "",
-  });
-
-  const dayOptions = React.useMemo(() => {
-    return (itinerary || []).map((d) => {
-      const dayKey = d.isoDate || `day-${d.day}`;
-      const dayBudget = budgetData.dailyBudgets?.[dayKey] || 0;
-      const dayActual = (budgetData.expenses || [])
-        .filter((e) => e.dayKey === dayKey)
-        .reduce((a, e) => a + (Number(e.actual) || 0), 0);
-      const dayDiff = dayBudget - dayActual;
-      const label = `Day ${d.day} • ${d.date}`;
-      return { dayKey, label };
-    });
-  }, [itinerary]);
-
-  React.useEffect(() => {
-    // default to first day
-    if (!newExpense.dayKey && dayOptions.length) {
-      setNewExpense((p) => ({ ...p, dayKey: dayOptions[0].dayKey }));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dayOptions.length]);
-
-  const totals = React.useMemo(() => {
-    const expenses = budgetData?.expenses || [];
-    const sum = (xs, k) =>
-      xs.reduce((acc, x) => acc + (Number(x?.[k]) || 0), 0);
-
-    const plannedTotal = sum(expenses, "planned");
-    const actualTotal = sum(expenses, "actual");
-
-    const overallBudget = Number(budgetData?.overallBudget || 0);
-    const remaining = overallBudget - actualTotal;
-
-    // per-day actual totals
-    const byDay = {};
-    for (const e of expenses) {
-      const dk = e.dayKey || "unknown";
-      byDay[dk] = (byDay[dk] || 0) + (Number(e.actual) || 0);
-    }
-
-    return { plannedTotal, actualTotal, overallBudget, remaining, byDay };
-  }, [budgetData]);
-
-  const setOverallBudget = (v) => {
-    setBudgetData((prev) => ({
-      ...prev,
-      overallBudget: Number(v) || 0,
-    }));
-  };
-
-  const setDailyBudget = (dayKey, v) => {
-    setBudgetData((prev) => ({
-      ...prev,
-      dailyBudgets: {
-        ...(prev.dailyBudgets || {}),
-        [dayKey]: Number(v) || 0,
-      },
-    }));
-  };
-
-  const addExpense = () => {
-    if (!newExpense.dayKey) return;
-
-    const planned = Number(newExpense.planned) || 0;
-    const actual = Number(newExpense.actual) || 0;
-
-    // allow zero planned/actual, but require note or category
-    if (!newExpense.note.trim() && !newExpense.category) return;
-
-    const item = {
-      id: cryptoRandomId(),
-      ts: Date.now(),
-      dayKey: newExpense.dayKey,
-      category: newExpense.category || "Other",
-      note: newExpense.note.trim() || "",
-      planned,
-      actual,
-    };
-
-    setBudgetData((prev) => ({
-      ...prev,
-      expenses: [item, ...(prev.expenses || [])],
-    }));
-
-    setNewExpense((p) => ({ ...p, note: "", planned: "", actual: "" }));
-  };
-
-  const deleteExpense = (id) => {
-    setBudgetData((prev) => ({
-      ...prev,
-      expenses: (prev.expenses || []).filter((x) => x.id !== id),
-    }));
-  };
-
-  const fmt = (n) => {
-    const v = Number(n) || 0;
-    try {
-      return new Intl.NumberFormat(undefined, {
-        style: "currency",
-        currency,
-        maximumFractionDigits: 0,
-      }).format(v);
-    } catch {
-      return `${currency} ${Math.round(v)}`;
-    }
-  };
-
-  const overUnder = totals.remaining;
-
-  return (
-    <div className="bg-white rounded-2xl shadow-xl p-6">
-      <div className="flex items-start justify-between gap-4 flex-wrap">
-        <div>
-          <div className="text-xs text-slate-500 font-semibold uppercase tracking-wide">
-            Budget tracker
-          </div>
-          <div className="text-2xl font-extrabold text-slate-900">
-            Budget vs actual
-          </div>
-          <div className="mt-1 text-sm text-slate-600">
-            Track planned spend and what you really spend — per day and overall.
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <label className="text-xs text-slate-600 font-semibold">Currency</label>
-          <select
-            value={currency}
-            onChange={(e) => setCurrency(e.target.value)}
-            className="px-3 py-2 rounded-lg border bg-white text-sm"
-          >
-            {["GBP", "EUR", "USD", "AUD", "CAD", "JPY"].map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      {/* Summary row */}
-      <div className="mt-5 grid grid-cols-1 md:grid-cols-4 gap-3">
-        <div className="rounded-xl border bg-slate-50 p-4">
-          <div className="text-xs text-slate-500 font-semibold">Overall budget</div>
-          <input
-            type="number"
-            value={budgetData.overallBudget}
-            onChange={(e) => setOverallBudget(e.target.value)}
-            className="mt-2 w-full px-3 py-2 rounded-lg border bg-white"
-            placeholder="0"
-          />
-        </div>
-
-        <div className="rounded-xl border bg-slate-50 p-4">
-          <div className="text-xs text-slate-500 font-semibold">Planned total</div>
-          <div className="mt-2 text-lg font-extrabold text-slate-900">
-            {fmt(totals.plannedTotal)}
-          </div>
-        </div>
-
-        <div className="rounded-xl border bg-slate-50 p-4">
-          <div className="text-xs text-slate-500 font-semibold">Actual total</div>
-          <div className="mt-2 text-lg font-extrabold text-slate-900">
-            {fmt(totals.actualTotal)}
-          </div>
-        </div>
-
-        <div className="rounded-xl border bg-slate-50 p-4">
-          <div className="text-xs text-slate-500 font-semibold">Over / under</div>
-          <div
-            className={[
-              "mt-2 text-lg font-extrabold",
-              overUnder >= 0 ? "text-emerald-700" : "text-red-600",
-            ].join(" ")}
-          >
-            {overUnder >= 0 ? `+${fmt(overUnder)}` : `-${fmt(Math.abs(overUnder))}`}
-          </div>
-          <div className="text-xs text-slate-500 mt-1">
-            {overUnder >= 0 ? "Under budget" : "Over budget"}
-          </div>
-        </div>
-      </div>
-
-      {/* Per-day budgets */}
-      <div className="mt-6">
-        <div className="text-sm font-extrabold text-slate-900">Daily budgets</div>
-        <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
-          {dayOptions.map(({ dayKey, label }) => (
-            <div key={dayKey} className="rounded-xl border p-4">
-              <div className="text-sm font-semibold text-slate-900">{label}</div>
-              <div className="mt-2 flex items-center gap-3">
-                <input
-                  type="number"
-                  value={budgetData.dailyBudgets?.[dayKey] ?? 0}
-                  onChange={(e) => setDailyBudget(dayKey, e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border bg-white"
-                  placeholder="0"
-                />
-                <div className="text-xs text-slate-600 whitespace-nowrap">
-                  Actual: <span className="font-semibold">{fmt(totals.byDay?.[dayKey] || 0)}</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Add expense */}
-      <div className="mt-7 rounded-2xl border bg-slate-50 p-4">
-        <div className="text-sm font-extrabold text-slate-900">Add an expense</div>
-
-        <div className="mt-3 grid grid-cols-1 md:grid-cols-6 gap-3">
-          <select
-            value={newExpense.dayKey}
-            onChange={(e) => setNewExpense((p) => ({ ...p, dayKey: e.target.value }))}
-            className="md:col-span-2 px-3 py-2 rounded-lg border bg-white text-sm"
-          >
-            {dayOptions.map((d) => (
-              <option key={d.dayKey} value={d.dayKey}>{d.label}</option>
-            ))}
-          </select>
-
-          <select
-            value={newExpense.category}
-            onChange={(e) => setNewExpense((p) => ({ ...p, category: e.target.value }))}
-            className="px-3 py-2 rounded-lg border bg-white text-sm"
-          >
-            {["Food", "Transport", "Tickets", "Shopping", "Hotel", "Other"].map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
-
-          <input
-            value={newExpense.note}
-            onChange={(e) => setNewExpense((p) => ({ ...p, note: e.target.value }))}
-            className="md:col-span-2 px-3 py-2 rounded-lg border bg-white text-sm"
-            placeholder="Note (e.g. museum tickets)"
-          />
-
-          <input
-            type="number"
-            value={newExpense.planned}
-            onChange={(e) => setNewExpense((p) => ({ ...p, planned: e.target.value }))}
-            className="px-3 py-2 rounded-lg border bg-white text-sm"
-            placeholder="Planned"
-          />
-
-          <input
-            type="number"
-            value={newExpense.actual}
-            onChange={(e) => setNewExpense((p) => ({ ...p, actual: e.target.value }))}
-            className="px-3 py-2 rounded-lg border bg-white text-sm"
-            placeholder="Actual"
-          />
-        </div>
-
-        <button
-          type="button"
-          onClick={addExpense}
-          className="mt-3 px-4 py-2 rounded-xl bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800"
-        >
-          Add expense
-        </button>
-      </div>
-
-      {/* Expense list */}
-      <div className="mt-6">
-        <div className="flex items-center justify-between gap-3">
-          <div className="text-sm font-extrabold text-slate-900">Expenses</div>
-          <div className="text-xs text-slate-500">
-            {budgetData.expenses?.length || 0} item(s)
-          </div>
-        </div>
-
-        {(!budgetData.expenses || budgetData.expenses.length === 0) ? (
-          <div className="mt-3 text-sm text-slate-600 rounded-xl border p-4 bg-white">
-            No expenses yet — add your first one above.
-          </div>
-        ) : (
-          <div className="mt-3 space-y-2">
-            {budgetData.expenses.map((x) => (
-              <div key={x.id} className="rounded-xl border bg-white p-4 flex items-start justify-between gap-4">
-                <div className="min-w-0">
-                  <div className="text-sm font-semibold text-slate-900">
-                    {x.category}{" "}
-                    <span className="text-xs font-normal text-slate-500">
-                      • {x.dayKey}
-                    </span>
-                  </div>
-                  {x.note ? (
-                    <div className="text-sm text-slate-700 mt-1">{x.note}</div>
-                  ) : null}
-                  <div className="text-xs text-slate-500 mt-2">
-                    Planned: <span className="font-semibold">{fmt(x.planned)}</span>{" "}
-                    • Actual: <span className="font-semibold">{fmt(x.actual)}</span>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => deleteExpense(x.id)}
-                  className="shrink-0 p-2 rounded-lg hover:bg-red-50 text-red-600"
-                  title="Delete expense"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );
@@ -483,6 +162,7 @@ export default function HolidayPlanner() {
   const [reviewRating, setReviewRating] = useState(5);
   const [destinationReviews, setDestinationReviews] = useState({});
 const [selectView, setSelectView] = useState('grid'); 
+const [fixMyDayOpen, setFixMyDayOpen] = useState(false);
 
   const pdfRef = useRef(null);
   const [exportingPdf, setExportingPdf] = useState(false);
@@ -496,6 +176,7 @@ const [hoveredDestId, setHoveredDestId] = useState(null);
 const [useDateRange, setUseDateRange] = useState(true);
 const [startDate, setStartDate] = useState(() => new Date().toISOString().slice(0, 10)); 
 const [showBudget, setShowBudget] = useState(false);
+const [budgetOpen, setBudgetOpen] = useState(false);
 
 const [endDate, setEndDate] = useState(() => {
 const d = new Date();
@@ -3176,17 +2857,30 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
           </button>
 
          <button
-            onClick={() => setShowBudget((v) => !v)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-white
-                       bg-gradient-to-r from-rose-600 to-red-700
-                       hover:from-rose-500 hover:to-red-600
-                       shadow-md hover:shadow-lg
-                       transition-all duration-200"
+            onClick={() => setBudgetOpen(true)}
+            className="
+              ml-3
+              inline-flex items-center gap-2
+              px-4 py-2
+              rounded-xl
+              text-white
+              bg-gradient-to-r from-rose-600 to-red-700
+              hover:from-rose-500 hover:to-red-600
+              shadow-md hover:shadow-lg
+              transition-all duration-200
+            "
           >
-            {showBudget ? "Hide Budget" : "Show Budget"}
+            <PiggyBank className="w-4 h-4" />
+            Budget Tracker
           </button>
 
-
+          <button
+            onClick={() => setFixMyDayOpen(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl
+                       bg-slate-900 text-white hover:bg-slate-800"
+          >
+            Fix My Day
+          </button>
 
 
           {viewMode === "story" && (
@@ -3430,18 +3124,31 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
             </div>
 
             <div className="bg-white rounded-2xl shadow-xl p-6">
-           {showBudget && (
-            <div className="mt-6" id="budget-section">
-              <BudgetTracker
+            {budgetOpen && (
+              <div className="mt-6" id="budget-section">
+              <BudgetTrackerModal
+                open={budgetOpen}
+                onClose={() => setBudgetOpen(false)}
                 itinerary={itinerary}
                 currency={currency}
                 setCurrency={setCurrency}
                 budgetData={budgetData}
                 setBudgetData={setBudgetData}
               />
-            </div>
-          )}
-
+              </div>
+            )}
+          {fixMyDayOpen && (
+              <div className="mt-6" id="fixmyday-section">
+                <FixMyDay
+                  open={fixMyDayOpen}
+                  onClose={() => setFixMyDayOpen(false)}
+                  itinerary={itinerary}
+                  setItinerary={setItinerary}
+                  attractionsForTrip={attractionsForTrip}
+                  destinationName={selectedDest?.name || "your trip"}
+                />
+              </div>
+            )}
         <div class="text-2xl font-extrabold text-gray-900 tracking-tight">Complete Itinerary</div>
             
               <div className="space-y-4">
@@ -3538,29 +3245,6 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 		      <Sun className="w-4 h-4 text-orange-500" />
 		      Morning
 		    </div>
-        {(() => {
-  const dayKey = day.isoDate || `day-${day.day}`;
-  const dayBudget = budgetData?.dailyBudgets?.[dayKey] ?? 0;
-
-  const dayActual = (budgetData?.expenses || [])
-    .filter((e) => e.dayKey === dayKey)
-    .reduce((sum, e) => sum + (Number(e.actual) || 0), 0);
-
-  const dayDiff = dayBudget - dayActual;
-
-  return (
-    <span
-      className={`inline-flex items-center px-3 py-1 rounded-full border bg-white text-sm font-semibold ${
-        dayDiff >= 0 ? "text-emerald-700" : "text-red-600"
-      }`}
-      title={`Budget: ${dayBudget} • Actual: ${dayActual}`}
-    >
-      {dayDiff >= 0
-        ? `Under ${Math.round(dayDiff)}`
-        : `Over ${Math.round(Math.abs(dayDiff))}`}
-    </span>
-  );
-})()}
 
 
 		    <div className="absolute top-3 right-3 flex items-center gap-2">
