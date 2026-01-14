@@ -56,6 +56,9 @@ import DestinationMap from "./DestinationMap";
 import FixMyDay from "./FixMyDay";
 import TravelStoryModal from "./TravelStoryModal";
 import BudgetTrackerModal from "./BudgetTrackerModal";
+import { buildSkyscannerFlightsUrl } from "./utils/skyscanner";
+import SkyscannerCTA from "./components/SkyscannerCTA";
+
 
    
 function AdSlot({ id, label = "Ad", className = "" }) {
@@ -1000,8 +1003,10 @@ const image = (await fetchUnsplashImage(query)) || svgPlaceholderDataUrl(label);
           country: city.country,
           lat: city.lat,
           lon: city.lon,
+          iata: city.iata || null,
           image
         };
+
       })
     );
 
@@ -1720,6 +1725,14 @@ useEffect(() => {
     setError('Share link copied to clipboard.');
   };
 
+  const skyscannerUrl = useMemo(() => {
+    return buildSkyscannerFlightsUrl({
+      destinationIata: selectedDest?.iata,
+      outboundIso: useDateRange ? startDate : null,
+      inboundIso: useDateRange ? endDate : null
+    });
+  }, [selectedDest?.iata, useDateRange, startDate, endDate]);
+
   const socialShareLinks = useMemo(() => {
     const u = encodeURIComponent(shareUrl || window.location.href);
     const text = encodeURIComponent(`Join my holiday plan: ${selectedDest?.name || ''}`);
@@ -1903,6 +1916,34 @@ ensureCollabSingleton(roomId, commentName || 'Anonymous', setComments, setPresen
       </div>
     );
   }
+
+function SkyscannerHeaderButton({ href, label = "Flights", disabled = false }) {
+  return (
+    <a
+      href={href || "#"}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={(e) => {
+        // prevent navigation if disabled / missing url
+        if (disabled || !href) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }}
+      className={[
+        "inline-flex items-center gap-2 px-4 py-2 rounded-lg text-white font-semibold",
+        "shadow-sm transition hover:opacity-95",
+        disabled || !href ? "opacity-50 cursor-not-allowed pointer-events-none" : "",
+      ].join(" ")}
+      style={{ backgroundColor: "#00A3E0" }} // Skyscanner blue
+      title="Open Skyscanner"
+    >
+      {/* You already import LinkIcon; you can swap to Plane icon if you want */}
+      <LinkIcon className="w-4 h-4" />
+      {label}
+    </a>
+  );
+}
 
 function getLocalVote(tripId, k) {
   const key = `itinex:vote:${tripId}:${k}`;
@@ -2320,10 +2361,24 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
     <main className="min-w-0">
       <div className="max-w-7xl mx-auto" style={{padding: '10px'}}>
         {error && (
-          <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3">
-            <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-            <p className="text-red-800">{error}</p>
-          </div>
+          <div
+  role="alert"
+  className="
+    mb-6 flex items-start gap-3
+    rounded-xl border border-sky-300
+    bg-sky-50 px-4 py-3
+    shadow-sm
+  "
+>
+  <AlertCircle className="w-5 h-5 text-sky-600 mt-0.5 flex-shrink-0" />
+
+  <div className="leading-tight">
+    <p className="text-sm text-sky-800 mt-0.5">
+      {error}
+    </p>
+  </div>
+</div>
+
         )}
         {step === "saved" && (
   <div id="saved" className="space-y-6">
@@ -2892,6 +2947,12 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
             Fix My Day
           </button>
 
+           <SkyscannerHeaderButton
+            href={skyscannerUrl}
+            label={selectedDest?.iata ? `Flights to ${selectedDest.iata}` : "Find flights"}
+            disabled={!selectedDest?.iata}
+          />
+
           {viewMode === "story" && (
             <button
               onClick={() => setViewMode("itinerary")}
@@ -3095,11 +3156,10 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 
       </button>
 		    <div className="absolute top-3 left-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/90 backdrop-blur text-sm font-semibold text-gray-900">
-		      <Sun className="w-4 h-4 text-orange-500" />
-		      Morning
+		      ☀️ Morning
 		    </div>
 
-
+        
 		    <div className="absolute top-3 right-3 flex items-center gap-2">
 		  <button
 		    type="button"
@@ -3207,10 +3267,8 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
     />
 
     <div className="absolute top-3 left-3 z-20 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/90 backdrop-blur text-sm font-semibold text-white">
-      <Clock className="w-4 h-4" />
-      Evening
+      🌙 Evening
     </div>
-
     <div className="absolute top-3 right-3 z-20 flex items-center gap-2">
       <button
         type="button"
