@@ -1,5 +1,5 @@
 // src/FixMyDay.js
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Sparkles, RefreshCw, ShieldCheck, Coins, Flame, X } from "lucide-react";
 
 /**
@@ -15,6 +15,11 @@ import { Sparkles, RefreshCw, ShieldCheck, Coins, Flame, X } from "lucide-react"
  * @param {function} setItinerary - setter from parent
  * @param {object|null} attractionsForTrip - { sunny:[], cloudy:[], rainy:[] } pools
  * @param {string} destinationName - used for friendly text
+ *
+ * Optional (for image hydration; safe if omitted):
+ * @param {object} attractionImages - map: { [placeName]: url }
+ * @param {function} setAttractionImages - setter from parent
+ * @param {function} getAttractionImage - async (destinationName, placeName) => url
  */
 export default function FixMyDay({
   open,
@@ -23,10 +28,25 @@ export default function FixMyDay({
   setItinerary,
   attractionsForTrip,
   destinationName = "your trip",
+
+  // optional image hydration
+  attractionImages,
+  setAttractionImages,
+  getAttractionImage,
 }) {
-  const [dayNumber, setDayNumber] = useState(() => (itinerary?.[0]?.day ? itinerary[0].day : 1));
+  const [dayNumber, setDayNumber] = useState(() =>
+    itinerary?.[0]?.day ? itinerary[0].day : 1
+  );
   const [mode, setMode] = useState("easy"); // easy | budget | popular
   const [focus, setFocus] = useState("both"); // morning | evening | both
+
+  // animation state
+  const [isVisible, setIsVisible] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const closeTimerRef = useRef(null);
+
+  // image hydration state (optional)
+  const [imagesReady, setImagesReady] = useState(true);
 
   const dayOptions = useMemo(() => {
     return (itinerary || []).map((d) => ({
@@ -48,11 +68,142 @@ export default function FixMyDay({
       typeof attractionsForTrip === "object"
   );
 
-  if (!open) return null;
-
   const toneLine = getOptimisticLine(mode);
 
-  const applyFix = () => {
+  // ---------- Modal open/close animation ----------
+  useEffect(() => {
+    if (open) {
+      // show
+      setIsVisible(true);
+      setIsClosing(false);
+    } else {
+      // parent closed immediately; hide
+      setIsVisible(false);
+      setIsClosing(false);
+    }
+  }, [open]);
+
+  // cleanup timers
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    };
+  }, []);
+
+  const requestClose = () => {
+    if (isClosing) return;
+    setIsClosing(true);
+    // match tailwind duration-200 below
+    closeTimerRef.current = setTimeout(() => {
+      setIsVisible(false);
+      setIsClosing(false);
+      onClose?.();
+    }, 200);
+  };
+
+  // ESC support
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") requestClose();
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, isClosing]);
+
+  // click-outside to close (backdrop)
+  const onBackdropMouseDown = (e) => {
+    if (e.target === e.currentTarget) requestClose();
+  };
+
+  // ---------- Optional image hydration ----------
+  const preloadImage = (url) =>
+    new Promise((resolve) => {
+      if (!url) return resolve(false);
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = url;
+    });
+
+  const hasImageHydration =
+    typeof getAttractionImage === "function" &&
+    typeof setAttractionImages === "function";
+
+  // When modal opens, (optionally) warm the cache for current morning/evening
+  useEffect(() => {
+    if (!open) return;
+
+    if (!hasImageHydration || !selectedDay) {
+      setImagesReady(true);
+      return;
+    }
+
+    let cancelled = false;
+
+    (async () => {
+      setImagesReady(false);
+
+      const names = [selectedDay.morning, selectedDay.evening].filter(Boolean);
+      const updates = {};
+      const urls = [];
+
+      for (const name of names) {
+        const cached = attractionImages?.[name];
+        if (cached) {
+          urls.push(cached);
+          continue;
+        }
+        const url = await getAttractionImage(destinationName || "", name);
+        updates[name] = url;
+        urls.push(url);
+      }
+
+      if (!cancelled && Object.keys(updates).length) {
+        setAttractionImages((prev) => ({ ...(prev || {}), ...updates }));
+      }
+
+      await Promise.all(urls.map(preloadImage));
+
+      if (!cancelled) setImagesReady(true);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, selectedDay?.day]);
+
+  // Ensure *newly chosen* activities have images loaded before closing
+  const hydrateNames = async (names) => {
+    if (!hasImageHydration) return;
+
+    const updates = {};
+    const urls = [];
+
+    for (const name of (names || []).filter(Boolean)) {
+      const cached = attractionImages?.[name];
+      if (cached) {
+        urls.push(cached);
+        continue;
+      }
+      const url = await getAttractionImage(destinationName || "", name);
+      updates[name] = url;
+      urls.push(url);
+    }
+
+    if (Object.keys(updates).length) {
+      setAttractionImages((prev) => ({ ...(prev || {}), ...updates }));
+    }
+
+    await Promise.all(urls.map(preloadImage));
+  };
+
+  // ---------- Actions ----------
+  const applyFix = async () => {
     if (!canRun) return;
 
     const fixed = buildFixForDay({
@@ -65,9 +216,20 @@ export default function FixMyDay({
 
     if (!fixed) return;
 
+    // Apply itinerary update (AS-IS)
     setItinerary((prev) =>
       (prev || []).map((d) => (d.day === selectedDay.day ? { ...d, ...fixed } : d))
     );
+
+    // Optional: hydrate images so parent tiles don't flash placeholders
+    try {
+      await hydrateNames([fixed.morning, fixed.evening]);
+    } catch {
+      // silent: keep UX smooth even if image fetch fails
+    }
+
+    // auto-close after apply ✅
+    requestClose();
   };
 
   const applyShuffle = () => {
@@ -103,9 +265,28 @@ export default function FixMyDay({
     });
   };
 
+  // If not open, render nothing (AS-IS)
+  if (!open || !isVisible) return null;
+
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-2xl overflow-hidden">
+    <div
+      className={[
+        "fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4",
+        "transition-opacity duration-200",
+        isClosing ? "opacity-0" : "opacity-100",
+      ].join(" ")}
+      onMouseDown={onBackdropMouseDown}
+      aria-modal="true"
+      role="dialog"
+    >
+      <div
+        className={[
+          "w-full max-w-2xl rounded-2xl bg-white shadow-2xl overflow-hidden",
+          "transform transition-all duration-200",
+          isClosing ? "scale-[0.98] translate-y-1 opacity-0" : "scale-100 translate-y-0 opacity-100",
+        ].join(" ")}
+        onMouseDown={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="p-6 border-b flex items-start justify-between gap-4">
           <div className="min-w-0">
@@ -122,7 +303,7 @@ export default function FixMyDay({
 
           <button
             type="button"
-            onClick={onClose}
+            onClick={requestClose}
             className="p-2 rounded-lg hover:bg-slate-100 text-slate-600"
             aria-label="Close"
             title="Close"
@@ -133,6 +314,13 @@ export default function FixMyDay({
 
         {/* Body */}
         <div className="p-6 space-y-5">
+          {/* Optional image-warming note (never blocks existing behavior) */}
+          {!imagesReady ? (
+            <div className="rounded-xl border bg-slate-50 p-4 text-sm text-slate-700">
+              Preparing your options… loading images for a smoother experience.
+            </div>
+          ) : null}
+
           {/* Controls */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div className="rounded-xl border p-4 bg-slate-50">
@@ -153,9 +341,24 @@ export default function FixMyDay({
             <div className="rounded-xl border p-4 bg-slate-50">
               <div className="text-xs font-semibold text-slate-600">Repair style</div>
               <div className="mt-2 flex flex-wrap gap-2">
-                <ModeChip active={mode === "easy"} onClick={() => setMode("easy")} icon={Sparkles} label="Easy & calm" />
-                <ModeChip active={mode === "budget"} onClick={() => setMode("budget")} icon={Coins} label="Budget-friendly" />
-                <ModeChip active={mode === "popular"} onClick={() => setMode("popular")} icon={Flame} label="Popular picks" />
+                <ModeChip
+                  active={mode === "easy"}
+                  onClick={() => setMode("easy")}
+                  icon={Sparkles}
+                  label="Easy & calm"
+                />
+                <ModeChip
+                  active={mode === "budget"}
+                  onClick={() => setMode("budget")}
+                  icon={Coins}
+                  label="Budget-friendly"
+                />
+                <ModeChip
+                  active={mode === "popular"}
+                  onClick={() => setMode("popular")}
+                  icon={Flame}
+                  label="Popular picks"
+                />
               </div>
             </div>
 
@@ -179,7 +382,8 @@ export default function FixMyDay({
                 Destination: <span className="font-semibold">{destinationName}</span>
                 {selectedDay?.condition ? (
                   <>
-                    {" "}• Weather vibe: <span className="font-semibold capitalize">{selectedDay.condition}</span>
+                    {" "}• Weather vibe:{" "}
+                    <span className="font-semibold capitalize">{selectedDay.condition}</span>
                   </>
                 ) : null}
               </div>
@@ -226,7 +430,8 @@ export default function FixMyDay({
           </div>
 
           <div className="text-xs text-slate-500">
-            Tip: If you don’t love the result, tap <span className="font-semibold">Fix my day</span> again — it will propose different options while avoiding repeats.
+            Tip: If you don’t love the result, tap{" "}
+            <span className="font-semibold">Fix my day</span> again — it will propose different options while avoiding repeats.
           </div>
         </div>
       </div>
@@ -245,7 +450,9 @@ function ModeChip({ active, onClick, icon: Icon, label }) {
       onClick={onClick}
       className={[
         "inline-flex items-center gap-2 px-3 py-2 rounded-xl border text-sm font-semibold transition",
-        active ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-700 hover:bg-slate-50",
+        active
+          ? "bg-slate-900 text-white border-slate-900"
+          : "bg-white text-slate-700 hover:bg-slate-50",
       ].join(" ")}
     >
       <Icon className="w-4 h-4" />
@@ -261,7 +468,9 @@ function SmallChip({ active, onClick, label }) {
       onClick={onClick}
       className={[
         "px-3 py-2 rounded-xl border text-sm font-semibold transition",
-        active ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-700 hover:bg-slate-50",
+        active
+          ? "bg-slate-900 text-white border-slate-900"
+          : "bg-white text-slate-700 hover:bg-slate-50",
       ].join(" ")}
     >
       {label}
@@ -324,8 +533,6 @@ function buildFixForDay({ itinerary, dayObj, attractionsForTrip, mode, focus }) 
 
   // Build local blocks: avoid repeats across itinerary + avoid same within day
   const blocked = new Set(used);
-  // Don’t block the current ones unless we’re specifically replacing them
-  // (we want to allow keeping an activity sometimes if focus is single slot)
 
   if (focus === "morning" || focus === "both") {
     blocked.add(currentEvening); // ensure new morning != evening

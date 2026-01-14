@@ -54,6 +54,7 @@ import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Tooltip, useMap } from 'react-leaflet';
 import DestinationMap from "./DestinationMap";
 import FixMyDay from "./FixMyDay";
+import TravelStoryModal from "./TravelStoryModal";
 import BudgetTrackerModal from "./BudgetTrackerModal";
 
    
@@ -177,6 +178,9 @@ const [useDateRange, setUseDateRange] = useState(true);
 const [startDate, setStartDate] = useState(() => new Date().toISOString().slice(0, 10)); 
 const [showBudget, setShowBudget] = useState(false);
 const [budgetOpen, setBudgetOpen] = useState(false);
+const [fixOpen, setFixOpen] = useState(false);
+const [storyOpen, setStoryOpen] = useState(false);
+const [travelStory, setTravelStory] = useState(false)
 
 const [endDate, setEndDate] = useState(() => {
 const d = new Date();
@@ -188,6 +192,9 @@ const storyRef = useRef(null);
 const [storySummaries, setStorySummaries] = useState({}); 
 // { [placeName]: { title, extract, url, image } }
 const [loadingStory, setLoadingStory] = useState(false);
+const [storyText, setStoryText] = useState("");
+const [isStoryLoading, setIsStoryLoading] = useState(false);
+
 
 const [hiddenGemsMode, setHiddenGemsMode] = useState(false);
 const [surpriseLevel, setSurpriseLevel] = useState(0.35); // 0..1
@@ -2847,14 +2854,15 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 					  Share
 					</button>
 
-          <button
-            onClick={() => setViewMode("story")}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg 
-           bg-orange-500 text-white hover:bg-orange-600"
-          >
-            <Sparkles className="w-4 h-4" />
-            Travel Story
-          </button>
+         <button
+          onClick={() => setStoryOpen(true)}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg 
+                   bg-orange-500 text-white hover:bg-orange-600"
+        >
+          <Sparkles className="w-4 h-4" />
+          Travel Story
+        </button>
+
 
          <button
             onClick={() => setBudgetOpen(true)}
@@ -2875,13 +2883,14 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
           </button>
 
           <button
-            onClick={() => setFixMyDayOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl
+            type="button"
+            onClick={() => setFixOpen(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg 
                        bg-slate-900 text-white hover:bg-slate-800"
           >
+            <Sparkles className="w-4 h-4" />
             Fix My Day
           </button>
-
 
           {viewMode === "story" && (
             <button
@@ -2893,193 +2902,7 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
             </button>
           )}
 
-          {viewMode === "story" && (
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-              {/* Story header */}
-              <div className="p-6 border-b">
-                <div className="flex items-start justify-between gap-4 flex-wrap">
-                  <div>
-                    <div className="text-xs text-slate-500 font-semibold uppercase tracking-wide">
-                      Travel Story
-                    </div>
-                    <h2 className="text-2xl font-extrabold text-slate-900">
-                      {selectedDest?.name}
-                    </h2>
-                    <div className="mt-1 text-sm text-slate-600">
-                      {useDateRange ? `${startDate} → ${endDate}` : `${days} day(s)`}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => {
-                        // share story link
-                        const u = new URL(shareUrl || window.location.href);
-                        u.searchParams.set("view", "story");
-                        copyToClipboard(u.toString());
-                        setError("Story link copied to clipboard.");
-                      }}
-                      className="px-4 py-2 rounded-lg bg-itinex-accent text-white hover:opacity-90 text-sm font-semibold"
-                    >
-                      Share Story
-                    </button>
-
-                    <button
-                      onClick={async () => {
-                        // export story to PDF
-                        if (!storyRef.current) return;
-                        setExportingPdf(true);
-                        try {
-                          await waitForImages(storyRef.current);
-                          const canvas = await html2canvas(storyRef.current, {
-                            scale: 2,
-                            useCORS: true,
-                            allowTaint: true,
-                            backgroundColor: "#ffffff",
-                          });
-
-                          const imgData = canvas.toDataURL("image/png");
-                          const pdf = new jsPDF("p", "pt", "a4");
-                          const pageWidth = pdf.internal.pageSize.getWidth();
-                          const pageHeight = pdf.internal.pageSize.getHeight();
-                          const imgWidth = pageWidth;
-                          const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-                          let heightLeft = imgHeight;
-                          let position = 0;
-
-                          pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-                          heightLeft -= pageHeight;
-
-                          while (heightLeft > 0) {
-                            position = position - pageHeight;
-                            pdf.addPage();
-                            pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-                            heightLeft -= pageHeight;
-                          }
-
-                          pdf.save(`story-${slugify(selectedDest?.name || "trip")}.pdf`);
-                        } catch (e) {
-                          setError(`Story PDF export failed: ${e?.message || "unknown error"}`);
-                        } finally {
-                          setExportingPdf(false);
-                        }
-                      }}
-                      className="px-4 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-sm font-semibold"
-                    >
-                      {exportingPdf ? "Exporting…" : "Download Story PDF"}
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Story content */}
-              {step === "itinerary" && viewMode === "story" && (
-                <div ref={storyRef} className="p-6 space-y-8">
-                {itinerary.map((d) => (
-                  <div key={d.day} className="rounded-2xl border overflow-hidden">
-                    <div className="p-5 bg-slate-50 border-b">
-                      <div className="flex items-center justify-between flex-wrap gap-2">
-                        <div className="font-extrabold text-slate-900">
-                          Day {d.day} <span className="text-slate-500 font-semibold">• {d.date}</span>
-                        </div>
-                        <div className="text-xs text-slate-600">
-                          {d.condition} • {d.tempMax}°C / {d.tempMin}°C • Rain {d.precipMm}mm
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2">
-                      {/* Morning */}
-                      <div className="relative">
-                        <img
-                          src={attractionImages[d.morning] || svgPlaceholderDataUrl(d.morning)}
-                          alt={d.morning}
-                          className="w-full h-72 object-cover"
-                          onError={(e) => {
-                            e.currentTarget.onerror = null;
-                            e.currentTarget.src = svgPlaceholderDataUrl(d.morning);
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
-                        <div className="absolute bottom-0 p-4">
-                          <div className="text-white/80 text-xs font-semibold">Morning</div>
-                          <div className="text-white text-lg font-extrabold">{d.morning}</div>
-                        </div>
-                      </div>
-
-                      {/* Evening */}
-                      <div className="relative">
-                        <img
-                          src={attractionImages[d.evening] || svgPlaceholderDataUrl(d.evening)}
-                          alt={d.evening}
-                          className="w-full h-72 object-cover"
-                          onError={(e) => {
-                            e.currentTarget.onerror = null;
-                            e.currentTarget.src = svgPlaceholderDataUrl(d.evening);
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
-                        <div className="absolute bottom-0 p-4">
-                          <div className="text-white/80 text-xs font-semibold">Evening</div>
-                          <div className="text-white text-lg font-extrabold">{d.evening}</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {(() => {
-                      const m = storySummaries[d.morning]?.extract || "";
-                      const e = storySummaries[d.evening]?.extract || "";
-
-                      const lines = buildSixLineStory({
-                        destinationName: selectedDest?.name,
-                        morningName: d.morning,
-                        eveningName: d.evening,
-                        morningExtract: storySummaries[d.morning]?.extract,
-                        eveningExtract: storySummaries[d.evening]?.extract,
-                      });
-
-
-                      return (
-                        <div className="p-5 text-sm text-slate-700 leading-relaxed">
-                          <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">
-                            Today’s story
-                          </div>
-
-                          {/* 6 lines */}
-                          <div className="space-y-1">
-                            {lines.map((line, i) => (
-                              <div
-                                key={i}
-                                className="whitespace-pre-wrap"
-                                dangerouslySetInnerHTML={{ __html: line }}
-                              />
-                            ))}
-                          </div>
-
-                          {loadingStory && (
-                            <div className="mt-2 text-xs text-slate-500">
-                              Loading richer place details…
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })()}
-
-                  </div>
-                ))}
-
-                {/* Closing card */}
-                <div className="rounded-2xl border p-6 bg-gradient-to-br from-itinex-secondary to-itinex-primary text-white">
-                  <div className="text-xl font-extrabold">The End ✨</div>
-                  <div className="mt-1 text-sm opacity-90">
-                    Share this story with friends or export it as a PDF.
-                  </div>
-                </div>
-              </div>
-              )}
-            </div>
-          )}
+          
 
                 </div>
               </div>
@@ -3137,18 +2960,48 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
               />
               </div>
             )}
-          {fixMyDayOpen && (
-              <div className="mt-6" id="fixmyday-section">
-                <FixMyDay
-                  open={fixMyDayOpen}
-                  onClose={() => setFixMyDayOpen(false)}
-                  itinerary={itinerary}
-                  setItinerary={setItinerary}
-                  attractionsForTrip={attractionsForTrip}
-                  destinationName={selectedDest?.name || "your trip"}
-                />
-              </div>
-            )}
+            <TravelStoryModal
+              open={storyOpen}
+              onClose={() => setStoryOpen(false)}
+              step={step}
+              selectedDest={selectedDest}
+              useDateRange={useDateRange}
+              startDate={startDate}
+              endDate={endDate}
+              days={days}
+              itinerary={itinerary}
+              attractionImages={attractionImages}
+              storySummaries={storySummaries}
+              loadingStory={loadingStory}
+              svgPlaceholderDataUrl={svgPlaceholderDataUrl}
+              buildSixLineStory={buildSixLineStory}
+              slugify={slugify}
+              waitForImages={waitForImages}
+              shareUrl={shareUrl}
+              copyToClipboard={copyToClipboard}
+              setError={setError}
+              exportingPdf={exportingPdf}
+              setExportingPdf={setExportingPdf}
+              storyRef={storyRef}
+              html2canvas={html2canvas}
+              jsPDF={jsPDF}
+            />
+
+
+          <FixMyDay
+            open={fixOpen}
+            onClose={() => setFixOpen(false)}
+            itinerary={itinerary}
+            setItinerary={setItinerary}
+            attractionsForTrip={attractionsForTrip}
+            destinationName={selectedDest?.name || "your trip"}
+
+            // optional image hydration (recommended)
+            attractionImages={attractionImages}
+            setAttractionImages={setAttractionImages}
+            getAttractionImage={getAttractionImage}
+          />
+
         <div class="text-2xl font-extrabold text-gray-900 tracking-tight">Complete Itinerary</div>
             
               <div className="space-y-4">
