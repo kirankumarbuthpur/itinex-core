@@ -3104,10 +3104,11 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
       transition-all duration-150
       active:scale-[0.97]
       focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2
+
+    hover:[animation:emergency-shake_0.4s_ease-in-out]
     "
   >
-    <AlertTriangle className="w-4 h-4" />
-    Emergency
+    🚨 Emergency
   </button>
 </div>
 
