@@ -1,0 +1,380 @@
+{
+  "japan": {
+    "primary": "110",
+    "police": "110",
+    "fire": "119",
+    "ambulance": "119",
+    "notes": "110 for police. 119 for fire and ambulance."
+  },
+  "south korea": {
+    "primary": "112",
+    "police": "112",
+    "fire": "119",
+    "ambulance": "119",
+    "notes": "112 police, 119 fire and ambulance."
+  },
+  "china": {
+    "primary": "110",
+    "police": "110",
+    "fire": "119",
+    "ambulance": "120",
+    "notes": "110 police, 119 fire, 120 ambulance."
+  },
+  "hong kong": {
+    "primary": "999",
+    "alternate": "112",
+    "police": "999",
+    "fire": "999",
+    "ambulance": "999",
+    "notes": "112 also works on mobile networks."
+  },
+  "thailand": {
+    "primary": "191",
+    "police": "191",
+    "fire": "199",
+    "ambulance": "1669",
+    "notes": "Tourist police: 1155."
+  },
+  "singapore": {
+    "primary": "999",
+    "police": "999",
+    "fire": "995",
+    "ambulance": "995",
+    "notes": "995 is for fire and ambulance services."
+  },
+  "malaysia": {
+    "primary": "999",
+    "police": "999",
+    "fire": "999",
+    "ambulance": "999",
+    "notes": "Unified emergency line."
+  },
+  "indonesia": {
+    "primary": "112",
+    "police": "110",
+    "fire": "113",
+    "ambulance": "119",
+    "notes": "112 is national emergency number."
+  },
+  "vietnam": {
+    "primary": "113",
+    "police": "113",
+    "fire": "114",
+    "ambulance": "115",
+    "notes": "Separate numbers for each service."
+  },
+  "uae": {
+    "primary": "999",
+    "police": "999",
+    "fire": "997",
+    "ambulance": "998",
+    "notes": "998 ambulance, 997 fire."
+  },
+  "qatar": {
+    "primary": "999",
+    "police": "999",
+    "fire": "999",
+    "ambulance": "999",
+    "notes": "Unified emergency number."
+  },
+  "oman": {
+    "primary": "9999",
+    "police": "9999",
+    "fire": "9999",
+    "ambulance": "9999",
+    "notes": "Unified emergency number."
+  },
+  "turkey": {
+    "primary": "112",
+    "police": "155",
+    "fire": "110",
+    "ambulance": "112",
+    "notes": "112 is the national unified emergency line."
+  },
+  "united kingdom": {
+    "primary": "999",
+    "alternate": "112",
+    "police": "999",
+    "fire": "999",
+    "ambulance": "999",
+    "nonEmergency": "101",
+    "medicalNonEmergency": "111",
+    "notes": "112 also works. 111 is non-emergency medical advice."
+  },
+  "ireland": {
+    "primary": "112",
+    "alternate": "999",
+    "police": "112",
+    "fire": "112",
+    "ambulance": "112",
+    "notes": "112 and 999 both operate."
+  },
+  "france": {
+    "primary": "112",
+    "police": "17",
+    "fire": "18",
+    "ambulance": "15",
+    "notes": "112 is EU-wide emergency number."
+  },
+  "spain": {
+    "primary": "112",
+    "police": "091",
+    "fire": "080",
+    "ambulance": "061",
+    "notes": "112 is recommended nationwide."
+  },
+  "italy": {
+    "primary": "112",
+    "police": "112",
+    "fire": "115",
+    "ambulance": "118",
+    "notes": "112 is unified emergency line."
+  },
+  "netherlands": {
+    "primary": "112",
+    "police": "112",
+    "fire": "112",
+    "ambulance": "112",
+    "notes": "Unified emergency number."
+  },
+  "belgium": {
+    "primary": "112",
+    "police": "101",
+    "fire": "112",
+    "ambulance": "112",
+    "notes": "101 police, 112 fire and ambulance."
+  },
+  "germany": {
+    "primary": "112",
+    "police": "110",
+    "fire": "112",
+    "ambulance": "112",
+    "notes": "110 police, 112 fire and ambulance."
+  },
+  "switzerland": {
+    "primary": "112",
+    "police": "117",
+    "fire": "118",
+    "ambulance": "144",
+    "notes": "112 also works internationally."
+  },
+  "austria": {
+    "primary": "112",
+    "police": "133",
+    "fire": "122",
+    "ambulance": "144",
+    "notes": "112 available across EU."
+  },
+  "czechia": {
+    "primary": "112",
+    "police": "158",
+    "fire": "150",
+    "ambulance": "155",
+    "notes": "112 is unified emergency line."
+  },
+  "hungary": {
+    "primary": "112",
+    "police": "112",
+    "fire": "112",
+    "ambulance": "112",
+    "notes": "Unified emergency system."
+  },
+  "denmark": {
+    "primary": "112",
+    "police": "112",
+    "fire": "112",
+    "ambulance": "112",
+    "notes": "Unified emergency number."
+  },
+  "sweden": {
+    "primary": "112",
+    "police": "112",
+    "fire": "112",
+    "ambulance": "112",
+    "notes": "Unified emergency number."
+  },
+  "norway": {
+    "primary": "113",
+    "police": "112",
+    "fire": "110",
+    "ambulance": "113",
+    "notes": "112 police, 110 fire, 113 ambulance."
+  },
+  "finland": {
+    "primary": "112",
+    "police": "112",
+    "fire": "112",
+    "ambulance": "112",
+    "notes": "Unified emergency number."
+  },
+  "iceland": {
+    "primary": "112",
+    "police": "112",
+    "fire": "112",
+    "ambulance": "112",
+    "notes": "Unified emergency number."
+  },
+  "usa": {
+    "primary": "911",
+    "police": "911",
+    "fire": "911",
+    "ambulance": "911",
+    "notes": "Nationwide emergency number."
+  },
+  "canada": {
+    "primary": "911",
+    "police": "911",
+    "fire": "911",
+    "ambulance": "911",
+    "notes": "Nationwide emergency number."
+  },
+  "mexico": {
+    "primary": "911",
+    "police": "911",
+    "fire": "911",
+    "ambulance": "911",
+    "notes": "Unified emergency number."
+  },
+  "brazil": {
+    "primary": "190",
+    "police": "190",
+    "fire": "193",
+    "ambulance": "192",
+    "notes": "190 police, 193 fire, 192 ambulance."
+  },
+  "argentina": {
+    "primary": "911",
+    "police": "911",
+    "fire": "100",
+    "ambulance": "107",
+    "notes": "911 widely supported in major cities."
+  },
+  "peru": {
+    "primary": "911",
+    "police": "105",
+    "fire": "116",
+    "ambulance": "106",
+    "notes": "911 available in some regions."
+  },
+  "south africa": {
+    "primary": "112",
+    "police": "10111",
+    "fire": "10177",
+    "ambulance": "10177",
+    "notes": "112 mobile emergency line."
+  },
+  "morocco": {
+    "primary": "19",
+    "police": "19",
+    "fire": "15",
+    "ambulance": "15",
+    "notes": "In mobile networks use 112."
+  },
+  "kenya": {
+    "primary": "999",
+    "alternate": "112",
+    "police": "999",
+    "fire": "999",
+    "ambulance": "999",
+    "notes": "112 also supported."
+  },
+  "australia": {
+    "primary": "000",
+    "alternate": "112",
+    "police": "000",
+    "fire": "000",
+    "ambulance": "000",
+    "notes": "112 works on mobile phones."
+  },
+  "new zealand": {
+    "primary": "111",
+    "police": "111",
+    "fire": "111",
+    "ambulance": "111",
+    "notes": "Unified emergency number."
+  },
+  "bahamas": {
+    "primary": "919",
+    "police": "919",
+    "fire": "919",
+    "ambulance": "919",
+    "notes": "Unified emergency number."
+  },
+  "jamaica": {
+    "primary": "119",
+    "police": "119",
+    "fire": "110",
+    "ambulance": "110",
+    "notes": "119 police, 110 fire and ambulance."
+  },
+  "dominican republic": {
+    "primary": "911",
+    "police": "911",
+    "fire": "911",
+    "ambulance": "911",
+    "notes": "Unified emergency number."
+  },
+  "puerto rico": {
+    "primary": "911",
+    "police": "911",
+    "fire": "911",
+    "ambulance": "911",
+    "notes": "US emergency system."
+  },
+  "barbados": {
+    "primary": "211",
+    "police": "211",
+    "fire": "311",
+    "ambulance": "511",
+    "notes": "Separate service numbers."
+  },
+  "saint lucia": {
+    "primary": "911",
+    "police": "911",
+    "fire": "911",
+    "ambulance": "911",
+    "notes": "Unified emergency number."
+  },
+  "grenada": {
+    "primary": "911",
+    "police": "911",
+    "fire": "911",
+    "ambulance": "911",
+    "notes": "Unified emergency number."
+  },
+  "aruba": {
+    "primary": "911",
+    "police": "911",
+    "fire": "115",
+    "ambulance": "127",
+    "notes": "911 connects emergency dispatch."
+  },
+  "curaçao": {
+    "primary": "911",
+    "police": "911",
+    "fire": "911",
+    "ambulance": "912",
+    "notes": "911 general emergency."
+  },
+  "saint kitts and nevis": {
+    "primary": "911",
+    "police": "911",
+    "fire": "911",
+    "ambulance": "911",
+    "notes": "Unified emergency number."
+  },
+  "sint maarten": {
+    "primary": "911",
+    "police": "911",
+    "fire": "911",
+    "ambulance": "912",
+    "notes": "911 emergency dispatch."
+  },
+  "british virgin islands": {
+    "primary": "999",
+    "police": "999",
+    "fire": "999",
+    "ambulance": "999",
+    "notes": "Unified emergency number."
+  }
+}

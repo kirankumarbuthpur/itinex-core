@@ -23,7 +23,8 @@ import {
   Trash2,
   Coins,
   PiggyBank,
-  Banknote
+  Banknote,
+  AlertTriangle
 } from 'lucide-react';
 
 import {
@@ -56,6 +57,8 @@ import DestinationMap from "./DestinationMap";
 import FixMyDay from "./FixMyDay";
 import TravelStoryModal from "./TravelStoryModal";
 import BudgetTrackerModal from "./BudgetTrackerModal";
+import EmergencyHubModal from "./EmergencyHubModal";
+
 import { buildSkyscannerFlightsUrl } from "./utils/skyscanner";
 import SkyscannerCTA from "./components/SkyscannerCTA";
 import SkyscannerTopAd from "./components/SkyscannerTopAd";
@@ -136,11 +139,6 @@ const VoteBar = ({ k, totals, onVote }) => {
   );
 };
 
-
-
-
-
-
 export default function HolidayPlanner() {
    useEffect(() => {
     window.scrollTo(0, 0);
@@ -188,6 +186,10 @@ const [budgetOpen, setBudgetOpen] = useState(false);
 const [fixOpen, setFixOpen] = useState(false);
 const [storyOpen, setStoryOpen] = useState(false);
 const [travelStory, setTravelStory] = useState(false)
+const [emergencyOpen, setEmergencyOpen] = useState(false);
+const [toolsOpen, setToolsOpen] = useState("");
+const [emergencyNumbers, setEmergencyNumbers] = useState({});
+const [emergencyPhrases, setEmergencyPhrases] = useState({});
 
 const [endDate, setEndDate] = useState(() => {
 const d = new Date();
@@ -592,6 +594,19 @@ useEffect(() => {
       const res = await fetch('/attractions.json');
       if (!res.ok) return;
       setAttractionsMap(await res.json());
+    } catch {}
+  })();
+  (async () => {
+    try {
+      const res = await fetch("/emergency_numbers.json");
+      if (res.ok) setEmergencyNumbers(await res.json());
+    } catch {}
+  })();
+
+  (async () => {
+    try {
+      const res = await fetch("/emergency_phrases.json");
+      if (res.ok) setEmergencyPhrases(await res.json());
     } catch {}
   })();
 }, []);
@@ -2876,103 +2891,87 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 					                </div>
 
 					                <div className="flex flex-wrap gap-2">
-					                  <button
-					  onClick={exportToPdf}
-					  disabled={exportingPdf}
-					  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
-					             bg-slate-800 text-white
-					             hover:bg-slate-900
-					             disabled:opacity-60"
-					>
-					  <FileText className="w-4 h-4" />
-					  {exportingPdf ? "Exporting…" : "Export PDF"}
-					</button>
-
 
 					                  <button
-					  onClick={downloadIcs}
-					  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
-					             bg-itinex-primary text-white
-					             hover:bg-emerald-700"
-					>
-					  <Download className="w-4 h-4" />
-					  Download .ics
-					</button>
+                  					  onClick={exportToPdf}
+                  					  disabled={exportingPdf}
+                  					  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
+                  					             bg-slate-800 text-white
+                  					             hover:bg-slate-900
+                  					             disabled:opacity-60"
+                  					>
+                  					  <FileText className="w-4 h-4" />
+                  					  {exportingPdf ? "Exporting…" : "Export PDF"}
+                  					</button>
 
 
 					                  <button
-					  onClick={emailItinerary}
-					  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
-					             bg-itinex-secondary text-white
-					             hover:bg-sky-700"
-					>
-					  <Mail className="w-4 h-4" />
-					  Email
-					</button>
+                  					  onClick={downloadIcs}
+                  					  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
+                  					             bg-itinex-primary text-white
+                  					             hover:bg-emerald-700"
+                  					>
+                  					  <Download className="w-4 h-4" />
+                  					  Download .ics
+                  					</button>
+
+
+					                  <button
+                  					  onClick={emailItinerary}
+                  					  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
+                  					             bg-itinex-secondary text-white
+                  					             hover:bg-sky-700"
+                  					>
+                  					  <Mail className="w-4 h-4" />
+                  					  Email
+                  					</button>
 
 
 					                 <button
-					  onClick={handleWebShare}
-					  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
-					             bg-itinex-accent text-white
-					             hover:bg-amber-600"
-					>
-					  <Share2 className="w-4 h-4" />
-					  Share
-					</button>
+                  					  onClick={handleWebShare}
+                  					  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
+                  					             bg-itinex-accent text-white
+                  					             hover:bg-amber-600"
+                  					>
+                  					  <Share2 className="w-4 h-4" />
+                  					  Share
+                  					</button>
 
-         <button
-          onClick={() => setStoryOpen(true)}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg 
-                   bg-orange-500 text-white hover:bg-orange-600"
-        >
-          <Sparkles className="w-4 h-4" />
-          Travel Story
-        </button>
+                        
+
+                           <SkyscannerHeaderButton
+                            href={skyscannerUrl}
+                            label={selectedDest?.iata ? `Flights to ${selectedDest.iata}` : "Find flights"}
+                            disabled={!selectedDest?.iata}
+                          />
 
 
-         <button
-            onClick={() => setBudgetOpen(true)}
-            className="
-              ml-3
-              inline-flex items-center gap-2
-              px-4 py-2
-              rounded-xl
-              text-white
-              bg-gradient-to-r from-rose-600 to-red-700
-              hover:from-rose-500 hover:to-red-600
-              shadow-md hover:shadow-lg
-              transition-all duration-200
-            "
-          >
-            <PiggyBank className="w-4 h-4" />
-            Budget Tracker
-          </button>
+                          <select
+                            value={toolsOpen}
+                            onChange={(e) => {
+                              const v = e.target.value;
+                              setToolsOpen("");
+                              if (v === "emergency") setEmergencyOpen(true);
+                              if (v === "budget") setBudgetOpen(true);
+                              if (v === "story") setStoryOpen(true);
+                              if (v === "fix") setFixOpen(true);
+                            }}
+                            className="px-3 py-2 rounded-lg border bg-white text-sm font-semibold"
+                          >
+                            <option value="">More Features</option>
+                            <option value="story">Travel Story</option>
+                            <option value="budget">Budget Tracker</option>
+                            <option value="fix">Fix My Day</option>
+                          </select>
 
-          <button
-            type="button"
-            onClick={() => setFixOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg 
-                       bg-slate-900 text-white hover:bg-slate-800"
-          >
-            <Sparkles className="w-4 h-4" />
-            Fix My Day
-          </button>
-
-           <SkyscannerHeaderButton
-            href={skyscannerUrl}
-            label={selectedDest?.iata ? `Flights to ${selectedDest.iata}` : "Find flights"}
-            disabled={!selectedDest?.iata}
-          />
-
-          {viewMode === "story" && (
-            <button
-              onClick={() => setViewMode("itinerary")}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border bg-white hover:bg-slate-50"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back
-            </button>
+                          {viewMode === "story" && (
+                            <button
+                              onClick={() => setViewMode("itinerary")}
+                              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border bg-white hover:bg-slate-50"
+                            >
+                              <ArrowLeft className="w-4 h-4" />
+                              Back
+                            </button>
           )}
 
           
@@ -3059,6 +3058,14 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
               html2canvas={html2canvas}
               jsPDF={jsPDF}
             />
+            <EmergencyHubModal
+  open={emergencyOpen}
+  onClose={() => setEmergencyOpen(false)}
+  selectedDest={selectedDest}
+  emergencyNumbers={emergencyNumbers}
+  emergencyPhrases={emergencyPhrases}
+/>
+
 
 
           <FixMyDay
@@ -3075,7 +3082,35 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
             getAttractionImage={getAttractionImage}
           />
 
-        <div class="text-2xl font-extrabold text-gray-900 tracking-tight">Complete Itinerary</div>
+        <div className="flex items-center justify-between mb-4">
+  <h2 className="text-2xl font-extrabold text-slate-900">
+    Complete Itinerary
+  </h2>
+
+  <button
+    type="button"
+    onClick={() => setEmergencyOpen(true)}
+    aria-label="Open emergency information"
+    className="
+      inline-flex items-center gap-2
+      px-4 py-2.5
+      rounded-full
+      font-extrabold text-sm
+      bg-white
+      border-2 border-red-600
+      text-red-600
+      hover:bg-red-50
+      shadow-md shadow-red-500/20
+      transition-all duration-150
+      active:scale-[0.97]
+      focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2
+    "
+  >
+    <AlertTriangle className="w-4 h-4" />
+    Emergency
+  </button>
+</div>
+
             
               <div className="space-y-4">
                 {itinerary.map((day, idx) => (

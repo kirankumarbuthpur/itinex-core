@@ -1,0 +1,1059 @@
+{
+  "japan": {
+    "languages": [
+      {
+        "name": "Japanese",
+        "iso": "ja",
+        "phrases": {
+          "help": { "text": "助けて！", "romanized": "Tasuke-te!" },
+          "call_police": { "text": "警察を呼んでください。", "romanized": "Keisatsu o yonde kudasai." },
+          "call_ambulance": { "text": "救急車を呼んでください。", "romanized": "Kyūkyūsha o yonde kudasai." },
+          "i_need_doctor": { "text": "医者が必要です。", "romanized": "Isha ga hitsuyō desu." },
+          "where_hospital": { "text": "病院はどこですか？", "romanized": "Byōin wa doko desu ka?" },
+          "i_am_lost": { "text": "道に迷いました。", "romanized": "Michi ni mayoi mashita." }
+        }
+      }
+    ]
+  },
+
+  "south korea": {
+    "languages": [
+      {
+        "name": "Korean",
+        "iso": "ko",
+        "phrases": {
+          "help": { "text": "도와주세요!", "romanized": "Dowajuseyo!" },
+          "call_police": { "text": "경찰을 불러 주세요.", "romanized": "Gyeongchareul bulleo juseyo." },
+          "call_ambulance": { "text": "구급차를 불러 주세요.", "romanized": "Gugeupchareul bulleo juseyo." },
+          "i_need_doctor": { "text": "의사가 필요해요.", "romanized": "Uisaga piryohayo." },
+          "where_hospital": { "text": "병원이 어디예요?", "romanized": "Byeongwoni eodiyeyo?" },
+          "i_am_lost": { "text": "길을 잃었어요.", "romanized": "Gireul ileosseoyo." }
+        }
+      }
+    ]
+  },
+
+  "china": {
+    "languages": [
+      {
+        "name": "Mandarin Chinese",
+        "iso": "zh",
+        "phrases": {
+          "help": { "text": "救命！", "romanized": "Jiùmìng!" },
+          "call_police": { "text": "请报警。", "romanized": "Qǐng bàojǐng." },
+          "call_ambulance": { "text": "请叫救护车。", "romanized": "Qǐng jiào jiùhùchē." },
+          "i_need_doctor": { "text": "我需要医生。", "romanized": "Wǒ xūyào yīshēng." },
+          "where_hospital": { "text": "医院在哪里？", "romanized": "Yīyuàn zài nǎlǐ?" },
+          "i_am_lost": { "text": "我迷路了。", "romanized": "Wǒ mílù le." }
+        }
+      }
+    ]
+  },
+
+  "hong kong": {
+    "languages": [
+      {
+        "name": "Cantonese",
+        "iso": "yue",
+        "phrases": {
+          "help": { "text": "救命！", "romanized": "Gau ming!" },
+          "call_police": { "text": "請幫我報警。", "romanized": "Cing bong ngo bou ging." },
+          "call_ambulance": { "text": "請叫救護車。", "romanized": "Cing giu gau wu ce." },
+          "i_need_doctor": { "text": "我需要醫生。", "romanized": "Ngo seoi jiu ji sang." },
+          "where_hospital": { "text": "醫院喺邊度？", "romanized": "Ji jyun hai bin dou?" },
+          "i_am_lost": { "text": "我迷路咗。", "romanized": "Ngo mai lou zo." }
+        }
+      },
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "thailand": {
+    "languages": [
+      {
+        "name": "Thai",
+        "iso": "th",
+        "phrases": {
+          "help": { "text": "ช่วยด้วย!", "romanized": "Chuay duay!" },
+          "call_police": { "text": "เรียกตำรวจให้หน่อย", "romanized": "Rîak tam-rùat hâi nòi." },
+          "call_ambulance": { "text": "เรียกรถพยาบาลให้หน่อย", "romanized": "Rîak rót pha-yaa-baan hâi nòi." },
+          "i_need_doctor": { "text": "ฉันต้องการหมอ", "romanized": "Chǎn tông-gaan mǒr." },
+          "where_hospital": { "text": "โรงพยาบาลอยู่ที่ไหน?", "romanized": "Rong-pha-yaa-baan yùu thîi nǎi?" },
+          "i_am_lost": { "text": "ฉันหลงทาง", "romanized": "Chǎn lǒng thaang." }
+        }
+      }
+    ]
+  },
+
+  "singapore": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ],
+    "notes": "English is widely used in Singapore."
+  },
+
+  "malaysia": {
+    "languages": [
+      {
+        "name": "Malay (Bahasa Melayu)",
+        "iso": "ms",
+        "phrases": {
+          "help": { "text": "Tolong!" },
+          "call_police": { "text": "Tolong panggil polis." },
+          "call_ambulance": { "text": "Tolong panggil ambulans." },
+          "i_need_doctor": { "text": "Saya perlukan doktor." },
+          "where_hospital": { "text": "Di mana hospital terdekat?" },
+          "i_am_lost": { "text": "Saya sesat." }
+        }
+      },
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "indonesia": {
+    "languages": [
+      {
+        "name": "Indonesian (Bahasa Indonesia)",
+        "iso": "id",
+        "phrases": {
+          "help": { "text": "Tolong!" },
+          "call_police": { "text": "Tolong panggil polisi." },
+          "call_ambulance": { "text": "Tolong panggil ambulans." },
+          "i_need_doctor": { "text": "Saya butuh dokter." },
+          "where_hospital": { "text": "Di mana rumah sakit terdekat?" },
+          "i_am_lost": { "text": "Saya tersesat." }
+        }
+      }
+    ]
+  },
+
+  "vietnam": {
+    "languages": [
+      {
+        "name": "Vietnamese",
+        "iso": "vi",
+        "phrases": {
+          "help": { "text": "Cứu tôi!", "romanized": "Cứu tôi!" },
+          "call_police": { "text": "Gọi công an giúp tôi.", "romanized": "Gọi công an giúp tôi." },
+          "call_ambulance": { "text": "Gọi xe cứu thương giúp tôi.", "romanized": "Gọi xe cứu thương giúp tôi." },
+          "i_need_doctor": { "text": "Tôi cần bác sĩ.", "romanized": "Tôi cần bác sĩ." },
+          "where_hospital": { "text": "Bệnh viện ở đâu?", "romanized": "Bệnh viện ở đâu?" },
+          "i_am_lost": { "text": "Tôi bị lạc.", "romanized": "Tôi bị lạc." }
+        }
+      }
+    ]
+  },
+
+  "uae": {
+    "languages": [
+      {
+        "name": "Arabic",
+        "iso": "ar",
+        "phrases": {
+          "help": { "text": "النجدة!", "romanized": "An-najda!" },
+          "call_police": { "text": "من فضلك اتصل بالشرطة.", "romanized": "Min faḍlak ittasil bil-shurṭa." },
+          "call_ambulance": { "text": "من فضلك اتصل بالإسعاف.", "romanized": "Min faḍlak ittasil bil-is‘āf." },
+          "i_need_doctor": { "text": "أحتاج طبيبًا.", "romanized": "Aḥtāj ṭabīban." },
+          "where_hospital": { "text": "أين أقرب مستشفى؟", "romanized": "Ayn aqrab mustashfā?" },
+          "i_am_lost": { "text": "أنا تائه.", "romanized": "Anā tāʾih." }
+        }
+      },
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "qatar": {
+    "languages": [
+      {
+        "name": "Arabic",
+        "iso": "ar",
+        "phrases": {
+          "help": { "text": "النجدة!", "romanized": "An-najda!" },
+          "call_police": { "text": "من فضلك اتصل بالشرطة.", "romanized": "Min faḍlak ittasil bil-shurṭa." },
+          "call_ambulance": { "text": "من فضلك اتصل بالإسعاف.", "romanized": "Min faḍlak ittasil bil-is‘āf." },
+          "i_need_doctor": { "text": "أحتاج طبيبًا.", "romanized": "Aḥtāj ṭabīban." },
+          "where_hospital": { "text": "أين أقرب مستشفى؟", "romanized": "Ayn aqrab mustashfā?" },
+          "i_am_lost": { "text": "أنا تائه.", "romanized": "Anā tāʾih." }
+        }
+      },
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "oman": {
+    "languages": [
+      {
+        "name": "Arabic",
+        "iso": "ar",
+        "phrases": {
+          "help": { "text": "النجدة!", "romanized": "An-najda!" },
+          "call_police": { "text": "من فضلك اتصل بالشرطة.", "romanized": "Min faḍlak ittasil bil-shurṭa." },
+          "call_ambulance": { "text": "من فضلك اتصل بالإسعاف.", "romanized": "Min faḍlak ittasil bil-is‘āf." },
+          "i_need_doctor": { "text": "أحتاج طبيبًا.", "romanized": "Aḥtāj ṭabīban." },
+          "where_hospital": { "text": "أين أقرب مستشفى؟", "romanized": "Ayn aqrab mustashfā?" },
+          "i_am_lost": { "text": "أنا تائه.", "romanized": "Anā tāʾih." }
+        }
+      },
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "turkey": {
+    "languages": [
+      {
+        "name": "Turkish",
+        "iso": "tr",
+        "phrases": {
+          "help": { "text": "Yardım!" },
+          "call_police": { "text": "Lütfen polisi arayın." },
+          "call_ambulance": { "text": "Lütfen ambulans çağırın." },
+          "i_need_doctor": { "text": "Doktora ihtiyacım var." },
+          "where_hospital": { "text": "En yakın hastane nerede?" },
+          "i_am_lost": { "text": "Kayboldum." }
+        }
+      }
+    ]
+  },
+
+  "united kingdom": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "ireland": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "france": {
+    "languages": [
+      {
+        "name": "French",
+        "iso": "fr",
+        "phrases": {
+          "help": { "text": "À l'aide !" },
+          "call_police": { "text": "Appelez la police, s'il vous plaît." },
+          "call_ambulance": { "text": "Appelez une ambulance, s'il vous plaît." },
+          "i_need_doctor": { "text": "J'ai besoin d'un médecin." },
+          "where_hospital": { "text": "Où est l'hôpital le plus proche ?" },
+          "i_am_lost": { "text": "Je suis perdu(e)." }
+        }
+      }
+    ]
+  },
+
+  "spain": {
+    "languages": [
+      {
+        "name": "Spanish",
+        "iso": "es",
+        "phrases": {
+          "help": { "text": "¡Ayuda!" },
+          "call_police": { "text": "Por favor, llame a la policía." },
+          "call_ambulance": { "text": "Por favor, llame a una ambulancia." },
+          "i_need_doctor": { "text": "Necesito un médico." },
+          "where_hospital": { "text": "¿Dónde está el hospital más cercano?" },
+          "i_am_lost": { "text": "Estoy perdido(a)." }
+        }
+      }
+    ]
+  },
+
+  "italy": {
+    "languages": [
+      {
+        "name": "Italian",
+        "iso": "it",
+        "phrases": {
+          "help": { "text": "Aiuto!" },
+          "call_police": { "text": "Per favore, chiami la polizia." },
+          "call_ambulance": { "text": "Per favore, chiami un'ambulanza." },
+          "i_need_doctor": { "text": "Ho bisogno di un medico." },
+          "where_hospital": { "text": "Dov'è l'ospedale più vicino?" },
+          "i_am_lost": { "text": "Mi sono perso(a)." }
+        }
+      }
+    ]
+  },
+
+  "netherlands": {
+    "languages": [
+      {
+        "name": "Dutch",
+        "iso": "nl",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Bel alstublieft de politie." },
+          "call_ambulance": { "text": "Bel alstublieft een ambulance." },
+          "i_need_doctor": { "text": "Ik heb een dokter nodig." },
+          "where_hospital": { "text": "Waar is het dichtstbijzijnde ziekenhuis?" },
+          "i_am_lost": { "text": "Ik ben verdwaald." }
+        }
+      }
+    ]
+  },
+
+  "belgium": {
+    "languages": [
+      {
+        "name": "Dutch",
+        "iso": "nl",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Bel alstublieft de politie." },
+          "call_ambulance": { "text": "Bel alstublieft een ambulance." },
+          "i_need_doctor": { "text": "Ik heb een dokter nodig." },
+          "where_hospital": { "text": "Waar is het dichtstbijzijnde ziekenhuis?" },
+          "i_am_lost": { "text": "Ik ben verdwaald." }
+        }
+      },
+      {
+        "name": "French",
+        "iso": "fr",
+        "phrases": {
+          "help": { "text": "À l'aide !" },
+          "call_police": { "text": "Appelez la police, s'il vous plaît." },
+          "call_ambulance": { "text": "Appelez une ambulance, s'il vous plaît." },
+          "i_need_doctor": { "text": "J'ai besoin d'un médecin." },
+          "where_hospital": { "text": "Où est l'hôpital le plus proche ?" },
+          "i_am_lost": { "text": "Je suis perdu(e)." }
+        }
+      }
+    ]
+  },
+
+  "germany": {
+    "languages": [
+      {
+        "name": "German",
+        "iso": "de",
+        "phrases": {
+          "help": { "text": "Hilfe!" },
+          "call_police": { "text": "Bitte rufen Sie die Polizei." },
+          "call_ambulance": { "text": "Bitte rufen Sie einen Krankenwagen." },
+          "i_need_doctor": { "text": "Ich brauche einen Arzt." },
+          "where_hospital": { "text": "Wo ist das nächste Krankenhaus?" },
+          "i_am_lost": { "text": "Ich habe mich verlaufen." }
+        }
+      }
+    ]
+  },
+
+  "switzerland": {
+    "languages": [
+      {
+        "name": "German",
+        "iso": "de",
+        "phrases": {
+          "help": { "text": "Hilfe!" },
+          "call_police": { "text": "Bitte rufen Sie die Polizei." },
+          "call_ambulance": { "text": "Bitte rufen Sie einen Krankenwagen." },
+          "i_need_doctor": { "text": "Ich brauche einen Arzt." },
+          "where_hospital": { "text": "Wo ist das nächste Krankenhaus?" },
+          "i_am_lost": { "text": "Ich habe mich verlaufen." }
+        }
+      },
+      {
+        "name": "French",
+        "iso": "fr",
+        "phrases": {
+          "help": { "text": "À l'aide !" },
+          "call_police": { "text": "Appelez la police, s'il vous plaît." },
+          "call_ambulance": { "text": "Appelez une ambulance, s'il vous plaît." },
+          "i_need_doctor": { "text": "J'ai besoin d'un médecin." },
+          "where_hospital": { "text": "Où est l'hôpital le plus proche ?" },
+          "i_am_lost": { "text": "Je suis perdu(e)." }
+        }
+      },
+      {
+        "name": "Italian",
+        "iso": "it",
+        "phrases": {
+          "help": { "text": "Aiuto!" },
+          "call_police": { "text": "Per favore, chiami la polizia." },
+          "call_ambulance": { "text": "Per favore, chiami un'ambulanza." },
+          "i_need_doctor": { "text": "Ho bisogno di un medico." },
+          "where_hospital": { "text": "Dov'è l'ospedale più vicino?" },
+          "i_am_lost": { "text": "Mi sono perso(a)." }
+        }
+      }
+    ]
+  },
+
+  "austria": {
+    "languages": [
+      {
+        "name": "German",
+        "iso": "de",
+        "phrases": {
+          "help": { "text": "Hilfe!" },
+          "call_police": { "text": "Bitte rufen Sie die Polizei." },
+          "call_ambulance": { "text": "Bitte rufen Sie einen Krankenwagen." },
+          "i_need_doctor": { "text": "Ich brauche einen Arzt." },
+          "where_hospital": { "text": "Wo ist das nächste Krankenhaus?" },
+          "i_am_lost": { "text": "Ich habe mich verlaufen." }
+        }
+      }
+    ]
+  },
+
+  "czechia": {
+    "languages": [
+      {
+        "name": "Czech",
+        "iso": "cs",
+        "phrases": {
+          "help": { "text": "Pomoc!" },
+          "call_police": { "text": "Prosím, zavolejte policii." },
+          "call_ambulance": { "text": "Prosím, zavolejte sanitku." },
+          "i_need_doctor": { "text": "Potřebuji doktora." },
+          "where_hospital": { "text": "Kde je nejbližší nemocnice?" },
+          "i_am_lost": { "text": "Ztratil(a) jsem se." }
+        }
+      }
+    ]
+  },
+
+  "hungary": {
+    "languages": [
+      {
+        "name": "Hungarian",
+        "iso": "hu",
+        "phrases": {
+          "help": { "text": "Segítség!" },
+          "call_police": { "text": "Kérem, hívja a rendőrséget." },
+          "call_ambulance": { "text": "Kérem, hívjon mentőt." },
+          "i_need_doctor": { "text": "Orvosra van szükségem." },
+          "where_hospital": { "text": "Hol van a legközelebbi kórház?" },
+          "i_am_lost": { "text": "Elvesztem." }
+        }
+      }
+    ]
+  },
+
+  "denmark": {
+    "languages": [
+      {
+        "name": "Danish",
+        "iso": "da",
+        "phrases": {
+          "help": { "text": "Hjælp!" },
+          "call_police": { "text": "Ring til politiet, tak." },
+          "call_ambulance": { "text": "Ring efter en ambulance, tak." },
+          "i_need_doctor": { "text": "Jeg har brug for en læge." },
+          "where_hospital": { "text": "Hvor er det nærmeste hospital?" },
+          "i_am_lost": { "text": "Jeg er faret vild." }
+        }
+      }
+    ]
+  },
+
+  "sweden": {
+    "languages": [
+      {
+        "name": "Swedish",
+        "iso": "sv",
+        "phrases": {
+          "help": { "text": "Hjälp!" },
+          "call_police": { "text": "Ring polisen, tack." },
+          "call_ambulance": { "text": "Ring en ambulans, tack." },
+          "i_need_doctor": { "text": "Jag behöver en läkare." },
+          "where_hospital": { "text": "Var är närmaste sjukhus?" },
+          "i_am_lost": { "text": "Jag har gått vilse." }
+        }
+      }
+    ]
+  },
+
+  "norway": {
+    "languages": [
+      {
+        "name": "Norwegian",
+        "iso": "no",
+        "phrases": {
+          "help": { "text": "Hjelp!" },
+          "call_police": { "text": "Ring politiet, takk." },
+          "call_ambulance": { "text": "Ring en ambulanse, takk." },
+          "i_need_doctor": { "text": "Jeg trenger en lege." },
+          "where_hospital": { "text": "Hvor er nærmeste sykehus?" },
+          "i_am_lost": { "text": "Jeg har gått meg bort." }
+        }
+      }
+    ]
+  },
+
+  "finland": {
+    "languages": [
+      {
+        "name": "Finnish",
+        "iso": "fi",
+        "phrases": {
+          "help": { "text": "Apua!" },
+          "call_police": { "text": "Soittakaa poliisi, kiitos." },
+          "call_ambulance": { "text": "Soittakaa ambulanssi, kiitos." },
+          "i_need_doctor": { "text": "Tarvitsen lääkärin." },
+          "where_hospital": { "text": "Missä on lähin sairaala?" },
+          "i_am_lost": { "text": "Olen eksynyt." }
+        }
+      }
+    ]
+  },
+
+  "iceland": {
+    "languages": [
+      {
+        "name": "Icelandic",
+        "iso": "is",
+        "phrases": {
+          "help": { "text": "Hjálp!" },
+          "call_police": { "text": "Vinsamlegast hringdu í lögregluna." },
+          "call_ambulance": { "text": "Vinsamlegast hringdu á sjúkrabíl." },
+          "i_need_doctor": { "text": "Ég þarf lækni." },
+          "where_hospital": { "text": "Hvar er næsta sjúkrahús?" },
+          "i_am_lost": { "text": "Ég er týnd(ur)." }
+        }
+      }
+    ]
+  },
+
+  "usa": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      },
+      {
+        "name": "Spanish",
+        "iso": "es",
+        "phrases": {
+          "help": { "text": "¡Ayuda!" },
+          "call_police": { "text": "Por favor, llame a la policía." },
+          "call_ambulance": { "text": "Por favor, llame a una ambulancia." },
+          "i_need_doctor": { "text": "Necesito un médico." },
+          "where_hospital": { "text": "¿Dónde está el hospital más cercano?" },
+          "i_am_lost": { "text": "Estoy perdido(a)." }
+        }
+      }
+    ]
+  },
+
+  "canada": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      },
+      {
+        "name": "French",
+        "iso": "fr",
+        "phrases": {
+          "help": { "text": "À l'aide !" },
+          "call_police": { "text": "Appelez la police, s'il vous plaît." },
+          "call_ambulance": { "text": "Appelez une ambulance, s'il vous plaît." },
+          "i_need_doctor": { "text": "J'ai besoin d'un médecin." },
+          "where_hospital": { "text": "Où est l'hôpital le plus proche ?" },
+          "i_am_lost": { "text": "Je suis perdu(e)." }
+        }
+      }
+    ]
+  },
+
+  "mexico": {
+    "languages": [
+      {
+        "name": "Spanish",
+        "iso": "es",
+        "phrases": {
+          "help": { "text": "¡Ayuda!" },
+          "call_police": { "text": "Por favor, llame a la policía." },
+          "call_ambulance": { "text": "Por favor, llame a una ambulancia." },
+          "i_need_doctor": { "text": "Necesito un médico." },
+          "where_hospital": { "text": "¿Dónde está el hospital más cercano?" },
+          "i_am_lost": { "text": "Estoy perdido(a)." }
+        }
+      }
+    ]
+  },
+
+  "brazil": {
+    "languages": [
+      {
+        "name": "Portuguese (Brazil)",
+        "iso": "pt-BR",
+        "phrases": {
+          "help": { "text": "Socorro!" },
+          "call_police": { "text": "Por favor, chame a polícia." },
+          "call_ambulance": { "text": "Por favor, chame uma ambulância." },
+          "i_need_doctor": { "text": "Eu preciso de um médico." },
+          "where_hospital": { "text": "Onde fica o hospital mais próximo?" },
+          "i_am_lost": { "text": "Estou perdido(a)." }
+        }
+      }
+    ]
+  },
+
+  "argentina": {
+    "languages": [
+      {
+        "name": "Spanish",
+        "iso": "es",
+        "phrases": {
+          "help": { "text": "¡Ayuda!" },
+          "call_police": { "text": "Por favor, llame a la policía." },
+          "call_ambulance": { "text": "Por favor, llame a una ambulancia." },
+          "i_need_doctor": { "text": "Necesito un médico." },
+          "where_hospital": { "text": "¿Dónde está el hospital más cercano?" },
+          "i_am_lost": { "text": "Estoy perdido(a)." }
+        }
+      }
+    ]
+  },
+
+  "peru": {
+    "languages": [
+      {
+        "name": "Spanish",
+        "iso": "es",
+        "phrases": {
+          "help": { "text": "¡Ayuda!" },
+          "call_police": { "text": "Por favor, llame a la policía." },
+          "call_ambulance": { "text": "Por favor, llame a una ambulancia." },
+          "i_need_doctor": { "text": "Necesito un médico." },
+          "where_hospital": { "text": "¿Dónde está el hospital más cercano?" },
+          "i_am_lost": { "text": "Estoy perdido(a)." }
+        }
+      }
+    ]
+  },
+
+  "south africa": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "morocco": {
+    "languages": [
+      {
+        "name": "Arabic",
+        "iso": "ar",
+        "phrases": {
+          "help": { "text": "النجدة!", "romanized": "An-najda!" },
+          "call_police": { "text": "من فضلك اتصل بالشرطة.", "romanized": "Min faḍlak ittasil bil-shurṭa." },
+          "call_ambulance": { "text": "من فضلك اتصل بالإسعاف.", "romanized": "Min faḍlak ittasil bil-is‘āf." },
+          "i_need_doctor": { "text": "أحتاج طبيبًا.", "romanized": "Aḥtāj ṭabīban." },
+          "where_hospital": { "text": "أين أقرب مستشفى؟", "romanized": "Ayn aqrab mustashfā?" },
+          "i_am_lost": { "text": "أنا تائه.", "romanized": "Anā tāʾih." }
+        }
+      },
+      {
+        "name": "French",
+        "iso": "fr",
+        "phrases": {
+          "help": { "text": "À l'aide !" },
+          "call_police": { "text": "Appelez la police, s'il vous plaît." },
+          "call_ambulance": { "text": "Appelez une ambulance, s'il vous plaît." },
+          "i_need_doctor": { "text": "J'ai besoin d'un médecin." },
+          "where_hospital": { "text": "Où est l'hôpital le plus proche ?" },
+          "i_am_lost": { "text": "Je suis perdu(e)." }
+        }
+      }
+    ]
+  },
+
+  "kenya": {
+    "languages": [
+      {
+        "name": "Swahili",
+        "iso": "sw",
+        "phrases": {
+          "help": { "text": "Msaada!" },
+          "call_police": { "text": "Tafadhali piga simu polisi." },
+          "call_ambulance": { "text": "Tafadhali piga simu ambulensi." },
+          "i_need_doctor": { "text": "Nahitaji daktari." },
+          "where_hospital": { "text": "Hospitali ya karibu iko wapi?" },
+          "i_am_lost": { "text": "Nimepotea." }
+        }
+      },
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "australia": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "new zealand": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "bahamas": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "jamaica": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "dominican republic": {
+    "languages": [
+      {
+        "name": "Spanish",
+        "iso": "es",
+        "phrases": {
+          "help": { "text": "¡Ayuda!" },
+          "call_police": { "text": "Por favor, llame a la policía." },
+          "call_ambulance": { "text": "Por favor, llame a una ambulancia." },
+          "i_need_doctor": { "text": "Necesito un médico." },
+          "where_hospital": { "text": "¿Dónde está el hospital más cercano?" },
+          "i_am_lost": { "text": "Estoy perdido(a)." }
+        }
+      }
+    ]
+  },
+
+  "puerto rico": {
+    "languages": [
+      {
+        "name": "Spanish",
+        "iso": "es",
+        "phrases": {
+          "help": { "text": "¡Ayuda!" },
+          "call_police": { "text": "Por favor, llame a la policía." },
+          "call_ambulance": { "text": "Por favor, llame a una ambulancia." },
+          "i_need_doctor": { "text": "Necesito un médico." },
+          "where_hospital": { "text": "¿Dónde está el hospital más cercano?" },
+          "i_am_lost": { "text": "Estoy perdido(a)." }
+        }
+      },
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "barbados": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "saint lucia": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "grenada": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "aruba": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "curaçao": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "saint kitts and nevis": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "sint maarten": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  },
+
+  "british virgin islands": {
+    "languages": [
+      {
+        "name": "English",
+        "iso": "en",
+        "phrases": {
+          "help": { "text": "Help!" },
+          "call_police": { "text": "Please call the police." },
+          "call_ambulance": { "text": "Please call an ambulance." },
+          "i_need_doctor": { "text": "I need a doctor." },
+          "where_hospital": { "text": "Where is the nearest hospital?" },
+          "i_am_lost": { "text": "I am lost." }
+        }
+      }
+    ]
+  }
+}
