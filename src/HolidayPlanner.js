@@ -58,6 +58,7 @@ import TravelStoryModal from "./TravelStoryModal";
 import BudgetTrackerModal from "./BudgetTrackerModal";
 import { buildSkyscannerFlightsUrl } from "./utils/skyscanner";
 import SkyscannerCTA from "./components/SkyscannerCTA";
+import SkyscannerTopAd from "./components/SkyscannerTopAd";
 
 
    
@@ -2338,15 +2339,23 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 </header>
 
 <div>
+{/* This is Default AdSlot
     <div className="bg-white border-b border-slate-200">
-  <div className="max-w-7xl mx-auto px-4 py-3">
-    <AdSlot
-      id="ad-top-banner"
-      label="Top banner (970×90 / 728×90)"
-      className="h-[90px]"
-    />
-  </div>
-</div>
+      <div className="max-w-7xl mx-auto px-4 py-3">
+        <AdSlot
+          id="ad-top-banner"
+          label="Top banner (970×90 / 728×90)"
+          className="h-[90px]"
+        />
+      </div>
+    </div>*/}
+  {/* SkyScanner Top Ad */}
+    <div className="bg-white border-b border-slate-200">
+      <div className="max-w-7xl mx-auto px-4 py-3">
+        <SkyscannerTopAd className="h-[90px]" />
+      </div>
+    </div>
+
 
 <div className=""> {/* use "max-w-[1440px] mx-auto px-4 py-8" to squeeze layout */}
   <div className="grid grid-cols-1 xl:grid-cols-[260px_minmax(0,1fr)_260px] gap-6">
