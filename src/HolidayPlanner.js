@@ -175,6 +175,9 @@ const [fixMyDayOpen, setFixMyDayOpen] = useState(false);
   const pdfRef = useRef(null);
   const [exportingPdf, setExportingPdf] = useState(false);
   const weatherAbortRef = useRef(null);
+  const utilityReqIdRef = useRef(0);
+const utilityAbortRef = useRef(null);
+
 const [attractionsSource, setAttractionsSource] = useState(null);
 const [attractionsMap, setAttractionsMap] = useState({});
 const _attractionImageCache = new Map(); 
@@ -349,66 +352,55 @@ async function getCoordsForPlace(placeName, selectedDest) {
 }
 
 // Overpass: fetch nearest amenity (hospital/pharmacy)
-async function fetchNearestAmenity({ originLat, originLon, type, radius = 50000 }) {
+async function fetchNearestAmenity({ originLat, originLon, type, signal }) {
   const tag = type === "hospital" ? 'amenity="hospital"' : 'amenity="pharmacy"';
+  const radii = [6000, 12000, 25000]; // faster first hit
 
-  const query = `
-[out:json][timeout:20];
+  for (const radius of radii) {
+    const query = `
+[out:json][timeout:18];
 (
   node[${tag}](around:${radius},${originLat},${originLon});
   way[${tag}](around:${radius},${originLat},${originLon});
   relation[${tag}](around:${radius},${originLat},${originLon});
 );
-out center 30;
+out center 25;
 `;
 
-  const res = await fetch("https://overpass-api.de/api/interpreter", {
-    method: "POST",
-    headers: { "Content-Type": "text/plain" },
-    body: query,
-  });
+    const res = await fetch("https://overpass-api.de/api/interpreter", {
+      method: "POST",
+      headers: { "Content-Type": "text/plain" },
+      body: query,
+      signal,
+    });
 
-  if (!res.ok) return null;
+    if (!res.ok) continue;
+    const data = await res.json();
+    const els = data?.elements || [];
+    if (!els.length) continue;
 
-  const data = await res.json();
-  const els = data?.elements || [];
-  if (!els.length) return null;
+    const best = els
+      .map((el) => {
+        const lat = el.lat ?? el.center?.lat;
+        const lon = el.lon ?? el.center?.lon;
+        if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+        return {
+          name: el.tags?.name || (type === "hospital" ? "Hospital" : "Pharmacy"),
+          lat,
+          lon,
+          approxKm: haversineKm(originLat, originLon, lat, lon),
+        };
+      })
+      .filter(Boolean)
+      .sort((a, b) => a.approxKm - b.approxKm)[0];
 
-  const normalized = els
-    .map((el) => {
-      const lat = el.lat ?? el.center?.lat;
-      const lon = el.lon ?? el.center?.lon;
-      if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+    if (best) return best;
+  }
 
-      const name =
-        el.tags?.name || (type === "hospital" ? "Hospital" : "Pharmacy");
-
-      const addr = [
-        el.tags?.["addr:housenumber"],
-        el.tags?.["addr:street"],
-        el.tags?.["addr:city"],
-        el.tags?.["addr:postcode"],
-      ]
-        .filter(Boolean)
-        .join(" ");
-
-      const approxKm = haversineKm(originLat, originLon, lat, lon);
-
-      return {
-        name,
-        lat,
-        lon,
-        address: addr || "",
-        phone: el.tags?.phone || el.tags?.["contact:phone"] || "",
-        website: el.tags?.website || el.tags?.["contact:website"] || "",
-        approxKm,
-      };
-    })
-    .filter(Boolean)
-    .sort((a, b) => a.approxKm - b.approxKm);
-
-  return normalized[0] || null;
+  return null;
 }
+
+
 
 function openGoogleMapsDrivingDirections({ originLat, originLon, destLat, destLon }) {
   const url =
@@ -562,60 +554,83 @@ const [utilityModalData, setUtilityModalData] = useState(null);
 const openNearestUtility = async (placeName, type) => {
   if (!placeName || !type) return;
 
-  const cacheKey = `${String(placeName).toLowerCase()}::${type}`;
+  // 1) Cancel any in-flight request
+  if (utilityAbortRef.current) utilityAbortRef.current.abort();
+  const controller = new AbortController();
+  utilityAbortRef.current = controller;
 
+  // 2) Increment request id (prevents stale responses from updating UI)
+  const reqId = ++utilityReqIdRef.current;
+
+  const cacheKey = `${String(placeName).trim().toLowerCase()}::${type}`;
+
+  // 3) OPEN modal immediately and CLEAR old result (fixes “previous attraction shown”)
   setUtilityModalOpen(true);
   setUtilityModalLoading(true);
-  setUtilityModalData({ placeName, type, result: null, error: null });
+  setUtilityModalData({
+    placeName,
+    type,
+    originLat: null,
+    originLon: null,
+    coordSource: null,
+    result: null,
+    error: null,
+    // Immediate “Maps fallback” is per attraction (never stale)
+    mapsSearchUrl:
+      type === "pharmacy"
+        ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`pharmacy near ${placeName}`)}`
+        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`hospital near ${placeName}`)}`,
+  });
 
-  try {
-    // cache hit
-    if (_nearestCache.has(cacheKey)) {
-      setUtilityModalData(_nearestCache.get(cacheKey));
-      setUtilityModalLoading(false);
-      return;
-    }
-
-    const coords = await getCoordsForPlace(placeName, selectedDest);
-    if (!coords) {
-      setUtilityModalData({
-        placeName,
-        type,
-        result: null,
-        error: "Unable to locate this place on the map.",
-      });
-      setUtilityModalLoading(false);
-      return;
-    }
-
-    // show origin coords in modal for directions
-    setUtilityModalData({
+  // 4) If you want caching, only use it AFTER clearing UI (still correct)
+  if (_nearestCache.has(cacheKey)) {
+    const cached = _nearestCache.get(cacheKey);
+    // stale guard
+    if (reqId !== utilityReqIdRef.current) return;
+    setUtilityModalData((prev) => ({
+      ...prev,
+      ...cached,
       placeName,
       type,
+    }));
+    setUtilityModalLoading(false);
+    return;
+  }
+
+  try {
+    // 5) Get coords (with fallback), support abort + stale guard
+    const coords = await getCoordsForPlace(placeName, selectedDest);
+    if (controller.signal.aborted || reqId !== utilityReqIdRef.current) return;
+
+    if (!coords) {
+      setUtilityModalData((prev) => ({
+        ...prev,
+        error: null, // don't show scary error
+      }));
+      setUtilityModalLoading(false);
+      return;
+    }
+
+    // Store origin for directions + keep mapsSearchUrl correct
+    setUtilityModalData((prev) => ({
+      ...prev,
       originLat: coords.lat,
       originLon: coords.lon,
       coordSource: coords.source,
-      result: null,
-      error: null,
-    });
+    }));
 
+    // 6) Fetch nearest amenity (Overpass) — allow abort
     const nearest = await fetchNearestAmenity({
       originLat: coords.lat,
       originLon: coords.lon,
       type,
-      radius: 50000,
+      signal: controller.signal, // add this support below
     });
 
+    if (controller.signal.aborted || reqId !== utilityReqIdRef.current) return;
+
     if (!nearest) {
-      setUtilityModalData({
-        placeName,
-        type,
-        originLat: coords.lat,
-        originLon: coords.lon,
-        coordSource: coords.source,
-        result: null,
-        error: `No nearby ${type} found.`,
-      });
+      // Don’t say “not found”. Keep Maps fallback only.
       setUtilityModalLoading(false);
       return;
     }
@@ -628,21 +643,23 @@ const openNearestUtility = async (placeName, type) => {
       coordSource: coords.source,
       result: nearest,
       error: null,
+      mapsSearchUrl: null,
     };
 
     _nearestCache.set(cacheKey, payload);
+
     setUtilityModalData(payload);
   } catch (e) {
-    setUtilityModalData({
-      placeName,
-      type,
-      result: null,
-      error: "Failed to load nearby services. Please try again.",
-    });
+    if (e?.name === "AbortError") return;
+    if (reqId !== utilityReqIdRef.current) return;
+
+    // Don’t show failure to travelers; keep Maps fallback visible
+    setUtilityModalData((prev) => ({ ...prev, error: null }));
   } finally {
-    setUtilityModalLoading(false);
+    if (reqId === utilityReqIdRef.current) setUtilityModalLoading(false);
   }
 };
+
 
 const fetchPlaceDetails = async (placeName) => {
   if (!placeName) return;
@@ -3516,7 +3533,7 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 		</div>
 
 
-		    <div className="absolute bottom-0 left-0 right-0 p-4">
+		    <div className="absolute bottom-0 left-0 right-0 p-3">
         <div className="flex items-center justify-between gap-3">
 		      <div className="text-white font-bold text-lg leading-snug drop-shadow">
 		        <button
@@ -3543,24 +3560,28 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 		      <div className="text-white/85 text-xs mt-1 flex items-center gap-1">
               Best for {day.condition === 'rainy' ? 'indoors nearby' : 'exploring'}
           </div>
+          <div className="space-y-2">
+            <div className="rounded-2xl border border-gray-200 overflow-hidden bg-white shadow-sm hover:shadow-lg transition-shadow">
+    </div>
           <div className="flex items-center gap-3 justify-start">
     <button
       type="button"
       onClick={(e) => { e.stopPropagation(); openNearestUtility(day.morning, "hospital"); }}
-      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-red-300 text-red-600 text-xs font-extrabold hover:bg-red-50 shadow-sm"
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white text-xs font-extrabold hover:text-white text-xs font-semibold border border-white"
     >
-      🏥 Hospital
+      🏥
     </button>
 
     <button
       type="button"
       onClick={(e) => { e.stopPropagation(); openNearestUtility(day.morning, "pharmacy"); }}
-      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-emerald-300 text-emerald-700 text-xs font-extrabold hover:bg-emerald-50 shadow-sm"
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white text-xs font-extrabold hover:text-white text-xs font-semibold border border-white"
     >
-      💊 Pharmacy
+      💊
     </button>
   </div>
 		    </div>
+        </div>
 		  </div>
 		</div>
 
@@ -3650,7 +3671,7 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
       />
     </div>
 
-    <div className="absolute bottom-0 left-0 right-0 z-20 p-4">
+    <div className="absolute bottom-0 left-0 right-0 z-20 p-3">
       <div className="text-white font-bold text-lg leading-snug drop-shadow">
         <button
           type="button"
@@ -3670,27 +3691,25 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
         Great for {day.tempMax >= 24 ? "late strolls" : "cozy spots"}
       </div>
       <div className="space-y-2">
-  {/* Evening tile (your existing tile div) */}
   <div className="rounded-2xl border border-gray-200 overflow-hidden bg-white shadow-sm hover:shadow-lg transition-shadow">
-    {/* ... YOUR EXISTING EVENING TILE CONTENT ... */}
-  </div>
+    </div>
 
   {/* Buttons BELOW tile (LEFT aligned) */}
   <div className="flex items-center gap-3 justify-start">
     <button
       type="button"
       onClick={(e) => { e.stopPropagation(); openNearestUtility(day.evening, "hospital"); }}
-      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-red-300 text-red-600 text-xs font-extrabold hover:bg-red-50 shadow-sm"
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white text-xs font-extrabold hover:text-white hover:text-white text-xs font-semibold border border-white"
     >
-      🏥 Hospital
+      🏥
     </button>
 
     <button
       type="button"
       onClick={(e) => { e.stopPropagation(); openNearestUtility(day.evening, "pharmacy"); }}
-      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-emerald-300 text-emerald-700 text-xs font-extrabold hover:bg-emerald-50 shadow-sm"
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white text-xs font-extrabold hover:text-white hover:text-white text-xs font-semibold border border-white"
     >
-      💊 Pharmacy
+      💊
     </button>
   </div>
 </div>

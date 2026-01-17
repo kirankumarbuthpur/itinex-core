@@ -5,6 +5,7 @@ export default function UtilityFinderModal({ open, onClose, data, loading }) {
   const type = data?.type || "";
   const placeName = data?.placeName || "";
   const err = data?.error || null;
+  const mapsSearchUrl = data?.mapsSearchUrl || null;
 
   const originLat = data?.originLat;
   const originLon = data?.originLon;
@@ -82,27 +83,35 @@ const openGoogleMapsDrivingDirections = ({ originLat, originLon, destLat, destLo
               </div>
 
               <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (
-                      Number.isFinite(originLat) &&
-                      Number.isFinite(originLon) &&
-                      Number.isFinite(result.lat) &&
-                      Number.isFinite(result.lon)
-                    ) {
+                {result?.isFallbackSearch ? (
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const q = encodeURIComponent(result.searchQuery || "");
+                      window.open(`https://www.google.com/maps/search/?api=1&query=${q}`, "_blank", "noopener,noreferrer");
+                    }}
+                    className="px-4 py-2 rounded-xl bg-slate-900 text-white font-extrabold text-sm hover:bg-slate-800"
+                  >
+                    Open nearby results in Maps
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
                       openGoogleMapsDrivingDirections({
                         originLat,
                         originLon,
                         destLat: result.lat,
                         destLon: result.lon,
                       });
-                    }
-                  }}
-                  className="px-4 py-2 rounded-xl bg-slate-900 text-white font-extrabold text-sm hover:bg-slate-800"
-                >
-                  Open driving route
-                </button>
+                    }}
+                    className="px-4 py-2 rounded-xl bg-slate-900 text-white font-extrabold text-sm hover:bg-slate-800"
+                  >
+                    Open driving route
+                  </button>
+                )}
+
 
                 {result.address ? (
                   <button
@@ -128,6 +137,40 @@ const openGoogleMapsDrivingDirections = ({ originLat, originLon, destLat, destLo
           ) : (
             <div className="text-sm text-slate-600">No result found.</div>
           )}
+
+          {loading && mapsSearchUrl ? (
+            <div className="space-y-3">
+              <div className="text-sm text-slate-600">
+                Finding the closest option… (you can open live results now)
+              </div>
+
+              <a
+                href={mapsSearchUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-slate-900 text-white font-extrabold text-sm hover:bg-slate-800"
+              >
+                Open nearby results in Maps
+              </a>
+            </div>
+          ) : null}
+
+          {!loading && !result && mapsSearchUrl ? (
+            <div className="space-y-3">
+              <div className="text-sm text-slate-600">
+                Here are the best live results near this attraction:
+              </div>
+
+              <a
+                href={mapsSearchUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-slate-900 text-white font-extrabold text-sm hover:bg-slate-800"
+              >
+                Open nearby results in Maps
+              </a>
+            </div>
+          ) : null}
         </div>
       </div>
     </div>
