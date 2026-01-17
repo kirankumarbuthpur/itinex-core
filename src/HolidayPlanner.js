@@ -58,6 +58,8 @@ import FixMyDay from "./FixMyDay";
 import TravelStoryModal from "./TravelStoryModal";
 import BudgetTrackerModal from "./BudgetTrackerModal";
 import EmergencyHubModal from "./EmergencyHubModal";
+import UtilityFinderModal from "./UtilityFinderModal";
+
 
 import { buildSkyscannerFlightsUrl } from "./utils/skyscanner";
 import SkyscannerCTA from "./components/SkyscannerCTA";
@@ -228,6 +230,195 @@ const [mapWeatherById, setMapWeatherById] = useState({});
 const [loadingMapWeather, setLoadingMapWeather] = useState(false);
 
 const [savedTrips, setSavedTrips] = useState([]);
+
+// -------------------- Utility Finder helpers --------------------
+const _coordsCache = new Map();       // placeName -> { lat, lon, source }
+const _nearestCache = new Map();      // `${placeName}::${type}` -> result
+
+const safeFixed2 = (v) => {
+  const n = Number(v);
+  return Number.isFinite(n) ? n.toFixed(2) : null;
+};
+
+const haversineKm = (aLat, aLon, bLat, bLon) => {
+  const toRad = (x) => (x * Math.PI) / 180;
+  const R = 6371;
+  const dLat = toRad(bLat - aLat);
+  const dLon = toRad(bLon - aLon);
+  const lat1 = toRad(aLat);
+  const lat2 = toRad(bLat);
+  const x =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(x));
+};
+
+// 1) Try Wikipedia summary coords
+async function wikiSummaryCoords(placeName) {
+  const res = await fetch(
+    `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(placeName)}`
+  );
+  if (!res.ok) return null;
+  const data = await res.json();
+  const lat = data?.coordinates?.lat;
+  const lon = data?.coordinates?.lon;
+  if (Number.isFinite(lat) && Number.isFinite(lon)) return { lat, lon, source: "wikipedia" };
+  return null;
+}
+
+// 2) Wikipedia search -> best title -> summary coords
+async function wikiSearchCoords(placeName, countryHint = "") {
+  const q = `${placeName} ${countryHint}`.trim();
+  const sRes = await fetch(
+    `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(
+      q
+    )}&format=json&origin=*`
+  );
+  if (!sRes.ok) return null;
+  const sData = await sRes.json();
+  const bestTitle = sData?.query?.search?.[0]?.title;
+  if (!bestTitle) return null;
+  const coords = await wikiSummaryCoords(bestTitle);
+  return coords ? { ...coords, source: "wikipedia_search" } : null;
+}
+
+// 3) Nominatim geocode (OSM)
+async function nominatimCoords(placeName, countryHint = "") {
+  const q = `${placeName}${countryHint ? `, ${countryHint}` : ""}`;
+  const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${encodeURIComponent(
+    q
+  )}`;
+
+  const res = await fetch(url, {
+    headers: { Accept: "application/json" },
+  });
+  if (!res.ok) return null;
+
+  const data = await res.json();
+  const hit = data?.[0];
+  const lat = hit?.lat ? Number(hit.lat) : null;
+  const lon = hit?.lon ? Number(hit.lon) : null;
+  if (Number.isFinite(lat) && Number.isFinite(lon)) return { lat, lon, source: "nominatim" };
+  return null;
+}
+
+// Main: get coords with fallbacks + caching
+async function getCoordsForPlace(placeName, selectedDest) {
+  const key = String(placeName || "").trim().toLowerCase();
+  if (!key) return null;
+
+  if (_coordsCache.has(key)) return _coordsCache.get(key);
+
+  const countryHint = selectedDest?.country || "";
+
+  // A) Wiki summary
+  try {
+    const a = await wikiSummaryCoords(placeName);
+    if (a) {
+      _coordsCache.set(key, a);
+      return a;
+    }
+  } catch {}
+
+  // B) Wiki search
+  try {
+    const b = await wikiSearchCoords(placeName, countryHint);
+    if (b) {
+      _coordsCache.set(key, b);
+      return b;
+    }
+  } catch {}
+
+  // C) Nominatim
+  try {
+    const c = await nominatimCoords(placeName, countryHint);
+    if (c) {
+      _coordsCache.set(key, c);
+      return c;
+    }
+  } catch {}
+
+  // D) Destination fallback
+  if (Number.isFinite(selectedDest?.lat) && Number.isFinite(selectedDest?.lon)) {
+    const d = { lat: selectedDest.lat, lon: selectedDest.lon, source: "destination_fallback" };
+    _coordsCache.set(key, d);
+    return d;
+  }
+
+  return null;
+}
+
+// Overpass: fetch nearest amenity (hospital/pharmacy)
+async function fetchNearestAmenity({ originLat, originLon, type, radius = 50000 }) {
+  const tag = type === "hospital" ? 'amenity="hospital"' : 'amenity="pharmacy"';
+
+  const query = `
+[out:json][timeout:20];
+(
+  node[${tag}](around:${radius},${originLat},${originLon});
+  way[${tag}](around:${radius},${originLat},${originLon});
+  relation[${tag}](around:${radius},${originLat},${originLon});
+);
+out center 30;
+`;
+
+  const res = await fetch("https://overpass-api.de/api/interpreter", {
+    method: "POST",
+    headers: { "Content-Type": "text/plain" },
+    body: query,
+  });
+
+  if (!res.ok) return null;
+
+  const data = await res.json();
+  const els = data?.elements || [];
+  if (!els.length) return null;
+
+  const normalized = els
+    .map((el) => {
+      const lat = el.lat ?? el.center?.lat;
+      const lon = el.lon ?? el.center?.lon;
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+
+      const name =
+        el.tags?.name || (type === "hospital" ? "Hospital" : "Pharmacy");
+
+      const addr = [
+        el.tags?.["addr:housenumber"],
+        el.tags?.["addr:street"],
+        el.tags?.["addr:city"],
+        el.tags?.["addr:postcode"],
+      ]
+        .filter(Boolean)
+        .join(" ");
+
+      const approxKm = haversineKm(originLat, originLon, lat, lon);
+
+      return {
+        name,
+        lat,
+        lon,
+        address: addr || "",
+        phone: el.tags?.phone || el.tags?.["contact:phone"] || "",
+        website: el.tags?.website || el.tags?.["contact:website"] || "",
+        approxKm,
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.approxKm - b.approxKm);
+
+  return normalized[0] || null;
+}
+
+function openGoogleMapsDrivingDirections({ originLat, originLon, destLat, destLon }) {
+  const url =
+    `https://www.google.com/maps/dir/?api=1` +
+    `&origin=${originLat},${originLon}` +
+    `&destination=${destLat},${destLon}` +
+    `&travelmode=driving`;
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
 const SAVED_TRIPS_KEY = "itinex:savedTrips";
 const destKey = (dest) => {
   // prefer stable explicit id if you have it
@@ -364,6 +555,95 @@ const [placeModalOpen, setPlaceModalOpen] = useState(false);
 const [activePlace, setActivePlace] = useState(null);
 const [placeDetails, setPlaceDetails] = useState(null);
 const [placeLoading, setPlaceLoading] = useState(false);
+const [utilityModalOpen, setUtilityModalOpen] = useState(false);
+const [utilityModalLoading, setUtilityModalLoading] = useState(false);
+const [utilityModalData, setUtilityModalData] = useState(null);
+
+const openNearestUtility = async (placeName, type) => {
+  if (!placeName || !type) return;
+
+  const cacheKey = `${String(placeName).toLowerCase()}::${type}`;
+
+  setUtilityModalOpen(true);
+  setUtilityModalLoading(true);
+  setUtilityModalData({ placeName, type, result: null, error: null });
+
+  try {
+    // cache hit
+    if (_nearestCache.has(cacheKey)) {
+      setUtilityModalData(_nearestCache.get(cacheKey));
+      setUtilityModalLoading(false);
+      return;
+    }
+
+    const coords = await getCoordsForPlace(placeName, selectedDest);
+    if (!coords) {
+      setUtilityModalData({
+        placeName,
+        type,
+        result: null,
+        error: "Unable to locate this place on the map.",
+      });
+      setUtilityModalLoading(false);
+      return;
+    }
+
+    // show origin coords in modal for directions
+    setUtilityModalData({
+      placeName,
+      type,
+      originLat: coords.lat,
+      originLon: coords.lon,
+      coordSource: coords.source,
+      result: null,
+      error: null,
+    });
+
+    const nearest = await fetchNearestAmenity({
+      originLat: coords.lat,
+      originLon: coords.lon,
+      type,
+      radius: 50000,
+    });
+
+    if (!nearest) {
+      setUtilityModalData({
+        placeName,
+        type,
+        originLat: coords.lat,
+        originLon: coords.lon,
+        coordSource: coords.source,
+        result: null,
+        error: `No nearby ${type} found.`,
+      });
+      setUtilityModalLoading(false);
+      return;
+    }
+
+    const payload = {
+      placeName,
+      type,
+      originLat: coords.lat,
+      originLon: coords.lon,
+      coordSource: coords.source,
+      result: nearest,
+      error: null,
+    };
+
+    _nearestCache.set(cacheKey, payload);
+    setUtilityModalData(payload);
+  } catch (e) {
+    setUtilityModalData({
+      placeName,
+      type,
+      result: null,
+      error: "Failed to load nearby services. Please try again.",
+    });
+  } finally {
+    setUtilityModalLoading(false);
+  }
+};
+
 const fetchPlaceDetails = async (placeName) => {
   if (!placeName) return;
 
@@ -543,7 +823,7 @@ useEffect(() => {
       if (todo.length === 0) return;
 
       // Limit concurrency to avoid hammering API
-      const limit = 6;
+      const limit = 20;
       let idx = 0;
 
       const worker = async () => {
@@ -3019,6 +3299,13 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
             </div>
 
             <div className="bg-white rounded-2xl shadow-xl p-6">
+            <UtilityFinderModal
+              open={utilityModalOpen}
+              onClose={() => setUtilityModalOpen(false)}
+              data={utilityModalData}
+              loading={utilityModalLoading}
+            />
+
             {budgetOpen && (
               <div className="mt-6" id="budget-section">
               <BudgetTrackerModal
@@ -3256,6 +3543,23 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 		      <div className="text-white/85 text-xs mt-1 flex items-center gap-1">
               Best for {day.condition === 'rainy' ? 'indoors nearby' : 'exploring'}
           </div>
+          <div className="flex items-center gap-3 justify-start">
+    <button
+      type="button"
+      onClick={(e) => { e.stopPropagation(); openNearestUtility(day.morning, "hospital"); }}
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-red-300 text-red-600 text-xs font-extrabold hover:bg-red-50 shadow-sm"
+    >
+      🏥 Hospital
+    </button>
+
+    <button
+      type="button"
+      onClick={(e) => { e.stopPropagation(); openNearestUtility(day.morning, "pharmacy"); }}
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-emerald-300 text-emerald-700 text-xs font-extrabold hover:bg-emerald-50 shadow-sm"
+    >
+      💊 Pharmacy
+    </button>
+  </div>
 		    </div>
 		  </div>
 		</div>
@@ -3365,6 +3669,32 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
       <div className="text-white/85 text-xs mt-1 flex items-center gap-1">
         Great for {day.tempMax >= 24 ? "late strolls" : "cozy spots"}
       </div>
+      <div className="space-y-2">
+  {/* Evening tile (your existing tile div) */}
+  <div className="rounded-2xl border border-gray-200 overflow-hidden bg-white shadow-sm hover:shadow-lg transition-shadow">
+    {/* ... YOUR EXISTING EVENING TILE CONTENT ... */}
+  </div>
+
+  {/* Buttons BELOW tile (LEFT aligned) */}
+  <div className="flex items-center gap-3 justify-start">
+    <button
+      type="button"
+      onClick={(e) => { e.stopPropagation(); openNearestUtility(day.evening, "hospital"); }}
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-red-300 text-red-600 text-xs font-extrabold hover:bg-red-50 shadow-sm"
+    >
+      🏥 Hospital
+    </button>
+
+    <button
+      type="button"
+      onClick={(e) => { e.stopPropagation(); openNearestUtility(day.evening, "pharmacy"); }}
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-emerald-300 text-emerald-700 text-xs font-extrabold hover:bg-emerald-50 shadow-sm"
+    >
+      💊 Pharmacy
+    </button>
+  </div>
+</div>
+
     </div>
 
   </div>
