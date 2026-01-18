@@ -59,6 +59,7 @@ import TravelStoryModal from "./TravelStoryModal";
 import BudgetTrackerModal from "./BudgetTrackerModal";
 import EmergencyHubModal from "./EmergencyHubModal";
 import UtilityFinderModal from "./UtilityFinderModal";
+import MicroExperiencesModal from "./MicroExperiencesModal";
 
 
 import { buildSkyscannerFlightsUrl } from "./utils/skyscanner";
@@ -717,6 +718,55 @@ const openGoogleMapsDirections = (placeName) => {
   window.open(url, "_blank", "noopener,noreferrer");
 };
 
+// --- Micro-Experiences ---
+const [microOpen, setMicroOpen] = useState(false);
+
+// extrasByDayKey: { [isoDateOrDayKey]: MicroExperience[] }
+const [microExtrasByDay, setMicroExtrasByDay] = useState({});
+
+const MICRO_KEY = (tripId) => `itinex:micro:${tripId}`;
+
+function loadMicro(tripId) {
+  try {
+    const raw = localStorage.getItem(MICRO_KEY(tripId));
+    const parsed = raw ? JSON.parse(raw) : {};
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+const handleAttachMicro = (dayObj, exp) => {
+  const author = commentName || "Anonymous";
+  const when = `Day ${dayObj?.day}${dayObj?.date ? ` • ${dayObj.date}` : ""}`;
+  const kindLabel = exp?.kind === "guide" ? "Guide" : "Event";
+  const venue = exp?.venue ? ` @ ${exp.venue}` : "";
+  const url = exp?.url ? `\n${exp.url}` : "";
+
+  const text =
+    `➕ Added ${kindLabel}: ${exp.title}${venue}\n` +
+    `${when}${url}`;
+
+  addCommentViaSingleton(author, text, setComments);
+};
+
+function persistMicro(tripId, next) {
+  localStorage.setItem(MICRO_KEY(tripId), JSON.stringify(next));
+}
+
+useEffect(() => {
+  if (step !== "itinerary" || !selectedDest) return;
+  const tripId = getTripIdForBudget(); // you already have this helper
+  setMicroExtrasByDay(loadMicro(tripId));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [step, roomId, selectedDest?.name]);
+
+useEffect(() => {
+  if (step !== "itinerary" || !selectedDest) return;
+  const tripId = getTripIdForBudget();
+  persistMicro(tripId, microExtrasByDay);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [microExtrasByDay, step, roomId, selectedDest?.name]);
 
 
 function loadSavedTrips() {
@@ -3323,6 +3373,14 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
               loading={utilityModalLoading}
             />
 
+            <MicroExperiencesModal
+              open={microOpen}
+              onClose={() => setMicroOpen(false)}
+              selectedDest={selectedDest}
+              itinerary={itinerary}
+            />
+
+
             {budgetOpen && (
               <div className="mt-6" id="budget-section">
               <BudgetTrackerModal
@@ -3737,6 +3795,19 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
                 <div className="text-sm text-gray-600 inline-flex items-center gap-2">
                   <Users className="w-4 h-4" /> {presenceCount} online
                 </div>
+                {/* ✅ New Micro Experiences button */}
+                  <button
+                    type="button"
+                    className="
+    inline
+    px-2 py-1 border-itinex-primary
+    text-itinex-primary font-semibold
+    bg-white
+    transition-all duration-150"
+                    onClick={() => setMicroOpen(true)} 
+                    title="Open Micro Experiences"
+                  >Discover Experiences in {selectedDest.name}
+                  </button>   
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
@@ -3793,19 +3864,59 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 				/>
 
 
-                {itinerary.map((d) => (
-                  <div key={d.day} style={{ marginBottom: 22, borderTop: '1px solid #eee', paddingTop: 16 }}>
-                    <div style={{ fontSize: 16, fontWeight: 800, marginBottom: 8 }}>
-                      Day {d.day}: {d.date} — {d.condition}, {d.temp}°C
-                    </div>
-                    <div style={{ marginBottom: 6 }}>
-                      <strong>Morning:</strong> {d.morning}
-                    </div>
-                    <div>
-                      <strong>Evening:</strong> {d.evening}
-                    </div>
-                  </div>
-                ))}
+         {itinerary.map((d) => {
+  const dayKey = d.isoDate || d.date || `day-${d.day}`;
+const extras = microExtrasByDay?.[dayKey] || [];
+
+  return (
+    <React.Fragment key={d.day}>
+      <div style={{ marginBottom: 22, borderTop: "1px solid #eee", paddingTop: 16 }}>
+        <div style={{ fontSize: 16, fontWeight: 800, marginBottom: 8 }}>
+          Day {d.day}: {d.date} — {d.condition}, {d.temp}°C
+        </div>
+
+        <div style={{ marginBottom: 6 }}>
+          <strong>Morning:</strong> {d.morning}
+        </div>
+
+        <div>
+          <strong>Evening:</strong> {d.evening}
+        </div>
+
+        {extras.length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-2">
+            {extras.slice(0, 4).map((x) => (
+              <a
+                key={x.id || x.title}
+                href={x.url || "#"}
+                target={x.url ? "_blank" : undefined}
+                rel={x.url ? "noreferrer" : undefined}
+                onClick={(e) => {
+                  if (!x.url) e.preventDefault();
+                }}
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                title={x.short || x.title}
+              >
+                {x.kind === "guide" ? "🧑‍🏫" : "🎟️"} {x.title}
+              </a>
+            ))}
+
+            {extras.length > 4 && (
+              <button
+                type="button"
+                onClick={() => setMicroOpen(true)}
+                className="px-3 py-1.5 rounded-full border bg-white text-xs font-semibold hover:bg-slate-50"
+              >
+                +{extras.length - 4} more
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    </React.Fragment>
+  );
+})}
+
               </div>
             </div>
           </div>

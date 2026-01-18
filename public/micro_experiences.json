@@ -1,0 +1,1830 @@
+{
+  "tokyo-japan": {
+    "events": [
+      {
+        "id": "cur-tokyo-japan-evt-1",
+        "title": "Seasonal street-food pop-up",
+        "short": "Rotating vendors, quick bites, and local favourites.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Tokyo+street+food+market+pop+up"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-tokyo-japan-gde-1",
+        "title": "90-minute neighbourhood walk (local guide)",
+        "short": "A short guided walk through iconic streets + hidden lanes.",
+        "durationMins": 90,
+        "venue": "Central Tokyo",
+        "url": "https://www.google.com/search?q=Tokyo+90+minute+walking+tour"
+      }
+    ]
+  },
+  "kyoto-japan": {
+    "events": [
+      {
+        "id": "cur-kyoto-japan-evt-1",
+        "title": "Evening craft & snack market",
+        "short": "Small stalls with handmade items and grab-and-go snacks.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Kyoto+night+market+pop+up"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-kyoto-japan-gde-1",
+        "title": "1–2 hour temple-district stroll (local guide)",
+        "short": "Short walk through historic streets with photo stops.",
+        "durationMins": 90,
+        "venue": "Gion / Higashiyama area",
+        "url": "https://www.google.com/search?q=Kyoto+walking+tour+1+hour"
+      }
+    ]
+  },
+  "osaka-japan": {
+    "events": [
+      {
+        "id": "cur-osaka-japan-evt-1",
+        "title": "Night bites pop-up",
+        "short": "Casual street eats + dessert stops—perfect for evenings.",
+        "venue": "Downtown",
+        "url": "https://www.google.com/search?q=Osaka+street+food+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-osaka-japan-gde-1",
+        "title": "90-minute food-street sampler (local guide)",
+        "short": "A short guided route focusing on must-try local snacks.",
+        "durationMins": 90,
+        "venue": "Namba / Dotonbori area",
+        "url": "https://www.google.com/search?q=Osaka+food+walking+tour+90+minutes"
+      }
+    ]
+  },
+
+  "seoul-south-korea": {
+    "events": [
+      {
+        "id": "cur-seoul-south-korea-evt-1",
+        "title": "Weekend market pop-up",
+        "short": "Street snacks, small makers, and seasonal stalls.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Seoul+weekend+market+pop+up"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-seoul-south-korea-gde-1",
+        "title": "1–2 hour neighbourhood highlights walk",
+        "short": "Short guided walk with viewpoints + local corners.",
+        "durationMins": 90,
+        "venue": "Central Seoul",
+        "url": "https://www.google.com/search?q=Seoul+walking+tour+1+hour"
+      }
+    ]
+  },
+  "busan-south-korea": {
+    "events": [
+      {
+        "id": "cur-busan-south-korea-evt-1",
+        "title": "Seaside night market pop-up",
+        "short": "Quick seafood bites + stalls near the waterfront.",
+        "venue": "Waterfront",
+        "url": "https://www.google.com/search?q=Busan+night+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-busan-south-korea-gde-1",
+        "title": "90-minute coastal walk (local guide)",
+        "short": "Short guided stroll with viewpoints and photo stops.",
+        "durationMins": 90,
+        "venue": "Coastal area",
+        "url": "https://www.google.com/search?q=Busan+walking+tour+90+minutes"
+      }
+    ]
+  },
+
+  "beijing-china": {
+    "events": [
+      {
+        "id": "cur-beijing-china-evt-1",
+        "title": "Food street pop-up",
+        "short": "Street snacks + casual evening atmosphere.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Beijing+food+street+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-beijing-china-gde-1",
+        "title": "1–2 hour hutong-style walk (local guide)",
+        "short": "Short guided stroll focusing on historic lanes + courtyards.",
+        "durationMins": 90,
+        "venue": "Old town area",
+        "url": "https://www.google.com/search?q=Beijing+hutong+walking+tour+1+hour"
+      }
+    ]
+  },
+  "shanghai-china": {
+    "events": [
+      {
+        "id": "cur-shanghai-china-evt-1",
+        "title": "Riverside pop-up market",
+        "short": "Seasonal stalls, snacks, and photo-friendly spots.",
+        "venue": "Riverside / downtown",
+        "url": "https://www.google.com/search?q=Shanghai+pop+up+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-shanghai-china-gde-1",
+        "title": "90-minute architecture walk (local guide)",
+        "short": "A short guided route highlighting historic and modern streets.",
+        "durationMins": 90,
+        "venue": "Central Shanghai",
+        "url": "https://www.google.com/search?q=Shanghai+architecture+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "hong-kong-hong-kong": {
+    "events": [
+      {
+        "id": "cur-hong-kong-hong-kong-evt-1",
+        "title": "Evening street-stall crawl",
+        "short": "Quick bites, desserts, and lively street scenes.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Hong+Kong+street+food+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-hong-kong-hong-kong-gde-1",
+        "title": "1–2 hour viewpoint + street walk (local guide)",
+        "short": "Short guided walk mixing iconic views with local streets.",
+        "durationMins": 90,
+        "venue": "Central / harbour area",
+        "url": "https://www.google.com/search?q=Hong+Kong+walking+tour+1+hour"
+      }
+    ]
+  },
+
+  "bangkok-thailand": {
+    "events": [
+      {
+        "id": "cur-bangkok-thailand-evt-1",
+        "title": "Night market bites pop-up",
+        "short": "Street food, fresh juices, and casual shopping stalls.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Bangkok+night+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-bangkok-thailand-gde-1",
+        "title": "90-minute street-food sampler (local guide)",
+        "short": "Short guided route to try classic snacks and sweets.",
+        "durationMins": 90,
+        "venue": "Central Bangkok",
+        "url": "https://www.google.com/search?q=Bangkok+street+food+tour+90+minutes"
+      }
+    ]
+  },
+  "chiang-mai-thailand": {
+    "events": [
+      {
+        "id": "cur-chiang-mai-thailand-evt-1",
+        "title": "Weekend makers market",
+        "short": "Handmade goods + snack stalls in a relaxed vibe.",
+        "venue": "Old City / center",
+        "url": "https://www.google.com/search?q=Chiang+Mai+weekend+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-chiang-mai-thailand-gde-1",
+        "title": "1–2 hour old-town walk (local guide)",
+        "short": "Short guided stroll with temples, lanes, and cafés.",
+        "durationMins": 90,
+        "venue": "Old City",
+        "url": "https://www.google.com/search?q=Chiang+Mai+walking+tour+1+hour"
+      }
+    ]
+  },
+  "phuket-thailand": {
+    "events": [
+      {
+        "id": "cur-phuket-thailand-evt-1",
+        "title": "Sunset night-market pop-up",
+        "short": "Food stalls and small finds—perfect pre/post beach.",
+        "venue": "Near the waterfront",
+        "url": "https://www.google.com/search?q=Phuket+night+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-phuket-thailand-gde-1",
+        "title": "90-minute old-town highlights (local guide)",
+        "short": "Short guided walk with photo stops and local stories.",
+        "durationMins": 90,
+        "venue": "Phuket Old Town",
+        "url": "https://www.google.com/search?q=Phuket+Old+Town+walking+tour+90+minutes"
+      }
+    ]
+  },
+
+  "singapore-singapore": {
+    "events": [
+      {
+        "id": "cur-singapore-singapore-evt-1",
+        "title": "Hawker-centre tasting pop-up",
+        "short": "Pick-and-mix bites across classic stalls.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Singapore+hawker+centre+food+tour"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-singapore-singapore-gde-1",
+        "title": "1–2 hour neighbourhood walk (local guide)",
+        "short": "Short guided walk through heritage streets and local stops.",
+        "durationMins": 90,
+        "venue": "Central Singapore",
+        "url": "https://www.google.com/search?q=Singapore+walking+tour+1+hour"
+      }
+    ]
+  },
+  "kuala-lumpur-malaysia": {
+    "events": [
+      {
+        "id": "cur-kuala-lumpur-malaysia-evt-1",
+        "title": "Night food-street pop-up",
+        "short": "Street snacks + dessert stops with local atmosphere.",
+        "venue": "Downtown",
+        "url": "https://www.google.com/search?q=Kuala+Lumpur+night+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-kuala-lumpur-malaysia-gde-1",
+        "title": "90-minute city highlights walk (local guide)",
+        "short": "A short guided walk linking landmarks and local streets.",
+        "durationMins": 90,
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Kuala+Lumpur+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "bali-denpasar-indonesia": {
+    "events": [
+      {
+        "id": "cur-bali-denpasar-indonesia-evt-1",
+        "title": "Evening food & craft market",
+        "short": "Local snacks, small crafts, relaxed island vibe.",
+        "venue": "City / nearby",
+        "url": "https://www.google.com/search?q=Bali+night+market+Denpasar"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-bali-denpasar-indonesia-gde-1",
+        "title": "1–2 hour cultural walk (local guide)",
+        "short": "Short guided stroll through local neighbourhoods and temples.",
+        "durationMins": 90,
+        "venue": "Denpasar / nearby",
+        "url": "https://www.google.com/search?q=Denpasar+walking+tour+1+hour"
+      }
+    ]
+  },
+  "hanoi-vietnam": {
+    "events": [
+      {
+        "id": "cur-hanoi-vietnam-evt-1",
+        "title": "Old-quarter evening market pop-up",
+        "short": "Street snacks + lively lanes for a quick night outing.",
+        "venue": "Old Quarter",
+        "url": "https://www.google.com/search?q=Hanoi+Old+Quarter+night+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-hanoi-vietnam-gde-1",
+        "title": "90-minute old-quarter walk (local guide)",
+        "short": "Short guided route through iconic streets and hidden alleys.",
+        "durationMins": 90,
+        "venue": "Old Quarter",
+        "url": "https://www.google.com/search?q=Hanoi+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "ho-chi-minh-city-vietnam": {
+    "events": [
+      {
+        "id": "cur-ho-chi-minh-city-vietnam-evt-1",
+        "title": "Street-food pop-up crawl",
+        "short": "Quick bites and dessert stops in a bustling night vibe.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Ho+Chi+Minh+City+street+food+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-ho-chi-minh-city-vietnam-gde-1",
+        "title": "1–2 hour city highlights walk (local guide)",
+        "short": "Short guided route mixing landmarks and local streets.",
+        "durationMins": 90,
+        "venue": "District 1 / center",
+        "url": "https://www.google.com/search?q=Ho+Chi+Minh+City+walking+tour+1+hour"
+      }
+    ]
+  },
+
+  "dubai-uae": {
+    "events": [
+      {
+        "id": "cur-dubai-uae-evt-1",
+        "title": "Evening market pop-up",
+        "short": "Food stalls, small vendors, and a night-out atmosphere.",
+        "venue": "Downtown / waterfront",
+        "url": "https://www.google.com/search?q=Dubai+pop+up+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-dubai-uae-gde-1",
+        "title": "90-minute old-district walk (local guide)",
+        "short": "Short guided stroll focused on heritage streets and local shops.",
+        "durationMins": 90,
+        "venue": "Old Dubai / creek area",
+        "url": "https://www.google.com/search?q=Dubai+old+district+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "abu-dhabi-uae": {
+    "events": [
+      {
+        "id": "cur-abu-dhabi-uae-evt-1",
+        "title": "Weekend waterfront pop-up",
+        "short": "Seasonal stalls and quick bites by the water.",
+        "venue": "Waterfront",
+        "url": "https://www.google.com/search?q=Abu+Dhabi+pop+up+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-abu-dhabi-uae-gde-1",
+        "title": "1–2 hour city highlights walk (local guide)",
+        "short": "Short guided walk linking major sights and local corners.",
+        "durationMins": 90,
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Abu+Dhabi+walking+tour+1+hour"
+      }
+    ]
+  },
+  "doha-qatar": {
+    "events": [
+      {
+        "id": "cur-doha-qatar-evt-1",
+        "title": "Evening souq-style pop-up",
+        "short": "Small stalls and snacks—good for a quick wander.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Doha+market+pop+up"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-doha-qatar-gde-1",
+        "title": "90-minute waterfront walk (local guide)",
+        "short": "Short guided stroll with skyline views and photo stops.",
+        "durationMins": 90,
+        "venue": "Corniche / waterfront",
+        "url": "https://www.google.com/search?q=Doha+corniche+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "muscat-oman": {
+    "events": [
+      {
+        "id": "cur-muscat-oman-evt-1",
+        "title": "Evening market browsing",
+        "short": "Local stalls and snacks—great as a light micro-plan.",
+        "venue": "City / market area",
+        "url": "https://www.google.com/search?q=Muscat+market+souq"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-muscat-oman-gde-1",
+        "title": "1–2 hour heritage walk (local guide)",
+        "short": "Short guided route through scenic streets and viewpoints.",
+        "durationMins": 90,
+        "venue": "Old town / waterfront",
+        "url": "https://www.google.com/search?q=Muscat+walking+tour+1+hour"
+      }
+    ]
+  },
+
+  "istanbul-turkey": {
+    "events": [
+      {
+        "id": "cur-istanbul-turkey-evt-1",
+        "title": "Evening bazaar-style pop-up",
+        "short": "Snacks + stalls—ideal for a quick night wander.",
+        "venue": "Historic center",
+        "url": "https://www.google.com/search?q=Istanbul+night+market+bazaar"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-istanbul-turkey-gde-1",
+        "title": "90-minute old-city walk (local guide)",
+        "short": "Short guided stroll through historic streets and viewpoints.",
+        "durationMins": 90,
+        "venue": "Sultanahmet / old city",
+        "url": "https://www.google.com/search?q=Istanbul+old+city+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "cappadocia-goreme-turkey": {
+    "events": [
+      {
+        "id": "cur-cappadocia-goreme-turkey-evt-1",
+        "title": "Sunset viewpoint gathering",
+        "short": "A simple micro-experience: sunset + local tea/snacks nearby.",
+        "venue": "Viewpoint area",
+        "url": "https://www.google.com/search?q=Goreme+sunset+viewpoint"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-cappadocia-goreme-turkey-gde-1",
+        "title": "1–2 hour valley walk (local guide)",
+        "short": "Short guided hike-style walk with photo stops.",
+        "durationMins": 90,
+        "venue": "Goreme / valleys",
+        "url": "https://www.google.com/search?q=Goreme+guided+walk+1+hour"
+      }
+    ]
+  },
+
+  "london-united-kingdom": {
+    "events": [
+      {
+        "id": "cur-london-united-kingdom-evt-1",
+        "title": "Weekend street-food pop-up",
+        "short": "Rotating vendors + live music vibe.",
+        "venue": "South Bank",
+        "url": "https://www.google.com/search?q=South+Bank+street+food+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-london-united-kingdom-gde-1",
+        "title": "1-hour hidden alleys walk",
+        "short": "Short guided walk through lesser-known lanes.",
+        "durationMins": 60,
+        "venue": "Central London",
+        "url": "https://www.google.com/search?q=1+hour+walking+tour+London"
+      }
+    ]
+  },
+  "edinburgh-united-kingdom": {
+    "events": [
+      {
+        "id": "cur-edinburgh-united-kingdom-evt-1",
+        "title": "Evening food & crafts market",
+        "short": "Local makers + warm snacks—great for a short outing.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Edinburgh+market+street+food"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-edinburgh-united-kingdom-gde-1",
+        "title": "90-minute Old Town walk (local guide)",
+        "short": "Short guided route through closes, viewpoints, and stories.",
+        "durationMins": 90,
+        "venue": "Old Town",
+        "url": "https://www.google.com/search?q=Edinburgh+Old+Town+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "dublin-ireland": {
+    "events": [
+      {
+        "id": "cur-dublin-ireland-evt-1",
+        "title": "Weekend market pop-up",
+        "short": "Food stalls + small vendors for a quick browse.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Dublin+weekend+market+street+food"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-dublin-ireland-gde-1",
+        "title": "1–2 hour city highlights walk (local guide)",
+        "short": "Short guided stroll through key streets and local corners.",
+        "durationMins": 90,
+        "venue": "Central Dublin",
+        "url": "https://www.google.com/search?q=Dublin+walking+tour+1+hour"
+      }
+    ]
+  },
+
+  "paris-france": {
+    "events": [
+      {
+        "id": "cur-paris-france-evt-1",
+        "title": "Evening food market pop-up",
+        "short": "Quick bites and small vendors—perfect for a micro-plan.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Paris+food+market+pop+up"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-paris-france-gde-1",
+        "title": "90-minute neighbourhood walk (local guide)",
+        "short": "Short guided walk through classic streets + hidden corners.",
+        "durationMins": 90,
+        "venue": "Central Paris",
+        "url": "https://www.google.com/search?q=Paris+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "nice-france": {
+    "events": [
+      {
+        "id": "cur-nice-france-evt-1",
+        "title": "Sunset market browse",
+        "short": "A relaxed evening market stop near the waterfront.",
+        "venue": "Old town / waterfront",
+        "url": "https://www.google.com/search?q=Nice+France+market+old+town"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-nice-france-gde-1",
+        "title": "1–2 hour old-town walk (local guide)",
+        "short": "Short guided stroll through lanes, viewpoints, and cafés.",
+        "durationMins": 90,
+        "venue": "Vieux Nice",
+        "url": "https://www.google.com/search?q=Nice+old+town+walking+tour+1+hour"
+      }
+    ]
+  },
+  "lyon-france": {
+    "events": [
+      {
+        "id": "cur-lyon-france-evt-1",
+        "title": "Food-hall pop-up tasting",
+        "short": "Grab a few bites—easy to fit into any day.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Lyon+food+hall+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-lyon-france-gde-1",
+        "title": "90-minute old-town walk (local guide)",
+        "short": "Short guided route through historic streets and viewpoints.",
+        "durationMins": 90,
+        "venue": "Vieux Lyon",
+        "url": "https://www.google.com/search?q=Vieux+Lyon+walking+tour+90+minutes"
+      }
+    ]
+  },
+
+  "barcelona-spain": {
+    "events": [
+      {
+        "id": "cur-barcelona-spain-evt-1",
+        "title": "Tapas-style market pop-up",
+        "short": "Casual bites + a lively evening atmosphere.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Barcelona+food+market+tapas"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-barcelona-spain-gde-1",
+        "title": "1–2 hour neighbourhood walk (local guide)",
+        "short": "Short guided stroll through iconic streets and local corners.",
+        "durationMins": 90,
+        "venue": "Central Barcelona",
+        "url": "https://www.google.com/search?q=Barcelona+walking+tour+1+hour"
+      }
+    ]
+  },
+  "madrid-spain": {
+    "events": [
+      {
+        "id": "cur-madrid-spain-evt-1",
+        "title": "Evening street-food pop-up",
+        "short": "Quick bites + small vendors—easy add-on to any day.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Madrid+street+food+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-madrid-spain-gde-1",
+        "title": "90-minute city highlights walk (local guide)",
+        "short": "Short guided route across major squares and side streets.",
+        "durationMins": 90,
+        "venue": "Central Madrid",
+        "url": "https://www.google.com/search?q=Madrid+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "seville-spain": {
+    "events": [
+      {
+        "id": "cur-seville-spain-evt-1",
+        "title": "Evening market + snacks",
+        "short": "A short browse with local treats and small stalls.",
+        "venue": "Old town",
+        "url": "https://www.google.com/search?q=Seville+market+street+food"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-seville-spain-gde-1",
+        "title": "1–2 hour old-town walk (local guide)",
+        "short": "Short guided stroll focused on lanes, plazas, and viewpoints.",
+        "durationMins": 90,
+        "venue": "Historic center",
+        "url": "https://www.google.com/search?q=Seville+walking+tour+1+hour"
+      }
+    ]
+  },
+
+  "rome-italy": {
+    "events": [
+      {
+        "id": "cur-rome-italy-evt-1",
+        "title": "Evening food-market pop-up",
+        "short": "Quick bites and casual browsing—great for a short slot.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Rome+food+market+evening"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-rome-italy-gde-1",
+        "title": "90-minute historic streets walk (local guide)",
+        "short": "Short guided route through iconic streets and hidden corners.",
+        "durationMins": 90,
+        "venue": "Centro Storico",
+        "url": "https://www.google.com/search?q=Rome+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "venice-italy": {
+    "events": [
+      {
+        "id": "cur-venice-italy-evt-1",
+        "title": "Sunset canal-side pop-up",
+        "short": "A simple micro-experience: waterfront wander + snacks nearby.",
+        "venue": "Canal-side / center",
+        "url": "https://www.google.com/search?q=Venice+evening+market+events"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-venice-italy-gde-1",
+        "title": "1–2 hour canals & lanes walk (local guide)",
+        "short": "Short guided stroll through quieter lanes and viewpoints.",
+        "durationMins": 90,
+        "venue": "Central Venice",
+        "url": "https://www.google.com/search?q=Venice+walking+tour+1+hour"
+      }
+    ]
+  },
+  "florence-italy": {
+    "events": [
+      {
+        "id": "cur-florence-italy-evt-1",
+        "title": "Evening artisan market pop-up",
+        "short": "Handmade goods + light bites—easy add-on.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Florence+artisan+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-florence-italy-gde-1",
+        "title": "90-minute Renaissance streets walk (local guide)",
+        "short": "Short guided route with photo stops and local stories.",
+        "durationMins": 90,
+        "venue": "Historic center",
+        "url": "https://www.google.com/search?q=Florence+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "milan-italy": {
+    "events": [
+      {
+        "id": "cur-milan-italy-evt-1",
+        "title": "Design & bites pop-up",
+        "short": "Small vendors + quick snacks—great short activity.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Milan+pop+up+market+events"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-milan-italy-gde-1",
+        "title": "1–2 hour city highlights walk (local guide)",
+        "short": "Short guided stroll through major streets and local corners.",
+        "durationMins": 90,
+        "venue": "Central Milan",
+        "url": "https://www.google.com/search?q=Milan+walking+tour+1+hour"
+      }
+    ]
+  },
+
+  "amsterdam-netherlands": {
+    "events": [
+      {
+        "id": "cur-amsterdam-netherlands-evt-1",
+        "title": "Weekend market browse",
+        "short": "Food stalls + small vendors for a quick micro-slot.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Amsterdam+weekend+market+food"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-amsterdam-netherlands-gde-1",
+        "title": "90-minute canalside walk (local guide)",
+        "short": "Short guided stroll with viewpoints and photo stops.",
+        "durationMins": 90,
+        "venue": "Canal ring",
+        "url": "https://www.google.com/search?q=Amsterdam+canal+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "brussels-belgium": {
+    "events": [
+      {
+        "id": "cur-brussels-belgium-evt-1",
+        "title": "Chocolate & snacks pop-up",
+        "short": "A quick tasting-style market stop.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Brussels+food+market+events"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-brussels-belgium-gde-1",
+        "title": "1–2 hour old-town walk (local guide)",
+        "short": "Short guided route through main squares and side streets.",
+        "durationMins": 90,
+        "venue": "Central Brussels",
+        "url": "https://www.google.com/search?q=Brussels+walking+tour+1+hour"
+      }
+    ]
+  },
+
+  "berlin-germany": {
+    "events": [
+      {
+        "id": "cur-berlin-germany-evt-1",
+        "title": "Street-food market pop-up",
+        "short": "Rotating stalls, quick bites, and a casual evening vibe.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Berlin+street+food+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-berlin-germany-gde-1",
+        "title": "90-minute neighbourhood walk (local guide)",
+        "short": "Short guided route focused on local streets and history.",
+        "durationMins": 90,
+        "venue": "Central Berlin",
+        "url": "https://www.google.com/search?q=Berlin+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "munich-germany": {
+    "events": [
+      {
+        "id": "cur-munich-germany-evt-1",
+        "title": "Evening market & bites",
+        "short": "Quick snack stop with small vendors and seasonal stalls.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Munich+market+food+stalls"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-munich-germany-gde-1",
+        "title": "1–2 hour old-town walk (local guide)",
+        "short": "Short guided stroll through plazas and classic streets.",
+        "durationMins": 90,
+        "venue": "Altstadt",
+        "url": "https://www.google.com/search?q=Munich+old+town+walking+tour+1+hour"
+      }
+    ]
+  },
+
+  "zurich-switzerland": {
+    "events": [
+      {
+        "id": "cur-zurich-switzerland-evt-1",
+        "title": "Lakeside market pop-up",
+        "short": "A quick browse: snacks + small stalls near the water.",
+        "venue": "Lake area",
+        "url": "https://www.google.com/search?q=Zurich+market+events"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-zurich-switzerland-gde-1",
+        "title": "90-minute old-town stroll (local guide)",
+        "short": "Short guided route through lanes, viewpoints, and cafés.",
+        "durationMins": 90,
+        "venue": "Altstadt",
+        "url": "https://www.google.com/search?q=Zurich+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "geneva-switzerland": {
+    "events": [
+      {
+        "id": "cur-geneva-switzerland-evt-1",
+        "title": "Evening food-hall stop",
+        "short": "Quick bites and a relaxed market-style atmosphere.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Geneva+food+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-geneva-switzerland-gde-1",
+        "title": "1–2 hour lakeside walk (local guide)",
+        "short": "Short guided stroll with viewpoints and photo stops.",
+        "durationMins": 90,
+        "venue": "Lakefront",
+        "url": "https://www.google.com/search?q=Geneva+lake+walking+tour+1+hour"
+      }
+    ]
+  },
+
+  "vienna-austria": {
+    "events": [
+      {
+        "id": "cur-vienna-austria-evt-1",
+        "title": "Evening market pop-up",
+        "short": "Small vendors + snack stalls—easy to fit into any plan.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Vienna+market+street+food"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-vienna-austria-gde-1",
+        "title": "90-minute historic core walk (local guide)",
+        "short": "Short guided route through grand streets and hidden lanes.",
+        "durationMins": 90,
+        "venue": "Innere Stadt",
+        "url": "https://www.google.com/search?q=Vienna+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "prague-czechia": {
+    "events": [
+      {
+        "id": "cur-prague-czechia-evt-1",
+        "title": "Old-town evening market stop",
+        "short": "Snacks + small stalls in a quick, photogenic wander.",
+        "venue": "Old Town",
+        "url": "https://www.google.com/search?q=Prague+market+old+town"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-prague-czechia-gde-1",
+        "title": "1–2 hour old-town walk (local guide)",
+        "short": "Short guided stroll through lanes, viewpoints, and bridges.",
+        "durationMins": 90,
+        "venue": "Staré Město",
+        "url": "https://www.google.com/search?q=Prague+walking+tour+1+hour"
+      }
+    ]
+  },
+  "budapest-hungary": {
+    "events": [
+      {
+        "id": "cur-budapest-hungary-evt-1",
+        "title": "Evening market + snack stop",
+        "short": "Quick bites and casual browsing—good micro-slot.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Budapest+market+street+food"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-budapest-hungary-gde-1",
+        "title": "90-minute riverside walk (local guide)",
+        "short": "Short guided stroll with viewpoints and photo stops.",
+        "durationMins": 90,
+        "venue": "Danube area",
+        "url": "https://www.google.com/search?q=Budapest+Danube+walking+tour+90+minutes"
+      }
+    ]
+  },
+
+  "copenhagen-denmark": {
+    "events": [
+      {
+        "id": "cur-copenhagen-denmark-evt-1",
+        "title": "Food market pop-up",
+        "short": "Grab a few bites—easy to add to any day.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Copenhagen+food+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-copenhagen-denmark-gde-1",
+        "title": "1–2 hour canalside walk (local guide)",
+        "short": "Short guided stroll with scenic stops and local stories.",
+        "durationMins": 90,
+        "venue": "Harbour / center",
+        "url": "https://www.google.com/search?q=Copenhagen+walking+tour+1+hour"
+      }
+    ]
+  },
+  "stockholm-sweden": {
+    "events": [
+      {
+        "id": "cur-stockholm-sweden-evt-1",
+        "title": "Weekend market browse",
+        "short": "Snacks + small stalls—simple and flexible.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Stockholm+market+food"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-stockholm-sweden-gde-1",
+        "title": "90-minute old-town walk (local guide)",
+        "short": "Short guided stroll through historic lanes and viewpoints.",
+        "durationMins": 90,
+        "venue": "Gamla Stan",
+        "url": "https://www.google.com/search?q=Stockholm+Gamla+Stan+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "oslo-norway": {
+    "events": [
+      {
+        "id": "cur-oslo-norway-evt-1",
+        "title": "Evening food-hall stop",
+        "short": "Quick bites and a relaxed indoor market vibe.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Oslo+food+hall"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-oslo-norway-gde-1",
+        "title": "1–2 hour waterfront walk (local guide)",
+        "short": "Short guided stroll with viewpoints and photo stops.",
+        "durationMins": 90,
+        "venue": "Waterfront / center",
+        "url": "https://www.google.com/search?q=Oslo+walking+tour+1+hour"
+      }
+    ]
+  },
+  "helsinki-finland": {
+    "events": [
+      {
+        "id": "cur-helsinki-finland-evt-1",
+        "title": "Market hall tasting stop",
+        "short": "A quick micro-experience: local bites indoors.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Helsinki+market+hall"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-helsinki-finland-gde-1",
+        "title": "90-minute design-district walk (local guide)",
+        "short": "Short guided stroll with local streets and highlights.",
+        "durationMins": 90,
+        "venue": "Central Helsinki",
+        "url": "https://www.google.com/search?q=Helsinki+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "reykjavik-iceland": {
+    "events": [
+      {
+        "id": "cur-reykjavik-iceland-evt-1",
+        "title": "Evening food-hall warm-up",
+        "short": "Quick indoor bites—great before/after a stroll.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Reykjavik+food+hall"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-reykjavik-iceland-gde-1",
+        "title": "1–2 hour city walk (local guide)",
+        "short": "Short guided stroll with landmarks, murals, and viewpoints.",
+        "durationMins": 90,
+        "venue": "Central Reykjavik",
+        "url": "https://www.google.com/search?q=Reykjavik+walking+tour+1+hour"
+      }
+    ]
+  },
+
+  "new-york-usa": {
+    "events": [
+      {
+        "id": "cur-new-york-usa-evt-1",
+        "title": "Food-truck or market pop-up",
+        "short": "A flexible micro-slot: grab a bite and browse vendors.",
+        "venue": "Manhattan / city center",
+        "url": "https://www.google.com/search?q=New+York+food+market+pop+up"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-new-york-usa-gde-1",
+        "title": "90-minute neighbourhood walk (local guide)",
+        "short": "Short guided walk through iconic blocks + local corners.",
+        "durationMins": 90,
+        "venue": "Central NYC",
+        "url": "https://www.google.com/search?q=New+York+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "san-francisco-usa": {
+    "events": [
+      {
+        "id": "cur-san-francisco-usa-evt-1",
+        "title": "Ferry-building style market stop",
+        "short": "Quick bites and small vendors—perfect midday/evening.",
+        "venue": "Waterfront / downtown",
+        "url": "https://www.google.com/search?q=San+Francisco+food+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-san-francisco-usa-gde-1",
+        "title": "1–2 hour waterfront + hills walk (local guide)",
+        "short": "Short guided stroll with viewpoints and photo stops.",
+        "durationMins": 90,
+        "venue": "Waterfront / central",
+        "url": "https://www.google.com/search?q=San+Francisco+walking+tour+1+hour"
+      }
+    ]
+  },
+  "los-angeles-usa": {
+    "events": [
+      {
+        "id": "cur-los-angeles-usa-evt-1",
+        "title": "Weekend outdoor market pop-up",
+        "short": "Vendors, snacks, and a casual stroll-friendly vibe.",
+        "venue": "City center / popular districts",
+        "url": "https://www.google.com/search?q=Los+Angeles+outdoor+market+pop+up"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-los-angeles-usa-gde-1",
+        "title": "90-minute neighbourhood walk (local guide)",
+        "short": "Short guided route focused on local streets and highlights.",
+        "durationMins": 90,
+        "venue": "Central LA",
+        "url": "https://www.google.com/search?q=Los+Angeles+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "chicago-usa": {
+    "events": [
+      {
+        "id": "cur-chicago-usa-evt-1",
+        "title": "Food-hall / market pop-up",
+        "short": "Quick tasting stop—easy to fit into an itinerary slot.",
+        "venue": "Downtown",
+        "url": "https://www.google.com/search?q=Chicago+food+hall+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-chicago-usa-gde-1",
+        "title": "1–2 hour architecture walk (local guide)",
+        "short": "Short guided stroll focused on skyline and streetscapes.",
+        "durationMins": 90,
+        "venue": "Downtown / river area",
+        "url": "https://www.google.com/search?q=Chicago+architecture+walking+tour+1+hour"
+      }
+    ]
+  },
+  "miami-usa": {
+    "events": [
+      {
+        "id": "cur-miami-usa-evt-1",
+        "title": "Sunset market pop-up",
+        "short": "A quick browse with snacks—great before a beach stroll.",
+        "venue": "Beach / waterfront area",
+        "url": "https://www.google.com/search?q=Miami+night+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-miami-usa-gde-1",
+        "title": "90-minute art-district walk (local guide)",
+        "short": "Short guided stroll focused on murals and local streets.",
+        "durationMins": 90,
+        "venue": "Central Miami",
+        "url": "https://www.google.com/search?q=Miami+walking+tour+90+minutes"
+      }
+    ]
+  },
+
+  "vancouver-canada": {
+    "events": [
+      {
+        "id": "cur-vancouver-canada-evt-1",
+        "title": "Weekend market browse",
+        "short": "Quick snacks + small vendors—easy micro-slot.",
+        "venue": "City center / waterfront",
+        "url": "https://www.google.com/search?q=Vancouver+market+street+food"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-vancouver-canada-gde-1",
+        "title": "1–2 hour seawall walk (local guide)",
+        "short": "Short guided stroll with viewpoints and photo stops.",
+        "durationMins": 90,
+        "venue": "Waterfront",
+        "url": "https://www.google.com/search?q=Vancouver+seawall+walking+tour+1+hour"
+      }
+    ]
+  },
+  "toronto-canada": {
+    "events": [
+      {
+        "id": "cur-toronto-canada-evt-1",
+        "title": "Food market pop-up",
+        "short": "A flexible add-on: quick bites and casual browsing.",
+        "venue": "Downtown",
+        "url": "https://www.google.com/search?q=Toronto+food+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-toronto-canada-gde-1",
+        "title": "90-minute neighbourhood walk (local guide)",
+        "short": "Short guided route through iconic streets and local corners.",
+        "durationMins": 90,
+        "venue": "Central Toronto",
+        "url": "https://www.google.com/search?q=Toronto+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "montreal-canada": {
+    "events": [
+      {
+        "id": "cur-montreal-canada-evt-1",
+        "title": "Evening market + snacks",
+        "short": "Quick bites and a cosy browse—easy micro-experience.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Montreal+market+food"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-montreal-canada-gde-1",
+        "title": "1–2 hour old-town walk (local guide)",
+        "short": "Short guided stroll through historic streets and viewpoints.",
+        "durationMins": 90,
+        "venue": "Old Montreal",
+        "url": "https://www.google.com/search?q=Old+Montreal+walking+tour+1+hour"
+      }
+    ]
+  },
+
+  "mexico-city-mexico": {
+    "events": [
+      {
+        "id": "cur-mexico-city-mexico-evt-1",
+        "title": "Street-food market pop-up",
+        "short": "Quick bites and lively stalls—great for evenings.",
+        "venue": "City center",
+        "url": "https://www.google.com/search?q=Mexico+City+street+food+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-mexico-city-mexico-gde-1",
+        "title": "90-minute historic-center walk (local guide)",
+        "short": "Short guided stroll through plazas, streets, and local stops.",
+        "durationMins": 90,
+        "venue": "Centro Histórico",
+        "url": "https://www.google.com/search?q=Mexico+City+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "cancun-mexico": {
+    "events": [
+      {
+        "id": "cur-cancun-mexico-evt-1",
+        "title": "Sunset market pop-up",
+        "short": "A quick browse with snacks—easy pre-dinner micro-slot.",
+        "venue": "Hotel zone / center",
+        "url": "https://www.google.com/search?q=Cancun+night+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-cancun-mexico-gde-1",
+        "title": "1–2 hour waterfront stroll (local guide)",
+        "short": "Short guided walk focused on views and local stops.",
+        "durationMins": 90,
+        "venue": "Waterfront",
+        "url": "https://www.google.com/search?q=Cancun+walking+tour+1+hour"
+      }
+    ]
+  },
+
+  "rio-de-janeiro-brazil": {
+    "events": [
+      {
+        "id": "cur-rio-de-janeiro-brazil-evt-1",
+        "title": "Sunset beach-market pop-up",
+        "short": "Snacks + small vendors—perfect before a beach walk.",
+        "venue": "Beach / waterfront",
+        "url": "https://www.google.com/search?q=Rio+de+Janeiro+market+events"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-rio-de-janeiro-brazil-gde-1",
+        "title": "90-minute viewpoint walk (local guide)",
+        "short": "Short guided stroll with photo stops and local stories.",
+        "durationMins": 90,
+        "venue": "City / viewpoint area",
+        "url": "https://www.google.com/search?q=Rio+walking+tour+90+minutes"
+      }
+    ]
+  },
+  "sao-paulo-brazil": {
+    "events": [
+      {
+        "id": "cur-sao-evt-1",
+        "title": "Vila Madalena street food fair",
+        "short": "Weekend food stalls and live samba atmosphere.",
+        "venue": "Vila Madalena",
+        "url": "https://www.google.com/search?q=Vila+Madalena+street+food+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-sao-gde-1",
+        "title": "1-hour Paulista Avenue walking tour",
+        "short": "Urban culture walk along São Paulo’s main boulevard.",
+        "durationMins": 60,
+        "venue": "Paulista Avenue",
+        "url": "https://www.google.com/search?q=1+hour+walking+tour+Paulista+Avenue"
+      }
+    ]
+  },
+
+  "buenos-aires-argentina": {
+    "events": [
+      {
+        "id": "cur-bue-evt-1",
+        "title": "San Telmo antique market",
+        "short": "Street performers, crafts and tango music.",
+        "venue": "San Telmo",
+        "url": "https://www.google.com/search?q=San+Telmo+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-bue-gde-1",
+        "title": "1-hour tango culture walk",
+        "short": "Short introduction to tango history and landmarks.",
+        "durationMins": 60,
+        "venue": "San Telmo",
+        "url": "https://www.google.com/search?q=1+hour+tango+walking+tour+Buenos+Aires"
+      }
+    ]
+  },
+
+  "lima-peru": {
+    "events": [
+      {
+        "id": "cur-lim-evt-1",
+        "title": "Miraflores night food market",
+        "short": "Street snacks and dessert pop-ups.",
+        "venue": "Miraflores",
+        "url": "https://www.google.com/search?q=Miraflores+street+food+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-lim-gde-1",
+        "title": "Historic center highlights walk",
+        "short": "Quick guided walk through colonial Lima.",
+        "durationMins": 60,
+        "venue": "Plaza Mayor",
+        "url": "https://www.google.com/search?q=1+hour+historic+center+walking+tour+Lima"
+      }
+    ]
+  },
+
+  "cape-town-south-africa": {
+    "events": [
+      {
+        "id": "cur-cpt-evt-1",
+        "title": "V&A Waterfront food market",
+        "short": "Local seafood stalls and live performers.",
+        "venue": "V&A Waterfront",
+        "url": "https://www.google.com/search?q=V%26A+Waterfront+food+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-cpt-gde-1",
+        "title": "Bo-Kaap cultural walking tour",
+        "short": "Colorful streets and Cape Malay heritage.",
+        "durationMins": 60,
+        "venue": "Bo-Kaap",
+        "url": "https://www.google.com/search?q=Bo-Kaap+walking+tour"
+      }
+    ]
+  },
+
+  "marrakesh-morocco": {
+    "events": [
+      {
+        "id": "cur-rak-evt-1",
+        "title": "Jemaa el-Fnaa night market",
+        "short": "Food stalls, musicians and street performers.",
+        "venue": "Jemaa el-Fnaa",
+        "url": "https://www.google.com/search?q=Jemaa+el-Fnaa+night+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-rak-gde-1",
+        "title": "Medina souks walking tour",
+        "short": "Short guided shopping and history walk.",
+        "durationMins": 60,
+        "venue": "Marrakesh Medina",
+        "url": "https://www.google.com/search?q=Medina+souks+walking+tour+Marrakesh"
+      }
+    ]
+  },
+
+  "nairobi-kenya": {
+    "events": [
+      {
+        "id": "cur-nbo-evt-1",
+        "title": "Maasai Market pop-up",
+        "short": "Handmade crafts and local art stalls.",
+        "venue": "City Centre",
+        "url": "https://www.google.com/search?q=Maasai+Market+Nairobi"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-nbo-gde-1",
+        "title": "City highlights walking tour",
+        "short": "Short introduction to downtown Nairobi.",
+        "durationMins": 60,
+        "venue": "CBD",
+        "url": "https://www.google.com/search?q=1+hour+walking+tour+Nairobi"
+      }
+    ]
+  },
+
+  "sydney-australia": {
+    "events": [
+      {
+        "id": "cur-syd-evt-1",
+        "title": "Darling Harbour food festival",
+        "short": "Seasonal food stalls and live music.",
+        "venue": "Darling Harbour",
+        "url": "https://www.google.com/search?q=Darling+Harbour+food+festival"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-syd-gde-1",
+        "title": "Sydney Harbour foreshore walk",
+        "short": "Scenic harbor highlights walk.",
+        "durationMins": 60,
+        "venue": "Circular Quay",
+        "url": "https://www.google.com/search?q=Sydney+Harbour+walking+tour"
+      }
+    ]
+  },
+
+  "melbourne-australia": {
+    "events": [
+      {
+        "id": "cur-mel-evt-1",
+        "title": "Queen Victoria Market night market",
+        "short": "Food trucks and live entertainment.",
+        "venue": "Queen Victoria Market",
+        "url": "https://www.google.com/search?q=Queen+Victoria+Market+night+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-mel-gde-1",
+        "title": "Laneways street art walk",
+        "short": "Discover Melbourne’s graffiti culture.",
+        "durationMins": 60,
+        "venue": "CBD Laneways",
+        "url": "https://www.google.com/search?q=Melbourne+street+art+walking+tour"
+      }
+    ]
+  },
+
+  "auckland-new-zealand": {
+    "events": [
+      {
+        "id": "cur-akl-evt-1",
+        "title": "Auckland night market",
+        "short": "Street food and local crafts.",
+        "venue": "CBD",
+        "url": "https://www.google.com/search?q=Auckland+night+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-akl-gde-1",
+        "title": "Waterfront walking tour",
+        "short": "Harbor history and skyline views.",
+        "durationMins": 60,
+        "venue": "Viaduct Harbour",
+        "url": "https://www.google.com/search?q=Auckland+waterfront+walking+tour"
+      }
+    ]
+  },
+
+  "queenstown-new-zealand": {
+    "events": [
+      {
+        "id": "cur-zqn-evt-1",
+        "title": "Lakeside artisan market",
+        "short": "Craft stalls by Lake Wakatipu.",
+        "venue": "Queenstown Bay",
+        "url": "https://www.google.com/search?q=Queenstown+artisan+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-zqn-gde-1",
+        "title": "Scenic lakeside walk",
+        "short": "Relaxed guided lakeside stroll.",
+        "durationMins": 60,
+        "venue": "Lake Wakatipu",
+        "url": "https://www.google.com/search?q=Lake+Wakatipu+walking+tour"
+      }
+    ]
+  },
+
+  "nassau-bahamas": {
+    "events": [
+      {
+        "id": "cur-nas-evt-1",
+        "title": "Junkanoo beach festival",
+        "short": "Music, dancing and food stalls.",
+        "venue": "Junkanoo Beach",
+        "url": "https://www.google.com/search?q=Junkanoo+Beach+festival"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-nas-gde-1",
+        "title": "Colonial town walking tour",
+        "short": "Short historic highlights walk.",
+        "durationMins": 60,
+        "venue": "Downtown Nassau",
+        "url": "https://www.google.com/search?q=Downtown+Nassau+walking+tour"
+      }
+    ]
+  },
+
+  "paradise-island-bahamas": {
+    "events": [
+      {
+        "id": "cur-par-evt-1",
+        "title": "Atlantis marina evening market",
+        "short": "Souvenirs and live music.",
+        "venue": "Atlantis Marina Village",
+        "url": "https://www.google.com/search?q=Atlantis+Marina+Village+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-par-gde-1",
+        "title": "Resort area walking tour",
+        "short": "Relaxed resort highlights stroll.",
+        "durationMins": 60,
+        "venue": "Paradise Island",
+        "url": "https://www.google.com/search?q=Paradise+Island+walking+tour"
+      }
+    ]
+  },
+
+  "montego-bay-jamaica": {
+    "events": [
+      {
+        "id": "cur-mbj-evt-1",
+        "title": "Hip Strip night market",
+        "short": "Street food and reggae vibe.",
+        "venue": "Gloucester Avenue",
+        "url": "https://www.google.com/search?q=Hip+Strip+Montego+Bay+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-mbj-gde-1",
+        "title": "Beachfront walking tour",
+        "short": "Short coastal sightseeing walk.",
+        "durationMins": 60,
+        "venue": "Doctor’s Cave Beach",
+        "url": "https://www.google.com/search?q=Montego+Bay+beach+walking+tour"
+      }
+    ]
+  },
+
+  "negril-jamaica": {
+    "events": [
+      {
+        "id": "cur-neg-evt-1",
+        "title": "Seven Mile Beach sunset market",
+        "short": "Local crafts and food stalls.",
+        "venue": "Seven Mile Beach",
+        "url": "https://www.google.com/search?q=Seven+Mile+Beach+Negril+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-neg-gde-1",
+        "title": "Cliffs walking tour",
+        "short": "Scenic walk along West End cliffs.",
+        "durationMins": 60,
+        "venue": "West End Negril",
+        "url": "https://www.google.com/search?q=Negril+cliffs+walking+tour"
+      }
+    ]
+  },
+
+  "punta-cana-dominican-republic": {
+    "events": [
+      {
+        "id": "cur-puj-evt-1",
+        "title": "Bavaro beach market",
+        "short": "Souvenirs and local snacks.",
+        "venue": "Bavaro Beach",
+        "url": "https://www.google.com/search?q=Bavaro+Beach+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-puj-gde-1",
+        "title": "Resort walking tour",
+        "short": "Short beachside sightseeing walk.",
+        "durationMins": 60,
+        "venue": "Punta Cana Resort Area",
+        "url": "https://www.google.com/search?q=Punta+Cana+walking+tour"
+      }
+    ]
+  },
+
+  "santo-domingo-dominican-republic": {
+    "events": [
+      {
+        "id": "cur-sdq-evt-1",
+        "title": "Zona Colonial street festival",
+        "short": "Music, dance and food stalls.",
+        "venue": "Zona Colonial",
+        "url": "https://www.google.com/search?q=Zona+Colonial+street+festival"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-sdq-gde-1",
+        "title": "Historic district walking tour",
+        "short": "Colonial landmarks overview.",
+        "durationMins": 60,
+        "venue": "Zona Colonial",
+        "url": "https://www.google.com/search?q=Zona+Colonial+walking+tour"
+      }
+    ]
+  },
+
+  "san-juan-puerto-rico": {
+    "events": [
+      {
+        "id": "cur-sju-evt-1",
+        "title": "La Placita night market",
+        "short": "Street food and salsa music.",
+        "venue": "Santurce",
+        "url": "https://www.google.com/search?q=La+Placita+Santurce+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-sju-gde-1",
+        "title": "Old San Juan walking tour",
+        "short": "Historic forts and colorful streets.",
+        "durationMins": 60,
+        "venue": "Old San Juan",
+        "url": "https://www.google.com/search?q=Old+San+Juan+walking+tour"
+      }
+    ]
+  },
+
+  "bridgetown-barbados": {
+    "events": [
+      {
+        "id": "cur-bgi-evt-1",
+        "title": "Harbour Lights beach festival",
+        "short": "Local music and food stalls.",
+        "venue": "Carlisle Bay",
+        "url": "https://www.google.com/search?q=Carlisle+Bay+beach+festival"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-bgi-gde-1",
+        "title": "Historic Bridgetown walk",
+        "short": "UNESCO heritage highlights tour.",
+        "durationMins": 60,
+        "venue": "Downtown Bridgetown",
+        "url": "https://www.google.com/search?q=Historic+Bridgetown+walking+tour"
+      }
+    ]
+  },
+
+  "castries-saint-lucia": {
+    "events": [
+      {
+        "id": "cur-uvf-evt-1",
+        "title": "Castries craft market",
+        "short": "Souvenirs and local food stalls.",
+        "venue": "Castries Market",
+        "url": "https://www.google.com/search?q=Castries+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-uvf-gde-1",
+        "title": "Waterfront walking tour",
+        "short": "Harbor and town highlights.",
+        "durationMins": 60,
+        "venue": "Castries Waterfront",
+        "url": "https://www.google.com/search?q=Castries+waterfront+walking+tour"
+      }
+    ]
+  },
+
+  "st-georges-grenada": {
+    "events": [
+      {
+        "id": "cur-gnd-evt-1",
+        "title": "Harbor spice market",
+        "short": "Local nutmeg and spice vendors.",
+        "venue": "Carenage",
+        "url": "https://www.google.com/search?q=St+George's+Grenada+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-gnd-gde-1",
+        "title": "Town walking tour",
+        "short": "Colonial streets and harbor views.",
+        "durationMins": 60,
+        "venue": "St. George's",
+        "url": "https://www.google.com/search?q=St+George's+Grenada+walking+tour"
+      }
+    ]
+  },
+
+  "oranjestad-aruba": {
+    "events": [
+      {
+        "id": "cur-aua-evt-1",
+        "title": "Renaissance Marketplace night market",
+        "short": "Shopping and live music.",
+        "venue": "Renaissance Marketplace",
+        "url": "https://www.google.com/search?q=Renaissance+Marketplace+Aruba"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-aua-gde-1",
+        "title": "Downtown walking tour",
+        "short": "Colorful colonial architecture walk.",
+        "durationMins": 60,
+        "venue": "Oranjestad",
+        "url": "https://www.google.com/search?q=Oranjestad+walking+tour"
+      }
+    ]
+  },
+
+  "willemstad-curacao": {
+    "events": [
+      {
+        "id": "cur-cur-evt-1",
+        "title": "Punda night market",
+        "short": "Food stalls and local music.",
+        "venue": "Punda District",
+        "url": "https://www.google.com/search?q=Punda+night+market+Curacao"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-cur-gde-1",
+        "title": "Historic waterfront walk",
+        "short": "UNESCO old town highlights.",
+        "durationMins": 60,
+        "venue": "Handelskade",
+        "url": "https://www.google.com/search?q=Willemstad+walking+tour"
+      }
+    ]
+  },
+
+  "basseterre-saint-kitts-and-nevis": {
+    "events": [
+      {
+        "id": "cur-skb-evt-1",
+        "title": "Port Zante craft market",
+        "short": "Local souvenirs and snacks.",
+        "venue": "Port Zante",
+        "url": "https://www.google.com/search?q=Port+Zante+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-skb-gde-1",
+        "title": "Town walking tour",
+        "short": "Historic Basseterre highlights.",
+        "durationMins": 60,
+        "venue": "Basseterre",
+        "url": "https://www.google.com/search?q=Basseterre+walking+tour"
+      }
+    ]
+  },
+
+  "philipsburg-sint-maarten": {
+    "events": [
+      {
+        "id": "cur-sxm-evt-1",
+        "title": "Boardwalk beach market",
+        "short": "Souvenirs and local snacks.",
+        "venue": "Great Bay Boardwalk",
+        "url": "https://www.google.com/search?q=Great+Bay+Boardwalk+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-sxm-gde-1",
+        "title": "Town highlights walking tour",
+        "short": "Dutch Caribbean architecture walk.",
+        "durationMins": 60,
+        "venue": "Philipsburg",
+        "url": "https://www.google.com/search?q=Philipsburg+walking+tour"
+      }
+    ]
+  },
+
+  "road-town-british-virgin-islands": {
+    "events": [
+      {
+        "id": "cur-eis-evt-1",
+        "title": "Craft Alive Village market",
+        "short": "Handmade crafts and island food.",
+        "venue": "Road Town",
+        "url": "https://www.google.com/search?q=Craft+Alive+Village+Tortola"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-eis-gde-1",
+        "title": "Harbor walking tour",
+        "short": "Short seaside sightseeing walk.",
+        "durationMins": 60,
+        "venue": "Road Town Harbour",
+        "url": "https://www.google.com/search?q=Road+Town+Tortola+walking+tour"
+      }
+    ]
+  }
+}
