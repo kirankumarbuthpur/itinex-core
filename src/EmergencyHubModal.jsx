@@ -41,56 +41,75 @@ function FieldRow({ label, value }) {
   );
 }
 
+// ✅ Keep existing functionality, but also support the newer schema:
+// { text, local_language, pronounce } as well as { text, romanized }
+function normalizePhraseFields(obj) {
+  const o = obj || {};
+  return {
+    // English always comes from `text` for the English language pack
+    text: o.text || "",
+    // Local may be stored in `local_language` or `text` (older pack)
+    local: o.local_language || o.text || "",
+    // Pronunciation may be stored in `pronounce` or `romanized`
+    pronounce: o.pronounce || o.romanized || "",
+  };
+}
+
 export default function EmergencyHubModal({
   open,
   onClose,
   selectedDest,
 
-  // pass your emergency numbers object:
   // emergencyNumbers["france"] => { primary, police, fire, ... }
   emergencyNumbers = {},
 
-  // pass phrases object (loaded from emergency_phrases.json):
-  // emergencyPhrases["france"] => { languages: [...] }
+  // emergencyPhrases["france"] =>
+  // { languages: [{ iso:"en", name:"English", phrases: { help:{text, romanized?} } }, ...], notes? }
+  // Also supports phrases where values are: { text, local_language, pronounce }
   emergencyPhrases = {},
 }) {
   const [copiedMsg, setCopiedMsg] = useState("");
   const [langIso, setLangIso] = useState("");
 
-  const countryKey = useMemo(
-    () => normKey(selectedDest?.country),
-    [selectedDest?.country]
-  );
-
+  const countryKey = normKey(selectedDest?.country);
   const numbers = emergencyNumbers?.[countryKey] || null;
+
+  // ✅ use the prop
   const phrasesPack = emergencyPhrases?.[countryKey] || null;
 
   const languages = useMemo(() => {
     const arr = phrasesPack?.languages || [];
-    return Array.isArray(arr) ? arr : [];
+    return Array.isArray(arr) ? arr.filter(Boolean) : [];
   }, [phrasesPack]);
 
-  // pick default language
+  // pick default language: local first, else English, else first
   useEffect(() => {
     if (!open) return;
     if (!languages.length) {
       setLangIso("");
       return;
     }
-    // prefer English if present, else first
+    const local = languages.find((l) => l?.iso && l.iso !== "en");
     const en = languages.find((l) => l?.iso === "en");
-    setLangIso(en?.iso || languages[0]?.iso || "");
+    setLangIso(local?.iso || en?.iso || languages[0]?.iso || "");
   }, [open, languages]);
+
+  const englishLang = useMemo(
+    () => languages.find((l) => l?.iso === "en") || null,
+    [languages]
+  );
 
   const activeLang = useMemo(() => {
     if (!langIso) return null;
     return languages.find((l) => l?.iso === langIso) || null;
   }, [languages, langIso]);
 
-  const phraseEntries = useMemo(() => {
-    const p = activeLang?.phrases || {};
-    return Object.entries(p);
-  }, [activeLang]);
+  // Union of phrase keys (so English + Local appear together)
+  const phraseKeys = useMemo(() => {
+    const enKeys = englishLang?.phrases ? Object.keys(englishLang.phrases) : [];
+    const locKeys = activeLang?.phrases ? Object.keys(activeLang.phrases) : [];
+    return Array.from(new Set([...enKeys, ...locKeys]));
+  }, [englishLang, activeLang]);
 
   useEffect(() => {
     if (!copiedMsg) return;
@@ -100,9 +119,11 @@ export default function EmergencyHubModal({
 
   if (!open) return null;
 
-  const title = selectedDest?.name
-    ? `Emergency & Utility Hub — ${selectedDest.name}`
-    : "Emergency & Utility Hub";
+  // ✅ Fix Babel "missing semicolon" edge case: use escaped em dash + explicit semicolon style
+  const title =
+    selectedDest?.name
+      ? `Emergency & Utility Hub \u2014 ${selectedDest.name}`
+      : "Emergency & Utility Hub";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -112,7 +133,7 @@ export default function EmergencyHubModal({
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 text-white text-xs font-semibold">
               <AlertTriangle className="w-4 h-4" />
-              Emergency & Utility Hub
+              Emergency &amp; Utility Hub
             </div>
             <h3 className="text-2xl font-extrabold text-slate-900 mt-3">
               {title}
@@ -145,7 +166,7 @@ export default function EmergencyHubModal({
 
             {!numbers ? (
               <div className="text-sm text-slate-600">
-                No emergency numbers found for{" "}
+                Emergency numbers coming soon for{" "}
                 <span className="font-semibold">{selectedDest?.country}</span>.
               </div>
             ) : (
@@ -190,55 +211,52 @@ export default function EmergencyHubModal({
               <div className="flex items-center gap-2">
                 <Languages className="w-5 h-5 text-slate-700" />
                 <h4 className="text-lg font-extrabold text-slate-900">
-                  Emergency phrases
+                  Emergency phrases{" "}
+                  {activeLang?.name
+                    ? `(English + ${activeLang.name})`
+                    : "(English + Local)"}
                 </h4>
-              </div>
-
-              {/* Language dropdown */}
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-500">Language</span>
-                <select
-                  value={langIso}
-                  onChange={(e) => setLangIso(e.target.value)}
-                  className="px-3 py-2 rounded-xl border bg-white text-sm font-semibold"
-                  disabled={!languages.length}
-                >
-                  {!languages.length ? (
-                    <option value="">No phrases available</option>
-                  ) : (
-                    languages.map((l) => (
-                      <option key={l.iso} value={l.iso}>
-                        {l.name}
-                      </option>
-                    ))
-                  )}
-                </select>
               </div>
             </div>
 
             {!languages.length ? (
               <div className="mt-4 text-sm text-slate-600">
-                No phrase pack found for{" "}
+                Local phrases coming soon for{" "}
                 <span className="font-semibold">{selectedDest?.country}</span>.
               </div>
             ) : (
               <div className="mt-4 space-y-3">
-                {phraseEntries.map(([key, obj]) => {
-                  const native = obj?.text || "";
-                  const romanized = obj?.romanized || "";
+                {phraseKeys.map((key) => {
                   const labelMap = {
                     help: "Help",
                     call_police: "Call the police",
                     call_ambulance: "Call an ambulance",
                     i_need_doctor: "I need a doctor",
                     where_hospital: "Where is the hospital?",
-                    i_am_lost: "I am lost"
+                    i_am_lost: "I am lost",
                   };
                   const label = labelMap[key] || key;
 
-                  const copyText = romanized
-                    ? `${native} (${romanized})`
-                    : native;
+                  const enRaw = englishLang?.phrases?.[key] || null;
+                  const locRaw = activeLang?.phrases?.[key] || null;
+
+                  const en = normalizePhraseFields(enRaw);
+                  const loc = normalizePhraseFields(locRaw);
+
+                  // English should show from english pack `text`
+                  const englishText = en.text || "";
+
+                  // Local should prefer `local_language` if present, else `text`
+                  const native = loc.local || "";
+
+                  // Pronunciation should prefer `pronounce` then `romanized`
+                  const pronounce = loc.pronounce || "";
+
+                  const copyText = native
+                    ? pronounce
+                      ? `${native} (${pronounce})`
+                      : native
+                    : englishText;
 
                   return (
                     <div
@@ -246,23 +264,52 @@ export default function EmergencyHubModal({
                       className="rounded-2xl border bg-slate-50 p-4"
                     >
                       <div className="flex items-start justify-between gap-3">
-                        <div>
+                        <div className="min-w-0">
                           <div className="text-xs font-bold uppercase tracking-wide text-slate-500">
                             {label}
                           </div>
-                          <div className="text-lg font-extrabold text-slate-900 mt-1">
-                            {native}
-                          </div>
-                          {romanized ? (
-                            <div className="text-sm text-slate-600 mt-1">
-                              {romanized}
+
+                          {/* English (always shown if available) */}
+                          {englishText ? (
+                            <div className="mt-2">
+                              <div className="text-[11px] font-bold text-slate-500">
+                                English
+                              </div>
+                              <div className="text-sm font-extrabold text-slate-900">
+                                {englishText}
+                              </div>
                             </div>
                           ) : null}
+
+                          {/* Local + pronunciation (default view) */}
+                          {native ? (
+                            <div className="mt-3">
+                              <div className="text-[11px] font-bold text-slate-500">
+                                {activeLang?.name || "Local language"}
+                              </div>
+                              <div className="text-lg font-extrabold text-slate-900 mt-0.5">
+                                {native}
+                              </div>
+                              {pronounce ? (
+                                <div className="text-sm text-slate-600 mt-1">
+                                  Pronounce:{" "}
+                                  <span className="font-semibold">
+                                    {pronounce}
+                                  </span>
+                                </div>
+                              ) : null}
+                            </div>
+                          ) : (
+                            <div className="mt-3 text-sm text-slate-600">
+                              Local phrase not available — use the English line
+                              above.
+                            </div>
+                          )}
                         </div>
 
                         <div className="shrink-0">
                           <CopyButton
-                            text={copyText}
+                            text={copyText || ""}
                             onCopied={() => setCopiedMsg("Copied ✅")}
                           />
                         </div>
@@ -274,7 +321,9 @@ export default function EmergencyHubModal({
             )}
 
             {phrasesPack?.notes ? (
-              <div className="mt-3 text-xs text-slate-500">{phrasesPack.notes}</div>
+              <div className="mt-3 text-xs text-slate-500">
+                {phrasesPack.notes}
+              </div>
             ) : null}
           </div>
         </div>
