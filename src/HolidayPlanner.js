@@ -65,8 +65,7 @@ import MicroExperiencesModal from "./MicroExperiencesModal";
 import { buildSkyscannerFlightsUrl } from "./utils/skyscanner";
 import SkyscannerCTA from "./components/SkyscannerCTA";
 import SkyscannerTopAd from "./components/SkyscannerTopAd";
-
-
+import HomePage from "./HomePage";
    
 function AdSlot({ id, label = "Ad", className = "" }) {
   return (
@@ -218,7 +217,7 @@ const [voteTotals, setVoteTotals] = useState({});
 const buildAttractionKey = (destName, attractionName) =>
   slugify(`${destName || ""}::${attractionName || ""}`);
 
-const [activeNav, setActiveNav] = useState("planner"); 
+const [activeNav, setActiveNav] = useState("home"); 
 const [mobileNavOpen, setMobileNavOpen] = useState(false);
 const [votes, setVotes] = useState({}); 
 
@@ -2552,7 +2551,7 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 
       {/* Desktop IA nav */}
       <nav className="hidden lg:flex items-center gap-1">
-      <NavButton
+  <NavButton
   active={activeNav === "home"}
   className="font-extrabold"
   onClick={() => {
@@ -2564,16 +2563,16 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 </NavButton>
 
         <NavButton
-          active={activeNav === "destinations"}
-          onClick={() => {
-            setActiveNav("destinations");
-            // If not on select, reset to show destinations
-            if (step !== "select") resetPlanner();
-            setTimeout(() => scrollToSection("destinations"), 50);
-          }}
-        >
-          Destinations
-        </NavButton>
+  active={activeNav === "destinations"}
+  onClick={() => {
+    setActiveNav("destinations");
+    setStep("select"); // ✅ ensure destination screen
+    if (step !== "select") resetPlanner();
+    setTimeout(() => scrollToSection("destinations"), 50);
+  }}
+>
+  Destinations
+</NavButton>
 
         <NavButton
 		  active={activeNav === "map"}
@@ -2870,9 +2869,27 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
   </div>
 )}
 
+{activeNav === "home" && step === "select" && (
+  <HomePage
+    onStartPlanning={() => {
+      setActiveNav("destinations");
+      setStep("select");
+      setTimeout(() => scrollToSection("destinations"), 50);
+    }}
+    onExploreDestinations={() => {
+      setActiveNav("destinations");
+      setStep("select");
+      setTimeout(() => scrollToSection("destinations"), 50);
+    }}
+    onScrollToHowItWorks={() => {
+      document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" });
+    }}
+  />
+)}
 
-        {step === 'select' && (
-          <div id="destinations" className="space-y-6">
+
+        {step === "select" && activeNav === "destinations" && (
+  <div id="destinations" className="space-y-6">
 	        <div className="flex items-center justify-center gap-2 mb-6">
 			  <button
 			    type="button"
@@ -4140,7 +4157,7 @@ const extras = microExtrasByDay?.[dayKey] || [];
           </div>
         </div>
       )}
-      
+
 {activeNav === "about" && (
   <section className="max-w-4xl mx-auto px-6 py-16">
     <h1 className="text-3xl font-extrabold mb-4">About Itinex</h1>
