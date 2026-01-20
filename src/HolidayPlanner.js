@@ -27,6 +27,8 @@ import {
   AlertTriangle
 } from 'lucide-react';
 
+import { useLocation, useNavigate } from "react-router-dom";
+
 import {
   getWeatherCondition,
   weatherConditionFromCode,
@@ -177,6 +179,8 @@ const [fixMyDayOpen, setFixMyDayOpen] = useState(false);
   const weatherAbortRef = useRef(null);
   const utilityReqIdRef = useRef(0);
 const utilityAbortRef = useRef(null);
+const navigate = useNavigate();
+const location = useLocation();
 
 const [attractionsSource, setAttractionsSource] = useState(null);
 const [attractionsMap, setAttractionsMap] = useState({});
@@ -459,6 +463,75 @@ const fetchReviewsForDestination = async (destinationId) => {
 
 {/* Remove after New Year */}
 const [showMarketingModal, setShowMarketingModal] = useState(false);
+
+useEffect(() => {
+  const path = location.pathname;
+
+  // Tabs
+  if (path === "/") {
+    setActiveNav("home");
+    setStep("select");
+    return;
+  }
+
+  if (path === "/destinations") {
+    setActiveNav("destinations");
+    setStep("select");
+    return;
+  }
+
+  if (path === "/map") {
+    setActiveNav("map");
+    setStep("map");
+    return;
+  }
+
+  if (path === "/saved") {
+    setActiveNav("saved");
+    setStep("saved");
+    return;
+  }
+
+  // Footer pages
+  if (path === "/about") {
+    setActiveNav("about");
+    setStep("select"); // or keep current; just ensure UI renders the section
+    return;
+  }
+  if (path === "/contact") {
+    setActiveNav("contact");
+    setStep("select");
+    return;
+  }
+  if (path === "/advertise") {
+    setActiveNav("advertise");
+    setStep("select");
+    return;
+  }
+  if (path === "/privacy") {
+    setActiveNav("privacy");
+    setStep("select");
+    return;
+  }
+  if (path === "/terms") {
+    setActiveNav("terms");
+    setStep("select");
+    return;
+  }
+
+  // Planner flow pages
+  if (path === "/planner/dates") {
+    setActiveNav("planner");
+    setStep("days");
+    return;
+  }
+
+  if (path === "/planner/itinerary") {
+    setActiveNav("planner");
+    setStep("itinerary");
+    return;
+  }
+}, [location.pathname]);
 
 useEffect(() => {
   const seen = localStorage.getItem("itinex_ny2026_seen");
@@ -1466,7 +1539,7 @@ useEffect(() => {
   upsertMeta("og:description", desc, true);
 
   // Canonical (basic SPA version)
-  setCanonical(window.location.origin + window.location.pathname);
+setCanonical(window.location.origin + location.pathname);
 }, [step, selectedDest?.name, days]);
 
   const loadDestinationReviews = async () => {
@@ -1705,6 +1778,7 @@ const response = await fetch(weatherUrl, { signal: controller.signal });
       setAttractionsForTrip(normalizedAttractions);
       setItinerary(plan);
       setStep("itinerary");
+      navigate("/planner/itinerary");
       setViewMode("itinerary"); 
       setLoading(false);
       hydrateAttractionImages(destination?.name || "", plan);
@@ -1757,7 +1831,7 @@ const response = await fetch(weatherUrl, { signal: controller.signal });
 
   const handleSelectDestination = (dest) => {
     setSelectedDest(dest);
-    setStep('days');
+    navigate("/planner/dates");
   };
 
   const handlePlanTrip = () => {
@@ -2497,21 +2571,22 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
   <div className="max-w-7xl mx-auto px-4 py-4">
     <div className="flex items-center justify-between gap-3">
       {/* Brand */}
-      <div
+<div
   role="button"
   tabIndex={0}
   onClick={() => {
-    setStep("select");        // destinations page
-    setActiveNav("home");    // optional nav sync
+    navigate("/");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }}
   onKeyDown={(e) => {
     if (e.key === "Enter" || e.key === " ") {
-      setStep("select");
-      setActiveNav("home");
+      e.preventDefault();
+      navigate("/");
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }}
   className="flex items-center gap-3 cursor-pointer select-none"
-  aria-label="Go to destinations"
+  aria-label="Go to home"
 >
   <div className="p-2 rounded-xl bg-gradient-to-br from-itinex-secondary to-itinex-primary shadow-sm">
     <svg
@@ -2551,49 +2626,43 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 
       {/* Desktop IA nav */}
       <nav className="hidden lg:flex items-center gap-1">
-  <NavButton
-  active={activeNav === "home"}
-  className="font-extrabold"
-  onClick={() => {
-    setActiveNav("home");
-    setStep("select");
-  }}
+ <NavButton
+  active={location.pathname === "/"}
+  onClick={() => navigate("/")}
 >
   Home
 </NavButton>
 
-        <NavButton
-  active={activeNav === "destinations"}
+
+<NavButton
+  active={location.pathname === "/destinations"}
   onClick={() => {
-    setActiveNav("destinations");
-    setStep("select"); // ✅ ensure destination screen
-    if (step !== "select") resetPlanner();
+    navigate("/destinations");
     setTimeout(() => scrollToSection("destinations"), 50);
   }}
 >
   Destinations
 </NavButton>
 
-        <NavButton
-		  active={activeNav === "map"}
-		  onClick={() => {
-		    setActiveNav("map");
-		    setStep("map");
-		    window.scrollTo({ top: 0, behavior: "smooth" });
-		  }}
-		>
-		  Map
-		</NavButton>
 
-       <NavButton
-		  active={activeNav === "saved"}
-		  onClick={() => {
-		    setActiveNav("saved");
-		    setStep("saved"); // ✅ show the saved trips screen
-		  }}
-		>
-		  Saved Trips
-		</NavButton>
+<NavButton
+  active={location.pathname === "/map"}
+  onClick={() => {
+    navigate("/map");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }}
+>
+  Map
+</NavButton>
+
+
+<NavButton
+  active={location.pathname === "/saved"}
+  onClick={() => navigate("/saved")}
+>
+  Saved Trips
+</NavButton>
+
 
 
         {/*<NavButton
@@ -2608,7 +2677,11 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
       <div className="flex items-center gap-2">
         {step !== "select" && (
           <button
-            onClick={resetPlanner}
+            active={location.pathname === "/destinations"}
+            onClick={() => {
+              navigate("/destinations");
+              setTimeout(() => scrollToSection("destinations"), 50);
+            }}
             className="hidden sm:inline-flex items-center gap-2 px-3 py-2 rounded-lg border bg-white hover:bg-slate-50 text-slate-700"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -2617,11 +2690,11 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
         )}
 
         <button
-          onClick={() => {
-            setActiveNav("planner");
-            window.scrollTo({ top: 0, behavior: "smooth" });
-            if (step !== "select") resetPlanner();
-          }}
+          active={location.pathname === "/destinations"}
+            onClick={() => {
+              navigate("/destinations");
+              setTimeout(() => scrollToSection("destinations"), 50);
+            }}
           className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg
                      bg-gradient-to-r from-itinex-secondary to-itinex-primary
                      text-white font-semibold hover:opacity-90 transition"
@@ -2645,11 +2718,21 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 {mobileNavOpen && (
   <div className="lg:hidden mt-4 flex flex-col gap-2">
     
+    <MobileNavItem
+      onClick={() => {
+        setMobileNavOpen(false);
+        navigate("/home");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }}
+    >
+      Home
+    </MobileNavItem>
+
     {/* Destinations */}
     <MobileNavItem
       onClick={() => {
         setMobileNavOpen(false);
-        setActiveNav("destinations");
+        navigate("/destinations");
 
         if (step !== "select") resetPlanner();
 
@@ -2661,11 +2744,10 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
     </MobileNavItem>
 
     {/* Map */}
-    <MobileNavItem
+   <MobileNavItem
       onClick={() => {
         setMobileNavOpen(false);
-        setActiveNav("map");
-        setStep("map"); // ✅ REQUIRED
+        navigate("/map");
         window.scrollTo({ top: 0, behavior: "smooth" });
       }}
     >
@@ -2673,25 +2755,26 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
     </MobileNavItem>
 
     {/* Saved Trips */}
-    <MobileNavItem
+   <MobileNavItem
       onClick={() => {
         setMobileNavOpen(false);
-        setActiveNav("saved");
-        setStep("saved"); // ✅ REQUIRED
+        navigate("/saved");
         window.scrollTo({ top: 0, behavior: "smooth" });
       }}
     >
-      Saved Trips
+      Saved
     </MobileNavItem>
 
     {/* New Trip */}
     <MobileNavItem
       onClick={() => {
         setMobileNavOpen(false);
-        setActiveNav("home");
+        navigate("/destinations");
+
+        if (step !== "select") resetPlanner();
+
         setStep("select"); // ✅ REQUIRED
-        resetPlanner();
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        setTimeout(() => scrollToSection("destinations"), 50);
       }}
       className="bg-gradient-to-r from-itinex-secondary to-itinex-primary text-white border-transparent"
     >
@@ -2753,7 +2836,7 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 </div>
 
         )}
-        {step === "saved" && (
+        {location.pathname === "/saved" && step === "saved" && (
   <div id="saved" className="space-y-6">
     <div className="flex items-center justify-between flex-wrap gap-3">
       <div>
@@ -2869,16 +2952,14 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
   </div>
 )}
 
-{activeNav === "home" && step === "select" && (
+{location.pathname === "/" && (
   <HomePage
     onStartPlanning={() => {
-      setActiveNav("destinations");
-      setStep("select");
+      navigate("/destinations");
       setTimeout(() => scrollToSection("destinations"), 50);
     }}
     onExploreDestinations={() => {
-      setActiveNav("destinations");
-      setStep("select");
+      navigate("/destinations");
       setTimeout(() => scrollToSection("destinations"), 50);
     }}
     onScrollToHowItWorks={() => {
@@ -2888,7 +2969,8 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 )}
 
 
-        {step === "select" && activeNav === "destinations" && (
+
+        {location.pathname === "/destinations" && step === "select" && (  
   <div id="destinations" className="space-y-6">
 	        <div className="flex items-center justify-center gap-2 mb-6">
 			  <button
@@ -3186,7 +3268,7 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
             </div>
           </div>
         )}
-        {step === "map" && (
+        {location.pathname === "/map" && step === "map" && (
 		  <div id="map" className="space-y-6">
 		    <div className="text-center mb-6">
 		      <h2 className="text-2xl font-extrabold text-gray-900">
@@ -3209,7 +3291,7 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 				  onSelect={(dest) => {
 				    setSelectedDest(dest);
 				    setActiveNav("planner");
-				    setStep("days");
+				    navigate("/planner/dates");
 				  }}
 				/>
 
@@ -4158,7 +4240,7 @@ const extras = microExtrasByDay?.[dayKey] || [];
         </div>
       )}
 
-{activeNav === "about" && (
+{location.pathname === "/about" && (
   <section className="max-w-4xl mx-auto px-6 py-16">
     <h1 className="text-3xl font-extrabold mb-4">About Itinex</h1>
     <p className="text-slate-700 leading-relaxed">
