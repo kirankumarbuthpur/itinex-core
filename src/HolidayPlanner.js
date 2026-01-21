@@ -3099,11 +3099,24 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
         </p>
 
         <a
-          href="mailto:buthpur@itinex.net"
-          className="inline-block px-5 py-2.5 rounded-lg bg-itinex-primary text-white font-semibold text-sm hover:opacity-90"
-        >
-          Contact Advertising Team
-        </a>
+        href="https://mail.google.com/mail/?view=cm&to=buthpur@itinex.net&su=Advertising%20with%20Itinex&body=Hi%20Itinex%20Team,%0A%0AI%20am%20interested%20in%20advertising%20on%20Itinex."
+        target="_blank"
+        rel="noopener noreferrer"
+        className="
+          inline-flex items-center gap-2
+          px-4 py-2 rounded-md
+          bg-itinex-primary text-white text-sm font-semibold
+          hover:opacity-95
+          transition-all duration-200
+          hover:scale-[1.03]
+          hover:shadow-[0_0_0_3px_rgba(16,185,129,0.25),0_10px_25px_-10px_rgba(16,185,129,0.6)]
+          active:scale-[0.99]
+          focus:outline-none focus:ring-2 focus:ring-itinex-primary/60 focus:ring-offset-2
+        "
+      >
+        <Mail className="w-4 h-4" />
+        Advertise with Itinex
+      </a>
       </section>
 
     )}
