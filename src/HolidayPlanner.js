@@ -182,8 +182,29 @@ const [fixMyDayOpen, setFixMyDayOpen] = useState(false);
 const utilityAbortRef = useRef(null);
 const navigate = useNavigate();
 const location = useLocation();
-  const { slug } = useParams();
-  const isDestinationSeoPage = location.pathname.startsWith("/destinations/") && !!slug;
+const { slug } = useParams();
+
+const slugify = (s) =>
+  String(s || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)+/g, "");
+
+const isDestinationSeoPage =
+  location.pathname.startsWith("/destinations/") && !!slug;
+
+// Find destination by slug from loaded destinations[]
+const seoDest = React.useMemo(() => {
+  if (!isDestinationSeoPage || !slug || !Array.isArray(destinations)) return null;
+
+  return destinations.find((d) => {
+    const name = d?.name || "";
+    const country = d?.country || "";
+    const s = slugify(`${name}-${country}`);
+    return s === slug;
+  });
+}, [isDestinationSeoPage, slug, destinations]);
 
 
   const destToSlug = (d) => slugify(`${d?.name || ""}-${d?.country || ""}`);
@@ -1566,12 +1587,6 @@ const hydrateAttractionImages = async (destinationName, plan) => {
     if (!res.ok) throw new Error('Failed to fetch destinations.json');
     const popularCities = await res.json();
 
-const slugify = (s) =>
-  String(s || "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)+/g, "");
 
 const destinationsWithImages = await Promise.all(
   popularCities.map(async (city, index) => {
@@ -2997,40 +3012,79 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
       </div>
     </aside>
 
-    {isDestinationSeoPage && selectedDest && (
+    {isDestinationSeoPage && (
   <section className="max-w-4xl mx-auto px-6 py-14">
     <h1 className="text-3xl font-extrabold text-slate-900">
-      {selectedDest.name} Trip Planner
+      {seoDest ? `${seoDest.name} Trip Planner` : "Trip Planner"}
     </h1>
 
     <p className="mt-3 text-slate-700 leading-relaxed">
-      Build a weather-aware itinerary for {selectedDest.name}. Browse top attractions,
-      get a smart day-by-day plan, and save/share your trip.
+      {seoDest
+        ? `Build a weather-aware itinerary for ${seoDest.name}. Browse top attractions, get a smart day-by-day plan, and save/share your trip.`
+        : "Build a weather-aware itinerary. Browse attractions, get a day-by-day plan, and save/share your trip."}
     </p>
 
     <div className="mt-8 flex flex-wrap gap-3">
       <button
         type="button"
         onClick={() => {
-          // go into planner flow
-          setSelectedDest(selectedDest);
+          if (!seoDest) return;
+          // ✅ select destination and go to planner dates
+          setSelectedDest(seoDest);
           navigate("/planner/dates");
+          window.scrollTo({ top: 0, behavior: "smooth" });
         }}
         className="px-5 py-3 rounded-xl bg-itinex-primary text-white font-semibold hover:opacity-90"
       >
         Generate itinerary
       </button>
 
-      <button
-        type="button"
-        onClick={() => navigate("/destinations")}
+      {/* ✅ Crawlable internal link */}
+      <Link
+        to="/destinations"
         className="px-5 py-3 rounded-xl border bg-white text-slate-700 font-semibold hover:bg-slate-50"
       >
         Browse all destinations
-      </button>
+      </Link>
+    </div>
+
+    <div className="mt-12 space-y-10">
+      <div>
+        <h2 className="text-xl font-bold text-slate-900">Why plan with Itinex?</h2>
+        <ul className="mt-3 list-disc pl-6 text-slate-700 space-y-2">
+          <li>Weather-aware itinerary suggestions</li>
+          <li>Real attractions and hidden gems</li>
+          <li>Map view to plan routes</li>
+          <li>Save and share your trip plan</li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 className="text-xl font-bold text-slate-900">Popular attractions</h2>
+        <p className="mt-2 text-slate-700">
+          {seoDest
+            ? `Explore top places in ${seoDest.name}, then generate a day-by-day itinerary based on the forecast.`
+            : "Explore top places, then generate a day-by-day itinerary based on the forecast."}
+        </p>
+      </div>
+
+      <div>
+        <h2 className="text-xl font-bold text-slate-900">FAQs</h2>
+        <div className="mt-4 space-y-4">
+          <div className="rounded-xl border bg-white p-4">
+            <div className="font-semibold text-slate-900">
+              How many days should I plan?
+            </div>
+            <div className="mt-1 text-sm text-slate-700">
+              Most travelers plan 3–5 days, but Itinex supports up to 14 days.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 )}
+
 
 
     <main className="min-w-0">
@@ -3483,7 +3537,7 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
       >
         {/* Clickable image/header */}
         <div
-          onClick={() => handleSelectDestination(dest)}
+          onClick={() => navigate(`/destinations/${slugify(`${dest.name}-${dest.country}`)}`)}
           className="cursor-pointer"
         >
           <div className="relative h-48 overflow-hidden bg-gray-200">
@@ -3540,7 +3594,7 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
 
           {/* Explore CTA */}
           <div
-            onClick={() => handleSelectDestination(dest)}
+            onClick={() => navigate(`/destinations/${slugify(`${dest.name}-${dest.country}`)}`)}
             className="flex items-center justify-between cursor-pointer"
           >
             <span className="text-sm text-gray-600">Explore destination</span>
