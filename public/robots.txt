@@ -2,5 +2,6 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.itinex.com/sitemap.xml
+Sitemap: https://www.itinex.net/sitemap.xml
+
 
