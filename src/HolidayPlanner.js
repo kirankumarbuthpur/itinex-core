@@ -27,7 +27,7 @@ import {
   AlertTriangle
 } from 'lucide-react';
 
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 import {
   getWeatherCondition,
@@ -157,6 +157,7 @@ export default function HolidayPlanner() {
   const [loadingDests, setLoadingDests] = useState(true);
   const [error, setError] = useState(null);
 
+
   const [shareUrl, setShareUrl] = useState('');
   const [roomId, setRoomId] = useState('');
   const [presenceCount, setPresenceCount] = useState(1);
@@ -181,7 +182,11 @@ const [fixMyDayOpen, setFixMyDayOpen] = useState(false);
 const utilityAbortRef = useRef(null);
 const navigate = useNavigate();
 const location = useLocation();
+  const { slug } = useParams();
+  const isDestinationSeoPage = location.pathname.startsWith("/destinations/") && !!slug;
 
+
+  const destToSlug = (d) => slugify(`${d?.name || ""}-${d?.country || ""}`);
 const footerPages = new Set([
   "/about",
   "/contact",
@@ -365,6 +370,34 @@ async function getCoordsForPlace(placeName, selectedDest) {
   return null;
 }
 
+useEffect(() => {
+  if (!slug) return;
+  if (!destinations?.length) return;
+
+  const found = destinations.find((d) => d.slug === slug);
+
+  if (found) {
+    setSelectedDest(found);
+    setStep("days");
+    window.scrollTo(0, 0);
+  }
+}, [slug, destinations]);
+
+useEffect(() => {
+  if (!isDestinationSeoPage) return;
+  if (!destinations?.length) return;
+
+  const match = destinations.find((d) => destToSlug(d) === slug);
+
+  if (match) {
+    setSelectedDest(match);
+    // IMPORTANT: do NOT navigate away, keep this URL
+    // Set a view mode that shows destination content
+    setStep("select"); // or a new step like "destSeo"
+  }
+}, [isDestinationSeoPage, slug, destinations]);
+
+
 // Overpass: fetch nearest amenity (hospital/pharmacy)
 async function fetchNearestAmenity({ originLat, originLon, type, signal }) {
   const tag = type === "hospital" ? 'amenity="hospital"' : 'amenity="pharmacy"';
@@ -476,6 +509,18 @@ const [showMarketingModal, setShowMarketingModal] = useState(false);
 
 useEffect(() => {
   const path = location.pathname;
+
+  if (path.startsWith("/destinations/")) {
+    setActiveNav("destinations");
+    setStep("select"); // or your SEO view
+    return;
+  }
+
+  if (path.startsWith("/destinations/")) {
+    setActiveNav("destinations");
+    setStep("days");
+    return;
+  }
 
   // Tabs
   if (path === "/") {
@@ -1521,27 +1566,33 @@ const hydrateAttractionImages = async (destinationName, plan) => {
     if (!res.ok) throw new Error('Failed to fetch destinations.json');
     const popularCities = await res.json();
 
-    const destinationsWithImages = await Promise.all(
-      popularCities.map(async (city, index) => {
-        const label = `${city.name}, ${city.country}`;
+const slugify = (s) =>
+  String(s || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)+/g, "");
 
-        // Better query than the old Source endpoint
-        const query = `${city.name} ${city.country} landmark`;
-const image = (await fetchUnsplashImage(query)) || svgPlaceholderDataUrl(label);
+const destinationsWithImages = await Promise.all(
+  popularCities.map(async (city, index) => {
+    const label = `${city.name}, ${city.country}`;
+    const query = `${city.name} ${city.country} landmark`;
+    const image = (await fetchUnsplashImage(query)) || svgPlaceholderDataUrl(label);
 
+    return {
+      id: index + 1,
+      name: label,
+      cityName: city.name,                 // ✅ ADD (for clean slugs)
+      country: city.country,
+      lat: city.lat,
+      lon: city.lon,
+      iata: city.iata || null,
+      image,
+      slug: slugify(`${city.name}-${city.country}`), // ✅ ADD
+    };
+  })
+);
 
-        return {
-          id: index + 1,
-          name: label,
-          country: city.country,
-          lat: city.lat,
-          lon: city.lon,
-          iata: city.iata || null,
-          image
-        };
-
-      })
-    );
 
     setDestinations(destinationsWithImages);
   } catch (e) {
@@ -1615,7 +1666,22 @@ const UNSPLASH_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
 }, [fetchDestinations]);
 
 useEffect(() => {
-  // Example: dynamic title when user is on itinerary
+  // ✅ Destination SEO pages: /destinations/:slug
+  if (location.pathname.startsWith("/destinations/") && selectedDest) {
+    const title = `${selectedDest.cityName || selectedDest.name} Trip Planner — Itinex`;
+    const desc = `Plan a ${days || 3}-day trip to ${
+      selectedDest.cityName || selectedDest.name
+    }. Build a weather-aware itinerary with real attractions, maps, and saving.`;
+
+    document.title = title;
+    upsertMeta("description", desc);
+    upsertMeta("og:title", title, true);
+    upsertMeta("og:description", desc, true);
+    setCanonical(window.location.origin + location.pathname);
+    return;
+  }
+
+  // ✅ Default / planner pages
   const title =
     step === "itinerary" && selectedDest?.name
       ? `Itinex — ${selectedDest.name} (${days} days)`
@@ -1623,7 +1689,6 @@ useEffect(() => {
 
   document.title = title;
 
-  // Optional: dynamic description
   const desc =
     step === "itinerary" && selectedDest?.name
       ? `Your weather-aware itinerary for ${selectedDest.name}. Save, share, and collaborate.`
@@ -1633,9 +1698,9 @@ useEffect(() => {
   upsertMeta("og:title", title, true);
   upsertMeta("og:description", desc, true);
 
-  // Canonical (basic SPA version)
-setCanonical(window.location.origin + location.pathname);
-}, [step, selectedDest?.name, days]);
+  setCanonical(window.location.origin + location.pathname);
+}, [location.pathname, step, selectedDest?.name, days]);
+
 
   const loadDestinationReviews = async () => {
   try {
@@ -1925,9 +1990,17 @@ const response = await fetch(weatherUrl, { signal: controller.signal });
   };
 
   const handleSelectDestination = (dest) => {
-    setSelectedDest(dest);
-    navigate("/planner/dates");
-  };
+  setSelectedDest(dest);
+
+  // ✅ go to SEO-friendly destination URL
+  navigate(`/destinations/${dest.slug}`);
+
+  // ✅ show date picker UI
+  setStep("days");
+
+  window.scrollTo(0, 0);
+};
+
 
   const handlePlanTrip = () => {
     fetchWeather(selectedDest);
@@ -2923,6 +2996,42 @@ const DestinationMapPicker = ({ destinations, onPick }) => {
         <AdSlot id="ad-left-2" label="Left rail (300×250)" className="h-[250px]" />
       </div>
     </aside>
+
+    {isDestinationSeoPage && selectedDest && (
+  <section className="max-w-4xl mx-auto px-6 py-14">
+    <h1 className="text-3xl font-extrabold text-slate-900">
+      {selectedDest.name} Trip Planner
+    </h1>
+
+    <p className="mt-3 text-slate-700 leading-relaxed">
+      Build a weather-aware itinerary for {selectedDest.name}. Browse top attractions,
+      get a smart day-by-day plan, and save/share your trip.
+    </p>
+
+    <div className="mt-8 flex flex-wrap gap-3">
+      <button
+        type="button"
+        onClick={() => {
+          // go into planner flow
+          setSelectedDest(selectedDest);
+          navigate("/planner/dates");
+        }}
+        className="px-5 py-3 rounded-xl bg-itinex-primary text-white font-semibold hover:opacity-90"
+      >
+        Generate itinerary
+      </button>
+
+      <button
+        type="button"
+        onClick={() => navigate("/destinations")}
+        className="px-5 py-3 rounded-xl border bg-white text-slate-700 font-semibold hover:bg-slate-50"
+      >
+        Browse all destinations
+      </button>
+    </div>
+  </section>
+)}
+
 
     <main className="min-w-0">
       <div className="max-w-7xl mx-auto" style={{padding: '10px'}}>

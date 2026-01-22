@@ -26,7 +26,8 @@
     "build": "react-scripts build && react-snap",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "generate:attractions": "node scripts/generate-attractions.mjs"
+    "generate:attractions": "node scripts/generate-attractions.mjs",
+    "generate:sitemap": "node scripts/generate-sitemap.js"
   },
   "eslintConfig": {
     "extends": [
