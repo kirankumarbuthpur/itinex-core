@@ -116,5 +116,58 @@
 
   { "name": "Philipsburg", "country": "Sint Maarten", "lat": 18.0250, "lon": -63.0460, "iata": "SXM" },
 
-  { "name": "Road Town", "country": "British Virgin Islands", "lat": 18.4286, "lon": -64.6185, "iata": "EIS" }
+  { "name": "Road Town", "country": "British Virgin Islands", "lat": 18.4286, "lon": -64.6185, "iata": "EIS" },
+
+  { "name": "Las Vegas", "country": "USA", "lat": 36.1699, "lon": -115.1398, "iata": "LAS" },
+
+  { "name": "San Diego", "country": "USA", "lat": 32.7157, "lon": -117.1611, "iata": "SAN" },
+  { "name": "San Jose", "country": "USA", "lat": 37.3382, "lon": -121.8863, "iata": "SJC" },
+  { "name": "Oakland", "country": "USA", "lat": 37.8044, "lon": -122.2712, "iata": "OAK" },
+
+  { "name": "Santa Monica", "country": "USA", "lat": 34.0195, "lon": -118.4912, "iata": "SMO" },
+  { "name": "Anaheim", "country": "USA", "lat": 33.8366, "lon": -117.9143, "iata": "SNA" },
+  { "name": "Burbank", "country": "USA", "lat": 34.1808, "lon": -118.3090, "iata": "BUR" },
+
+  { "name": "Brooklyn (NYC)", "country": "USA", "lat": 40.6782, "lon": -73.9442, "iata": "JFK" },
+  { "name": "Newark", "country": "USA", "lat": 40.7357, "lon": -74.1724, "iata": "EWR" },
+  { "name": "Jersey City", "country": "USA", "lat": 40.7178, "lon": -74.0431, "iata": "NYC" },
+
+  { "name": "Boston", "country": "USA", "lat": 42.3601, "lon": -71.0589, "iata": "BOS" },
+  { "name": "Washington DC", "country": "USA", "lat": 38.9072, "lon": -77.0369, "iata": "WAS" },
+  { "name": "Philadelphia", "country": "USA", "lat": 39.9526, "lon": -75.1652, "iata": "PHL" },
+
+  { "name": "Seattle", "country": "USA", "lat": 47.6062, "lon": -122.3321, "iata": "SEA" },
+  { "name": "Portland", "country": "USA", "lat": 45.5051, "lon": -122.6750, "iata": "PDX" },
+
+  { "name": "Austin", "country": "USA", "lat": 30.2672, "lon": -97.7431, "iata": "AUS" },
+  { "name": "Dallas", "country": "USA", "lat": 32.7767, "lon": -96.7970, "iata": "DFW" },
+  { "name": "Houston", "country": "USA", "lat": 29.7604, "lon": -95.3698, "iata": "IAH" },
+
+  { "name": "Orlando", "country": "USA", "lat": 28.5383, "lon": -81.3792, "iata": "MCO" },
+  { "name": "Tampa", "country": "USA", "lat": 27.9506, "lon": -82.4572, "iata": "TPA" },
+
+  { "name": "Denver", "country": "USA", "lat": 39.7392, "lon": -104.9903, "iata": "DEN" },
+  { "name": "Phoenix", "country": "USA", "lat": 33.4484, "lon": -112.0740, "iata": "PHX" },
+  { "name": "Lisbon", "country": "Portugal", "lat": 38.7223, "lon": -9.1393, "iata": "LIS" },
+  { "name": "Athens", "country": "Greece", "lat": 37.98381, "lon": 23.727539, "iata": "ATH" },
+  { "name": "Dubrovnik", "country": "Croatia", "lat": 42.640278, "lon": 18.108334, "iata": "DBV" },
+  { "name": "Warsaw", "country": "Poland", "lat": 52.237049, "lon": 21.017532, "iata": "WAW" },
+
+  { "name": "Bucharest", "country": "Romania", "lat": 44.4268, "lon": 26.1025, "iata": "OTP" },
+  { "name": "Cairo", "country": "Egypt", "lat": 30.04442, "lon": 31.23571, "iata": "CAI" },
+  { "name": "Tel Aviv", "country": "Israel", "lat": 32.0853, "lon": 34.7818, "iata": "TLV" },
+
+  { "name": "Mumbai", "country": "India", "lat": 19.07609, "lon": 72.877426, "iata": "BOM" },
+  { "name": "Colombo", "country": "Sri Lanka", "lat": 6.927079, "lon": 79.861244, "iata": "CMB" },
+  { "name": "Kathmandu", "country": "Nepal", "lat": 27.717244, "lon": 85.3206, "iata": "KTM" },
+  { "name": "Malé", "country": "Maldives", "lat": 4.1755, "lon": 73.5093, "iata": "MLE" },
+
+  { "name": "Zanzibar City", "country": "Tanzania", "lat": -6.1639, "lon": 39.1979, "iata": "ZNZ" },
+
+  { "name": "Bogotá", "country": "Colombia", "lat": 4.624335, "lon": -74.063644, "iata": "BOG" },
+  { "name": "San José", "country": "Costa Rica", "lat": 9.934739, "lon": -84.087502, "iata": "SJO" },
+  { "name": "Panama City", "country": "Panama", "lat": 8.983333, "lon": -79.51667, "iata": "PTY" },
+
+  { "name": "Santiago", "country": "Chile", "lat": -33.459229, "lon": -70.645348, "iata": "SCL" }
+
 ]

@@ -376,5 +376,132 @@
     "fire": "999",
     "ambulance": "999",
     "notes": "Unified emergency number."
+  },
+  "portugal": {
+    "primary": "112",
+    "police": "112",
+    "fire": "112",
+    "ambulance": "112",
+    "notes": "112 is the unified emergency number across Portugal and the EU."
+  },
+
+  "greece": {
+    "primary": "112",
+    "police": "100",
+    "fire": "199",
+    "ambulance": "166",
+    "notes": "112 unified EU emergency. Police 100, Fire 199, Ambulance 166."
+  },
+
+  "croatia": {
+    "primary": "112",
+    "police": "192",
+    "fire": "193",
+    "ambulance": "194",
+    "notes": "112 unified EU emergency. Police 192, Fire 193, Ambulance 194."
+  },
+
+  "poland": {
+    "primary": "112",
+    "police": "997",
+    "fire": "998",
+    "ambulance": "999",
+    "notes": "112 unified EU emergency. Police 997, Fire 998, Ambulance 999."
+  },
+
+  "romania": {
+    "primary": "112",
+    "police": "112",
+    "fire": "112",
+    "ambulance": "112",
+    "notes": "112 is the national unified emergency number."
+  },
+
+  "egypt": {
+    "primary": "122",
+    "police": "122",
+    "fire": "180",
+    "ambulance": "123",
+    "notes": "Police 122, Fire 180, Ambulance 123."
+  },
+
+  "israel": {
+    "primary": "100",
+    "police": "100",
+    "fire": "102",
+    "ambulance": "101",
+    "notes": "Police 100, Fire 102, Ambulance (MDA) 101."
+  },
+
+  "india": {
+    "primary": "112",
+    "police": "112",
+    "fire": "101",
+    "ambulance": "108",
+    "notes": "112 unified emergency number. Fire 101, Ambulance 108."
+  },
+
+  "sri-lanka": {
+    "primary": "119",
+    "police": "119",
+    "fire": "110",
+    "ambulance": "1990",
+    "notes": "Police 119, Fire 110, Ambulance 1990 (Suwa Seriya)."
+  },
+
+  "nepal": {
+    "primary": "100",
+    "police": "100",
+    "fire": "101",
+    "ambulance": "102",
+    "notes": "Police 100, Fire 101, Ambulance 102."
+  },
+
+  "maldives": {
+    "primary": "119",
+    "police": "119",
+    "fire": "118",
+    "ambulance": "102",
+    "notes": "Police 119, Fire 118, Ambulance 102."
+  },
+
+  "tanzania": {
+    "primary": "112",
+    "police": "112",
+    "fire": "114",
+    "ambulance": "115",
+    "notes": "112 unified emergency line. Fire 114, Ambulance 115."
+  },
+
+  "colombia": {
+    "primary": "123",
+    "police": "112",
+    "fire": "119",
+    "ambulance": "125",
+    "notes": "123 unified emergency line. Police 112, Fire 119, Ambulance 125."
+  },
+
+  "costa-rica": {
+    "primary": "911",
+    "police": "911",
+    "fire": "118",
+    "ambulance": "911",
+    "notes": "911 unified emergency. Fire department direct line 118."
+  },
+
+  "panama": {
+    "primary": "911",
+    "police": "104",
+    "fire": "103",
+    "ambulance": "911",
+    "notes": "Police 104, Fire 103, Ambulance via 911."
+  },
+
+  "chile": {
+    "primary": "133",
+    "police": "133",
+    "fire": "132",
+    "ambulance": "131",
+    "notes": "Police 133, Fire 132, Ambulance 131."
   }
 }

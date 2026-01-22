@@ -1042,5 +1042,277 @@
         }
       }
     ]
+  },
+  
+  "portugal": {
+    "languages": [
+      {
+        "name": "Portuguese",
+        "iso": "pt",
+        "phrases": {
+          "help": { "text": "Help!", "local_language": "Ajuda!", "pronounce": "Ah-zhoo-dah!" },
+          "call_police": { "text": "Please call the police.", "local_language": "Por favor, chame a polícia.", "pronounce": "Por fah-vor shah-meh ah poh-LEE-see-ah" },
+          "call_ambulance": { "text": "Please call an ambulance.", "local_language": "Por favor, chame uma ambulância.", "pronounce": "Ahm-boo-LAN-see-ah" },
+          "i_need_doctor": { "text": "I need a doctor.", "local_language": "Preciso de um médico.", "pronounce": "Pre-SEE-zoo jeh oom MEH-dee-koo" },
+          "where_hospital": { "text": "Where is the nearest hospital?", "local_language": "Onde fica o hospital mais próximo?", "pronounce": "ON-jeh FEE-kah oo os-pee-TAL" },
+          "i_am_lost": { "text": "I am lost.", "local_language": "Estou perdido.", "pronounce": "Eh-STOW pehr-DEE-doo" }
+        }
+      }
+    ]
+  },
+
+  "greece": {
+    "languages": [
+      {
+        "name": "Greek",
+        "iso": "el",
+        "phrases": {
+          "help": { "text": "Help!", "local_language": "Βοήθεια!", "pronounce": "Vo-EE-thee-ah" },
+          "call_police": { "text": "Please call the police.", "local_language": "Καλέστε την αστυνομία.", "pronounce": "Ka-LES-te teen as-tee-no-MEE-ah" },
+          "call_ambulance": { "text": "Please call an ambulance.", "local_language": "Καλέστε ασθενοφόρο.", "pronounce": "As-the-no-FO-ro" },
+          "i_need_doctor": { "text": "I need a doctor.", "local_language": "Χρειάζομαι γιατρό.", "pronounce": "Hree-AH-zo-me yah-TRO" },
+          "where_hospital": { "text": "Where is the nearest hospital?", "local_language": "Πού είναι το κοντινότερο νοσοκομείο;", "pronounce": "Poo EE-neh to no-so-ko-MEE-o" },
+          "i_am_lost": { "text": "I am lost.", "local_language": "Έχω χαθεί.", "pronounce": "EH-ho ha-THEE" }
+        }
+      }
+    ]
+  },
+
+  "croatia": {
+    "languages": [
+      {
+        "name": "Croatian",
+        "iso": "hr",
+        "phrases": {
+          "help": { "text": "Help!", "local_language": "Upomoć!", "pronounce": "Oo-po-motch" },
+          "call_police": { "text": "Please call the police.", "local_language": "Zovite policiju.", "pronounce": "ZO-vee-te po-LEE-tsi-yoo" },
+          "call_ambulance": { "text": "Please call an ambulance.", "local_language": "Zovite hitnu pomoć.", "pronounce": "HEET-noo PO-motch" },
+          "i_need_doctor": { "text": "I need a doctor.", "local_language": "Trebam liječnika.", "pronounce": "TRE-bam LEE-ech-nee-kah" },
+          "where_hospital": { "text": "Where is the nearest hospital?", "local_language": "Gdje je najbliža bolnica?", "pronounce": "Gdyeh yeh bol-NEE-tsa" },
+          "i_am_lost": { "text": "I am lost.", "local_language": "Izgubio sam se.", "pronounce": "Iz-GOO-bee-oh sam seh" }
+        }
+      }
+    ]
+  },
+
+  "poland": {
+    "languages": [
+      {
+        "name": "Polish",
+        "iso": "pl",
+        "phrases": {
+          "help": { "text": "Help!", "local_language": "Pomocy!", "pronounce": "Po-MO-tsi" },
+          "call_police": { "text": "Please call the police.", "local_language": "Proszę zadzwonić na policję.", "pronounce": "PRO-sheh za-dzvo-neech" },
+          "call_ambulance": { "text": "Please call an ambulance.", "local_language": "Proszę wezwać karetkę.", "pronounce": "Ka-RET-keh" },
+          "i_need_doctor": { "text": "I need a doctor.", "local_language": "Potrzebuję lekarza.", "pronounce": "Po-cheh-BOO-yeh leh-KA-zha" },
+          "where_hospital": { "text": "Where is the nearest hospital?", "local_language": "Gdzie jest najbliższy szpital?", "pronounce": "SHPEE-tal" },
+          "i_am_lost": { "text": "I am lost.", "local_language": "Zgubiłem się.", "pronounce": "Zgoo-BEE-wem sheh" }
+        }
+      }
+    ]
+  },
+
+  "romania": {
+    "languages": [
+      {
+        "name": "Romanian",
+        "iso": "ro",
+        "phrases": {
+          "help": { "text": "Help!", "local_language": "Ajutor!", "pronounce": "Ah-zhoo-TOR" },
+          "call_police": { "text": "Please call the police.", "local_language": "Chemați poliția.", "pronounce": "Ke-MATS po-LEE-tsi-ah" },
+          "call_ambulance": { "text": "Please call an ambulance.", "local_language": "Chemați ambulanța.", "pronounce": "Ahm-boo-LAN-tsa" },
+          "i_need_doctor": { "text": "I need a doctor.", "local_language": "Am nevoie de doctor.", "pronounce": "Ahm ne-VOY-eh" },
+          "where_hospital": { "text": "Where is the nearest hospital?", "local_language": "Unde este cel mai apropiat spital?", "pronounce": "UN-deh es-teh spee-TAL" },
+          "i_am_lost": { "text": "I am lost.", "local_language": "M-am pierdut.", "pronounce": "Mam peer-DOOT" }
+        }
+      }
+    ]
+  },
+
+  "egypt": {
+    "languages": [
+      {
+        "name": "Arabic",
+        "iso": "ar",
+        "phrases": {
+          "help": { "text": "Help!", "local_language": "النجدة!", "pronounce": "El-neg-da" },
+          "call_police": { "text": "Please call the police.", "local_language": "اتصل بالشرطة.", "pronounce": "Et-sel bel-shor-ta" },
+          "call_ambulance": { "text": "Please call an ambulance.", "local_language": "اتصل بالإسعاف.", "pronounce": "Et-sel bel-es-aaf" },
+          "i_need_doctor": { "text": "I need a doctor.", "local_language": "أنا محتاج دكتور.", "pronounce": "Ana meh-TAG dok-TOR" },
+          "where_hospital": { "text": "Where is the nearest hospital?", "local_language": "فين أقرب مستشفى؟", "pronounce": "Fein aqrab mos-tash-fa" },
+          "i_am_lost": { "text": "I am lost.", "local_language": "أنا تايه.", "pronounce": "Ana TAY-eh" }
+        }
+      }
+    ]
+  },
+
+  "israel": {
+    "languages": [
+      {
+        "name": "Hebrew",
+        "iso": "he",
+        "phrases": {
+          "help": { "text": "Help!", "local_language": "הצילו!", "pronounce": "Ha-tsee-loo" },
+          "call_police": { "text": "Please call the police.", "local_language": "תתקשר למשטרה.", "pronounce": "Tit-ka-sher la-mish-ta-ra" },
+          "call_ambulance": { "text": "Please call an ambulance.", "local_language": "תתקשר לאמבולנס.", "pronounce": "Am-bu-lans" },
+          "i_need_doctor": { "text": "I need a doctor.", "local_language": "אני צריך רופא.", "pronounce": "Ani tsa-REEKH ro-FEH" },
+          "where_hospital": { "text": "Where is the nearest hospital?", "local_language": "איפה בית חולים קרוב?", "pronounce": "Eifo beit ho-lim" },
+          "i_am_lost": { "text": "I am lost.", "local_language": "אני אבוד.", "pronounce": "Ani a-VOOD" }
+        }
+      }
+    ]
+  },
+
+  "india": {
+    "languages": [
+      {
+        "name": "Hindi",
+        "iso": "hi",
+        "phrases": {
+          "help": { "text": "Help!", "local_language": "मदद करो!", "pronounce": "Madad karo" },
+          "call_police": { "text": "Please call the police.", "local_language": "पुलिस को बुलाइए।", "pronounce": "Police ko bulaaiye" },
+          "call_ambulance": { "text": "Please call an ambulance.", "local_language": "एम्बुलेंस बुलाइए।", "pronounce": "Ambulance bulaaiye" },
+          "i_need_doctor": { "text": "I need a doctor.", "local_language": "मुझे डॉक्टर चाहिए।", "pronounce": "Mujhe doctor chahiye" },
+          "where_hospital": { "text": "Where is the nearest hospital?", "local_language": "नज़दीकी अस्पताल कहाँ है?", "pronounce": "Nazdeeki aspataal kahaan hai" },
+          "i_am_lost": { "text": "I am lost.", "local_language": "मैं खो गया हूँ।", "pronounce": "Main kho gaya hoon" }
+        }
+      }
+    ]
+  },
+
+  "sri-lanka": {
+    "languages": [
+      {
+        "name": "Sinhala",
+        "iso": "si",
+        "phrases": {
+          "help": { "text": "Help!", "local_language": "උදව්!", "pronounce": "U-daw" },
+          "call_police": { "text": "Please call the police.", "local_language": "පොලිසියට කතා කරන්න.", "pronounce": "Po-lee-si-ya-ta ka-tha ka-ran-na" },
+          "call_ambulance": { "text": "Please call an ambulance.", "local_language": "ගිලන් රථය කැඳවන්න.", "pronounce": "Gi-lan ra-tha-ya ken-da-wan-na" },
+          "i_need_doctor": { "text": "I need a doctor.", "local_language": "මට වෛද්‍යවරයෙක් ඕන.", "pronounce": "Mat wai-dya-wa-ray-ek ona" },
+          "where_hospital": { "text": "Where is the nearest hospital?", "local_language": "ලඟම රෝහල කොහෙද?", "pronounce": "La-ga-ma ro-ha-la ko-heda" },
+          "i_am_lost": { "text": "I am lost.", "local_language": "මම මඟ බස්සලා.", "pronounce": "Mama maga bas-sa-la" }
+        }
+      }
+    ]
+  },
+
+  "nepal": {
+    "languages": [
+      {
+        "name": "Nepali",
+        "iso": "ne",
+        "phrases": {
+          "help": { "text": "Help!", "local_language": "मद्दत!", "pronounce": "Mad-dat" },
+          "call_police": { "text": "Please call the police.", "local_language": "प्रहरीलाई बोलाउनुहोस्।", "pronounce": "Pra-hari-lai bo-laa-nu-hos" },
+          "call_ambulance": { "text": "Please call an ambulance.", "local_language": "एम्बुलेन्स बोलाउनुहोस्।", "pronounce": "Em-bu-lens bo-laa-nu-hos" },
+          "i_need_doctor": { "text": "I need a doctor.", "local_language": "मलाई डाक्टर चाहियो।", "pronounce": "Ma-lai doctor cha-hi-yo" },
+          "where_hospital": { "text": "Where is the nearest hospital?", "local_language": "नजिकको अस्पताल कहाँ छ?", "pronounce": "Na-jeek-ko aspataal kahaan cha" },
+          "i_am_lost": { "text": "I am lost.", "local_language": "म बाटो बिराएँ।", "pronounce": "Ma ba-to bi-raa-ye" }
+        }
+      }
+    ]
+  },
+
+  "maldives": {
+    "languages": [
+      {
+        "name": "Dhivehi",
+        "iso": "dv",
+        "phrases": {
+          "help": { "text": "Help!", "local_language": "އެހީ!", "pronounce": "E-hee" },
+          "call_police": { "text": "Please call the police.", "local_language": "ފުލުހުންނަށް ގުޅުވާ.", "pronounce": "Fu-lu-hun-nash gu-lu-vaa" },
+          "call_ambulance": { "text": "Please call an ambulance.", "local_language": "އެމްބިއުލެންސް ގުޅުވާ.", "pronounce": "Am-bu-lens gu-lu-vaa" },
+          "i_need_doctor": { "text": "I need a doctor.", "local_language": "ޑޮކްޓަރެއް ބޭނުން.", "pronounce": "Dok-tar-eh bay-nun" },
+          "where_hospital": { "text": "Where is the nearest hospital?", "local_language": "ކަރީބު ހޮސްޕިޓަލް ކޮންތަން؟", "pronounce": "Ka-ree-bu hos-pi-tal kon-than" },
+          "i_am_lost": { "text": "I am lost.", "local_language": "މަގު ފައްސާލައިފި.", "pronounce": "Ma-gu fas-saa-lai-fi" }
+        }
+      }
+    ]
+  },
+
+  "tanzania": {
+    "languages": [
+      {
+        "name": "Swahili",
+        "iso": "sw",
+        "phrases": {
+          "help": { "text": "Help!", "local_language": "Msaada!", "pronounce": "M-sa-da" },
+          "call_police": { "text": "Please call the police.", "local_language": "Piga simu polisi.", "pronounce": "Pee-ga see-mu po-LEE-si" },
+          "call_ambulance": { "text": "Please call an ambulance.", "local_language": "Piga simu ambulansi.", "pronounce": "Am-bu-LAN-si" },
+          "i_need_doctor": { "text": "I need a doctor.", "local_language": "Nahitaji daktari.", "pronounce": "Na-ha-jee-jee dak-TA-ree" },
+          "where_hospital": { "text": "Where is the nearest hospital?", "local_language": "Hospitali ya karibu iko wapi?", "pronounce": "Hos-pee-ta-li ya ka-REE-bo ee-ko WA-pee" },
+          "i_am_lost": { "text": "I am lost.", "local_language": "Nimepotea.", "pronounce": "Nee-me-po-teh-ah" }
+        }
+      }
+    ]
+  },
+
+  "colombia": {
+    "languages": [
+      {
+        "name": "Spanish",
+        "iso": "es",
+        "phrases": {
+          "help": { "text": "Help!", "local_language": "¡Ayuda!", "pronounce": "Ah-yoo-dah" },
+          "call_police": { "text": "Please call the police.", "local_language": "Llame a la policía.", "pronounce": "Ya-meh a la po-LEE-see-ah" },
+          "call_ambulance": { "text": "Please call an ambulance.", "local_language": "Llame a una ambulancia.", "pronounce": "Ahm-boo-LAN-see-ah" },
+          "i_need_doctor": { "text": "I need a doctor.", "local_language": "Necesito un médico.", "pronounce": "Ne-seh-SEE-to un MEH-dee-ko" },
+          "where_hospital": { "text": "Where is the nearest hospital?", "local_language": "¿Dónde está el hospital más cercano?", "pronounce": "Don-deh es-ta el os-pee-TAL" },
+          "i_am_lost": { "text": "I am lost.", "local_language": "Estoy perdido.", "pronounce": "Es-toy pehr-DEE-do" }
+        }
+      }
+    ]
+  },
+
+  "costa-rica": {
+    "languages": [
+      {
+        "name": "Spanish",
+        "iso": "es",
+        "phrases": {
+          "help": { "text": "Help!", "local_language": "¡Ayuda!", "pronounce": "Ah-yoo-dah" },
+          "call_police": { "text": "Please call the police.", "local_language": "Llame a la policía.", "pronounce": "Ya-meh a la po-LEE-see-ah" },
+          "call_ambulance": { "text": "Please call an ambulance.", "local_language": "Llame a una ambulancia.", "pronounce": "Ahm-boo-LAN-see-ah" },
+          "i_need_doctor": { "text": "I need a doctor.", "local_language": "Necesito un doctor.", "pronounce": "Ne-seh-SEE-to un doc-TOR" },
+          "where_hospital": { "text": "Where is the nearest hospital?", "local_language": "¿Dónde está el hospital más cercano?", "pronounce": "Don-deh es-ta el os-pee-TAL" },
+          "i_am_lost": { "text": "I am lost.", "local_language": "Estoy perdido.", "pronounce": "Es-toy pehr-DEE-do" }
+        }
+      }
+    ]
+  },
+
+  "panama": {
+    "languages": [
+      {
+        "name": "Spanish",
+        "iso": "es",
+        "phrases": {
+          "help": { "text": "Help!", "local_language": "¡Ayuda!", "pronounce": "Ah-yoo-dah" },
+          "call_police": { "text": "Please call the police.", "local_language": "Llame a la policía.", "pronounce": "Ya-meh a la po-LEE-see-ah" },
+          "call_ambulance": { "text": "Please call an ambulance.", "local_language": "Llame a una ambulancia.", "pronounce": "Ahm-boo-LAN-see-ah" },
+          "i_need_doctor": { "text": "I need a doctor.", "local_language": "Necesito un médico.", "pronounce": "MEH-dee-ko" },
+          "where_hospital": { "text": "Where is the nearest hospital?", "local_language": "¿Dónde está el hospital más cercano?", "pronounce": "Cer-CA-no" },
+          "i_am_lost": { "text": "I am lost.", "local_language": "Estoy perdido.", "pronounce": "Es-toy pehr-DEE-do" }
+        }
+      }
+    ]
+  },
+
+  "chile": {
+    "languages": [
+      {
+        "name": "Spanish",
+        "iso": "es",
+        "phrases": {
+          "help": { "text": "Help!", "local_language": "¡Auxilio!", "pronounce": "Ow-SEE-lee-oh" },
+          "call_police": { "text": "Please call the police.", "local_language": "Llame a carabineros.", "pronounce": "Ka-ra-bee-NEH-ros" },
+          "call_ambulance": { "text": "Please call an ambulance.", "local_language": "Llame a una ambulancia.", "pronounce": "Ahm-boo-LAN-see-ah" },
+          "i_need_doctor": { "text": "I need a doctor.", "local_language": "Necesito un doctor.", "pronounce": "Doc-TOR" },
+          "where_hospital": { "text": "Where is the nearest hospital?", "local_language": "¿Dónde está el hospital más cercano?", "pronounce": "Os-pee-TAL" },
+          "i_am_lost": { "text": "I am lost.", "local_language": "Estoy perdido.", "pronounce": "Es-toy pehr-DEE-do" }
+        }
+      }
+    ]
   }
 }

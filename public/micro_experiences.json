@@ -1826,5 +1826,357 @@
         "url": "https://www.google.com/search?q=Road+Town+Tortola+walking+tour"
       }
     ]
+  },
+  
+  "lisbon-portugal": {
+    "events": [
+      {
+        "id": "cur-lisbon-portugal-evt-1",
+        "title": "Riverside sunset food market",
+        "short": "Street food stalls with live music near the Tagus River.",
+        "venue": "Cais do Sodré",
+        "url": "https://www.google.com/search?q=Lisbon+riverside+street+food+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-lisbon-portugal-gde-1",
+        "title": "90-minute Alfama walking tour",
+        "short": "Guided stroll through Lisbon’s oldest neighborhood.",
+        "durationMins": 90,
+        "venue": "Alfama District",
+        "url": "https://www.google.com/search?q=Lisbon+Alfama+walking+tour"
+      }
+    ]
+  },
+
+  "athens-greece": {
+    "events": [
+      {
+        "id": "cur-athens-greece-evt-1",
+        "title": "Open-air cultural night market",
+        "short": "Local crafts, food tastings, and street performances.",
+        "venue": "Monastiraki Square",
+        "url": "https://www.google.com/search?q=Athens+Monastiraki+night+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-athens-greece-gde-1",
+        "title": "Acropolis area express tour",
+        "short": "Quick history walk around major ancient landmarks.",
+        "durationMins": 90,
+        "venue": "Acropolis Area",
+        "url": "https://www.google.com/search?q=Athens+Acropolis+walking+tour"
+      }
+    ]
+  },
+
+  "dubrovnik-croatia": {
+    "events": [
+      {
+        "id": "cur-dubrovnik-croatia-evt-1",
+        "title": "Old Town evening music event",
+        "short": "Live classical and folk music inside historic squares.",
+        "venue": "Old Town Dubrovnik",
+        "url": "https://www.google.com/search?q=Dubrovnik+old+town+evening+music"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-dubrovnik-croatia-gde-1",
+        "title": "City walls highlights walk",
+        "short": "Fast-paced guided tour of Dubrovnik’s famous walls.",
+        "durationMins": 90,
+        "venue": "Old Town Walls",
+        "url": "https://www.google.com/search?q=Dubrovnik+city+walls+tour"
+      }
+    ]
+  },
+
+  "warsaw-poland": {
+    "events": [
+      {
+        "id": "cur-warsaw-poland-evt-1",
+        "title": "Weekend street food festival",
+        "short": "Rotating food trucks and local specialties.",
+        "venue": "Vistula Boulevards",
+        "url": "https://www.google.com/search?q=Warsaw+street+food+festival"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-warsaw-poland-gde-1",
+        "title": "Old Town history walk",
+        "short": "Guided walk through Warsaw’s reconstructed Old Town.",
+        "durationMins": 90,
+        "venue": "Stare Miasto",
+        "url": "https://www.google.com/search?q=Warsaw+Old+Town+walking+tour"
+      }
+    ]
+  },
+
+  "bucharest-romania": {
+    "events": [
+      {
+        "id": "cur-bucharest-romania-evt-1",
+        "title": "Old Town nightlife crawl",
+        "short": "Popular bars and live music venues in Lipscani.",
+        "venue": "Old Town Bucharest",
+        "url": "https://www.google.com/search?q=Bucharest+Old+Town+pub+crawl"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-bucharest-romania-gde-1",
+        "title": "Communist-era architecture walk",
+        "short": "Short guided tour of iconic socialist landmarks.",
+        "durationMins": 90,
+        "venue": "City Center",
+        "url": "https://www.google.com/search?q=Bucharest+communist+architecture+tour"
+      }
+    ]
+  },
+
+  "cairo-egypt": {
+    "events": [
+      {
+        "id": "cur-cairo-egypt-evt-1",
+        "title": "Nile dinner cruise show",
+        "short": "Traditional dance and buffet on the Nile River.",
+        "venue": "Nile River Docks",
+        "url": "https://www.google.com/search?q=Cairo+Nile+dinner+cruise"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-cairo-egypt-gde-1",
+        "title": "Giza pyramids express tour",
+        "short": "Quick guided tour of pyramids and Sphinx.",
+        "durationMins": 90,
+        "venue": "Giza Plateau",
+        "url": "https://www.google.com/search?q=Giza+pyramids+guided+tour"
+      }
+    ]
+  },
+
+  "tel-aviv-israel": {
+    "events": [
+      {
+        "id": "cur-tel-aviv-israel-evt-1",
+        "title": "Beach sunset DJ sessions",
+        "short": "Live DJs and pop-up bars on the beachfront.",
+        "venue": "Tel Aviv Promenade",
+        "url": "https://www.google.com/search?q=Tel+Aviv+beach+sunset+DJ"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-tel-aviv-israel-gde-1",
+        "title": "Old Jaffa walking tour",
+        "short": "Guided cultural walk through ancient port streets.",
+        "durationMins": 90,
+        "venue": "Jaffa Old City",
+        "url": "https://www.google.com/search?q=Jaffa+walking+tour"
+      }
+    ]
+  },
+
+  "mumbai-india": {
+    "events": [
+      {
+        "id": "cur-mumbai-india-evt-1",
+        "title": "Evening street food crawl",
+        "short": "Guided tasting of Mumbai’s iconic snacks.",
+        "venue": "Chowpatty & Colaba",
+        "url": "https://www.google.com/search?q=Mumbai+street+food+tour"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-mumbai-india-gde-1",
+        "title": "Colonial heritage walking tour",
+        "short": "Quick history walk through South Mumbai landmarks.",
+        "durationMins": 90,
+        "venue": "Fort Area",
+        "url": "https://www.google.com/search?q=Mumbai+heritage+walking+tour"
+      }
+    ]
+  },
+
+  "colombo-sri-lanka": {
+    "events": [
+      {
+        "id": "cur-colombo-sri-lanka-evt-1",
+        "title": "Galle Face evening food stalls",
+        "short": "Local snacks and oceanfront street food.",
+        "venue": "Galle Face Green",
+        "url": "https://www.google.com/search?q=Galle+Face+Green+street+food"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-colombo-sri-lanka-gde-1",
+        "title": "Colonial Colombo city walk",
+        "short": "Short guided walk around historic Fort district.",
+        "durationMins": 90,
+        "venue": "Colombo Fort",
+        "url": "https://www.google.com/search?q=Colombo+Fort+walking+tour"
+      }
+    ]
+  },
+
+  "kathmandu-nepal": {
+    "events": [
+      {
+        "id": "cur-kathmandu-nepal-evt-1",
+        "title": "Evening cultural dance show",
+        "short": "Traditional Nepali dance and music performance.",
+        "venue": "Thamel Area",
+        "url": "https://www.google.com/search?q=Kathmandu+cultural+dance+show"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-kathmandu-nepal-gde-1",
+        "title": "Durbar Square heritage tour",
+        "short": "Guided walk through palace squares and temples.",
+        "durationMins": 90,
+        "venue": "Kathmandu Durbar Square",
+        "url": "https://www.google.com/search?q=Kathmandu+Durbar+Square+tour"
+      }
+    ]
+  },
+
+  "male-maldives": {
+    "events": [
+      {
+        "id": "cur-male-maldives-evt-1",
+        "title": "Sunset dolphin cruise",
+        "short": "Short boat trip with dolphin spotting opportunities.",
+        "venue": "Malé Harbor",
+        "url": "https://www.google.com/search?q=Maldives+sunset+dolphin+cruise"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-male-maldives-gde-1",
+        "title": "Local island culture tour",
+        "short": "Guided visit to nearby inhabited islands.",
+        "durationMins": 90,
+        "venue": "Nearby Local Islands",
+        "url": "https://www.google.com/search?q=Maldives+local+island+tour"
+      }
+    ]
+  },
+
+  "zanzibar-city-tanzania": {
+    "events": [
+      {
+        "id": "cur-zanzibar-city-tanzania-evt-1",
+        "title": "Forodhani night food market",
+        "short": "Seafood grills and local Swahili dishes.",
+        "venue": "Forodhani Gardens",
+        "url": "https://www.google.com/search?q=Forodhani+Gardens+night+market"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-zanzibar-city-tanzania-gde-1",
+        "title": "Stone Town heritage walk",
+        "short": "Guided exploration of historic streets and landmarks.",
+        "durationMins": 90,
+        "venue": "Stone Town",
+        "url": "https://www.google.com/search?q=Stone+Town+walking+tour"
+      }
+    ]
+  },
+
+  "bogota-colombia": {
+    "events": [
+      {
+        "id": "cur-bogota-colombia-evt-1",
+        "title": "Street art cycling tour",
+        "short": "Short bike ride through mural districts.",
+        "venue": "La Candelaria",
+        "url": "https://www.google.com/search?q=Bogota+street+art+bike+tour"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-bogota-colombia-gde-1",
+        "title": "Historic downtown walking tour",
+        "short": "Guided walk through colonial-era landmarks.",
+        "durationMins": 90,
+        "venue": "La Candelaria",
+        "url": "https://www.google.com/search?q=Bogota+walking+tour"
+      }
+    ]
+  },
+
+  "san-jose-costa-rica": {
+    "events": [
+      {
+        "id": "cur-san-jose-costa-rica-evt-1",
+        "title": "Coffee tasting experience",
+        "short": "Guided sampling of Costa Rican specialty coffee.",
+        "venue": "City Center Cafés",
+        "url": "https://www.google.com/search?q=San+Jose+Costa+Rica+coffee+tasting"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-san-jose-costa-rica-gde-1",
+        "title": "Central market food walk",
+        "short": "Short guided tour of traditional markets.",
+        "durationMins": 90,
+        "venue": "Mercado Central",
+        "url": "https://www.google.com/search?q=San+Jose+Central+Market+tour"
+      }
+    ]
+  },
+
+  "panama-city-panama": {
+    "events": [
+      {
+        "id": "cur-panama-city-panama-evt-1",
+        "title": "Casco Viejo rooftop sunset party",
+        "short": "DJ sets with skyline and ocean views.",
+        "venue": "Casco Viejo",
+        "url": "https://www.google.com/search?q=Casco+Viejo+rooftop+bar+sunset"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-panama-city-panama-gde-1",
+        "title": "Panama Canal visitor tour",
+        "short": "Guided experience at Miraflores Locks.",
+        "durationMins": 90,
+        "venue": "Miraflores Locks",
+        "url": "https://www.google.com/search?q=Panama+Canal+Miraflores+tour"
+      }
+    ]
+  },
+
+  "santiago-chile": {
+    "events": [
+      {
+        "id": "cur-santiago-chile-evt-1",
+        "title": "Wine bar tasting night",
+        "short": "Sample Chilean wines with local sommeliers.",
+        "venue": "Barrio Lastarria",
+        "url": "https://www.google.com/search?q=Santiago+Chile+wine+tasting"
+      }
+    ],
+    "guides": [
+      {
+        "id": "cur-santiago-chile-gde-1",
+        "title": "City highlights walking tour",
+        "short": "Quick walk through historic and cultural districts.",
+        "durationMins": 90,
+        "venue": "Downtown Santiago",
+        "url": "https://www.google.com/search?q=Santiago+walking+tour"
+      }
+    ]
   }
 }

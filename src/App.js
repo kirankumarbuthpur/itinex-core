@@ -19,6 +19,10 @@ export default function App() {
 
         <Route path="/planner/dates" element={<HolidayPlanner />} />
         <Route path="/planner/itinerary" element={<HolidayPlanner />} />
+        <Route path="/destinations/:slug" element={<HolidayPlanner />} />
+        <Route path="/planner/itinerary/:slug" element={<HolidayPlanner />} />
+
+
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

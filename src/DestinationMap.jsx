@@ -1,7 +1,7 @@
 import React from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, Marker, Tooltip, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Tooltip, useMap, useMapEvents } from "react-leaflet";
 
 /* ---- Leaflet icon fix (unchanged) ---- */
 delete L.Icon.Default.prototype._getIconUrl;
@@ -20,11 +20,29 @@ L.Icon.Default.mergeOptions({
  */
 function FlyController({ defaultCenter, defaultZoom }) {
   const map = useMap();
+  const lastUserActionRef = React.useRef(Date.now());
+
+  // Track any user interaction so we don't override their zoom
+  useMapEvents({
+    zoomstart() {
+      lastUserActionRef.current = Date.now();
+    },
+    movestart() {
+      lastUserActionRef.current = Date.now();
+    },
+    dragstart() {
+      lastUserActionRef.current = Date.now();
+    },
+  });
 
   React.useEffect(() => {
     const onFlyTo = (e) => {
       const { lat, lon, zoom } = e.detail || {};
       if (lat == null || lon == null) return;
+
+      // This is a programmatic move, not a user one, but we should still
+      // prevent immediate "idle reset" afterwards:
+      lastUserActionRef.current = Date.now();
 
       map.flyTo([lat, lon], zoom ?? map.getZoom(), {
         animate: true,
@@ -34,18 +52,23 @@ function FlyController({ defaultCenter, defaultZoom }) {
 
     window.addEventListener("itinex-flyto", onFlyTo);
 
-    const idle = setInterval(() => {
-      if (!window.__itinexHovering && !window.__itinexRecentClick) {
-        map.flyTo(defaultCenter, defaultZoom, {
-          animate: true,
-          duration: 0.9,
-        });
-      }
-    }, 900);
+    const IDLE_MS = 15000; // <-- change: how long before auto-reset (e.g. 15s)
+    const tick = setInterval(() => {
+      const now = Date.now();
+
+      // Don't reset if the user recently interacted or clicked a marker
+      if (window.__itinexRecentClick) return;
+      if (now - lastUserActionRef.current < IDLE_MS) return;
+
+      map.flyTo(defaultCenter, defaultZoom, {
+        animate: true,
+        duration: 0.9,
+      });
+    }, 1000);
 
     return () => {
       window.removeEventListener("itinex-flyto", onFlyTo);
-      clearInterval(idle);
+      clearInterval(tick);
     };
   }, [map, defaultCenter, defaultZoom]);
 
