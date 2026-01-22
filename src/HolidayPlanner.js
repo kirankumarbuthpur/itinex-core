@@ -144,9 +144,7 @@ const VoteBar = ({ k, totals, onVote }) => {
 };
 
 export default function HolidayPlanner() {
-   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+
   const [step, setStep] = useState('select');
   const [destinations, setDestinations] = useState([]);
   const [selectedDest, setSelectedDest] = useState(null);
@@ -183,6 +181,14 @@ const utilityAbortRef = useRef(null);
 const navigate = useNavigate();
 const location = useLocation();
 const { slug } = useParams();
+   useEffect(() => {
+  // Always scroll to top on route change (important for SEO landing pages)
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: "instant"
+  });
+}, [location.pathname]);
 
 const slugify = (s) =>
   String(s || "")
